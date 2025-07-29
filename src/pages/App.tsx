@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle, TrendingUp } from "lucide-react";
+import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle, TrendingUp, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface Message {
@@ -13,9 +12,15 @@ interface Message {
   timestamp: Date;
   sender?: string;
   guestType?: string;
+  priceRecommendation?: {
+    dates: string;
+    currentPrice: number;
+    recommendedPrice: number;
+    reason: string;
+  };
 }
 
-type ConversationStage = 'initial' | 'guestInteraction' | 'pricingOpportunity' | 'pricingDecision' | 'completed';
+type ConversationStage = 'initial' | 'analyzing' | 'monitoring' | 'guest-interaction' | 'pricing-opportunity' | 'ended';
 
 const App = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -27,13 +32,13 @@ const App = () => {
     }
   ]);
   const [inputValue, setInputValue] = useState('');
-  const [conversationStage, setConversationStage] = useState<ConversationStage>('initial');
+  const [showGuestMessage, setShowGuestMessage] = useState(false);
   const [showResponseOptions, setShowResponseOptions] = useState(false);
-  const [showDecisionButtons, setShowDecisionButtons] = useState(false);
   const [suggestedResponse, setSuggestedResponse] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editedResponse, setEditedResponse] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationStage, setConversationStage] = useState<ConversationStage>('initial');
   const navigate = useNavigate();
 
   const addMessage = (message: Message) => {
@@ -49,7 +54,7 @@ const App = () => {
   };
 
   const handleSend = async () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || conversationStage === 'ended') return;
 
     const newMessage: Message = {
       id: messages.length + 1,
@@ -59,44 +64,48 @@ const App = () => {
     };
 
     addMessage(newMessage);
+    const userInput = inputValue.toLowerCase();
     setInputValue('');
 
     if (conversationStage === 'initial') {
-      await handleInitialSetup();
+      setConversationStage('analyzing');
+      // Simulate AI analysis
+      await simulateTyping(2000);
+      
+      const aiResponse: Message = {
+        id: messages.length + 2,
+        type: 'ai',
+        content: "Perfect! I've analyzed your Downtown Loft property. I can see it's a 2-bedroom with 4.9 stars, averaging $180/night with 85% occupancy. I've identified your peak seasons and guest patterns. I'm now monitoring for bookings, messages, and market changes. You're all set!",
+        timestamp: new Date()
+      };
+      addMessage(aiResponse);
+      
+      setConversationStage('monitoring');
+      
+      // Show monitoring status
+      await simulateTyping(1000);
+      const monitoringMessage: Message = {
+        id: messages.length + 3,
+        type: 'status',
+        content: "🔍 Monitoring active for bookings, guest messages, and pricing opportunities...",
+        timestamp: new Date()
+      };
+      addMessage(monitoringMessage);
+      
+      // Simulate guest message after some time
+      setTimeout(() => {
+        simulateGuestInteraction();
+      }, 3000);
+    } else if (conversationStage === 'guest-interaction' && (userInput.includes('yes') || userInput.includes('handle'))) {
+      handlePricingFlow();
     }
   };
 
-  const handleInitialSetup = async () => {
-    // Simulate AI analysis
-    await simulateTyping(2000);
-    
-    const aiResponse: Message = {
-      id: messages.length + 2,
-      type: 'ai',
-      content: "Perfect! I've analyzed your Downtown Loft property. I can see it's a 2-bedroom with 4.9 stars, averaging $180/night with 85% occupancy. I've identified your peak seasons and guest patterns. I'm now monitoring for bookings, messages, and market changes. You're all set!",
-      timestamp: new Date()
-    };
-    addMessage(aiResponse);
-    
-    // Show monitoring status
-    await simulateTyping(1000);
-    const monitoringMessage: Message = {
-      id: messages.length + 3,
-      type: 'status',
-      content: "🔍 Monitoring active for bookings, guest messages, and pricing opportunities...",
-      timestamp: new Date()
-    };
-    addMessage(monitoringMessage);
-    
-    setConversationStage('guestInteraction');
-    
-    // Simulate guest message after some time
-    setTimeout(() => {
-      simulateGuestInteraction();
-    }, 3000);
-  };
-
   const simulateGuestInteraction = async () => {
+    if (conversationStage !== 'monitoring') return;
+    
+    setConversationStage('guest-interaction');
+    
     // Guest message notification
     const guestNotification: Message = {
       id: messages.length + 4,
@@ -173,9 +182,6 @@ const App = () => {
         timestamp: new Date()
       };
       addMessage(finalAI);
-      
-      setConversationStage('pricingOpportunity');
-      setShowDecisionButtons(true);
     }, 3000);
 
     setShowResponseOptions(false);
@@ -184,75 +190,56 @@ const App = () => {
     setSuggestedResponse('');
   };
 
-  const handlePricingDecision = async (decision: 'yes' | 'no') => {
-    const userResponse: Message = {
-      id: messages.length + 11,
-      type: 'user',
-      content: decision === 'yes' ? 'Yes' : 'No',
-      timestamp: new Date()
+  const handlePricingFlow = async () => {
+    setConversationStage('pricing-opportunity');
+    
+    await simulateTyping(2000);
+    
+    const pricingMessage: Message = {
+      id: messages.length + 1,
+      type: 'pricing',
+      content: "I've identified a pricing opportunity! Based on local events and demand patterns:",
+      timestamp: new Date(),
+      priceRecommendation: {
+        dates: "March 15-17 (Weekend)",
+        currentPrice: 180,
+        recommendedPrice: 220,
+        reason: "Local music festival + 90% area occupancy. Similar properties increased rates by 20-25%."
+      }
     };
-    addMessage(userResponse);
-    setShowDecisionButtons(false);
-
-    if (decision === 'yes') {
-      await simulateTyping(2000);
-      
-      const pricingAnalysis: Message = {
-        id: messages.length + 12,
-        type: 'ai',
-        content: "📊 I've analyzed the market data for next weekend. There's a local festival happening, and similar properties are charging 22% more. I recommend increasing your rate from $180 to $220/night for Friday-Sunday. This could generate an extra $120 in revenue. Should I implement this change?",
-        timestamp: new Date()
-      };
-      addMessage(pricingAnalysis);
-      
-      setConversationStage('pricingDecision');
-      setShowDecisionButtons(true);
-    } else {
-      await simulateTyping(1000);
-      
-      const endMessage: Message = {
-        id: messages.length + 12,
-        type: 'ai',
-        content: "Understood! I'll continue monitoring and will notify you of any urgent opportunities. Your property is in great hands with PropCore. Have a great day!",
-        timestamp: new Date()
-      };
-      addMessage(endMessage);
-      
-      setConversationStage('completed');
-    }
+    addMessage(pricingMessage);
   };
 
-  const handlePricingImplementation = async (decision: 'yes' | 'no') => {
+  const handlePricingDecision = async (approved: boolean) => {
     const userResponse: Message = {
-      id: messages.length + 13,
+      id: messages.length + 1,
       type: 'user',
-      content: decision === 'yes' ? 'Yes, implement the change' : 'No, keep current pricing',
+      content: approved ? 'Yes, update the pricing' : 'No, keep monitoring only',
       timestamp: new Date()
     };
     addMessage(userResponse);
-    setShowDecisionButtons(false);
 
     await simulateTyping(1500);
 
-    if (decision === 'yes') {
-      const implementationMessage: Message = {
-        id: messages.length + 14,
+    if (approved) {
+      const successMessage: Message = {
+        id: messages.length + 2,
         type: 'success',
-        content: "✅ Perfect! I've updated your pricing to $220/night for next weekend (Nov 15-17). Your calendar has been updated on Airbnb. I'll continue monitoring market trends and will recommend adjustments as needed. Great job optimizing your revenue!",
+        content: "✅ Perfect! I've updated your pricing to $220/night for March 15-17 weekend. The change will be reflected on your Airbnb listing within the next hour. I'll continue monitoring for more opportunities and guest messages.",
         timestamp: new Date()
       };
-      addMessage(implementationMessage);
+      addMessage(successMessage);
     } else {
-      const keepCurrentMessage: Message = {
-        id: messages.length + 14,
+      const continuedMonitoring: Message = {
+        id: messages.length + 2,
         type: 'ai',
-        content: "No problem! I'll keep your current rate at $180/night. I've noted your preference and will continue monitoring for other opportunities. PropCore is here whenever you need assistance!",
+        content: "Understood! I'll keep monitoring the market and will only notify you of significant opportunities. I'm continuing to watch for new bookings, guest messages, and major pricing trends. You're all set!",
         timestamp: new Date()
       };
-      addMessage(keepCurrentMessage);
+      addMessage(continuedMonitoring);
     }
-    
-    setConversationStage('completed');
+
+    setConversationStage('ended');
   };
 
   const handleEditResponse = () => {
@@ -293,9 +280,9 @@ const App = () => {
 
       <div className="relative z-10">
         {/* Header */}
-        <header className="bg-transparent backdrop-blur-xl border-b border-gray-800/50 p-4">
+        <header className="backdrop-blur-xl border-b border-gray-800/30 p-4">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center">
               <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
             </div>
             <Button 
@@ -338,6 +325,59 @@ const App = () => {
                         <CheckCircle className="h-4 w-4 mr-2" />
                         {message.content}
                       </p>
+                    </div>
+                  </div>
+                )}
+
+                {message.type === 'pricing' && (
+                  <div className="flex justify-start mb-4">
+                    <div className="max-w-2xl">
+                      <div className="bg-gray-800/80 rounded-lg p-4 border border-gray-700/50 backdrop-blur-sm">
+                        <div className="flex items-center space-x-2 mb-3">
+                          <TrendingUp className="h-5 w-5 text-yellow-500" />
+                          <span className="text-yellow-400 font-medium">Pricing Opportunity Detected</span>
+                        </div>
+                        <p className="text-white text-sm mb-4">{message.content}</p>
+                        {message.priceRecommendation && (
+                          <div className="bg-gray-900/70 rounded-lg p-3 border border-yellow-600/30 mb-4">
+                            <div className="grid grid-cols-2 gap-3 text-sm">
+                              <div>
+                                <span className="text-gray-400">Dates:</span>
+                                <p className="text-white font-medium">{message.priceRecommendation.dates}</p>
+                              </div>
+                              <div>
+                                <span className="text-gray-400">Current → Recommended:</span>
+                                <p className="text-white font-medium">
+                                  ${message.priceRecommendation.currentPrice} → <span className="text-yellow-400">${message.priceRecommendation.recommendedPrice}</span>
+                                </p>
+                              </div>
+                            </div>
+                            <div className="mt-2">
+                              <span className="text-gray-400 text-xs">Reason:</span>
+                              <p className="text-white text-xs mt-1">{message.priceRecommendation.reason}</p>
+                            </div>
+                          </div>
+                        )}
+                        <div className="flex space-x-2">
+                          <Button
+                            onClick={() => handlePricingDecision(true)}
+                            className="bg-yellow-600 hover:bg-yellow-700 text-white text-sm"
+                            disabled={conversationStage === 'ended'}
+                          >
+                            <CheckCircle className="h-4 w-4 mr-1" />
+                            Approve Change
+                          </Button>
+                          <Button
+                            onClick={() => handlePricingDecision(false)}
+                            variant="outline"
+                            className="border-gray-600 text-gray-300 hover:bg-gray-800 text-sm"
+                            disabled={conversationStage === 'ended'}
+                          >
+                            <X className="h-4 w-4 mr-1" />
+                            Keep Current
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -412,26 +452,6 @@ const App = () => {
               </div>
             )}
 
-            {/* Decision Buttons */}
-            {showDecisionButtons && (
-              <div className="flex justify-center space-x-4 mt-4">
-                <Button
-                  onClick={() => conversationStage === 'pricingOpportunity' ? handlePricingDecision('yes') : handlePricingImplementation('yes')}
-                  className="bg-teal-600 hover:bg-teal-700 text-white"
-                >
-                  <CheckCircle className="h-4 w-4 mr-2" />
-                  {conversationStage === 'pricingOpportunity' ? 'Yes' : 'Yes, implement change'}
-                </Button>
-                <Button
-                  onClick={() => conversationStage === 'pricingOpportunity' ? handlePricingDecision('no') : handlePricingImplementation('no')}
-                  variant="outline"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-800"
-                >
-                  {conversationStage === 'pricingOpportunity' ? 'No' : 'No, keep current pricing'}
-                </Button>
-              </div>
-            )}
-
             {/* Response Options */}
             {showResponseOptions && (
               <div className="bg-gray-900/90 border border-gray-700/50 rounded-lg p-4 backdrop-blur-sm">
@@ -492,30 +512,28 @@ const App = () => {
             )}
           </div>
 
-          {/* Input - Only show if conversation is not completed */}
-          {conversationStage !== 'completed' && !showDecisionButtons && (
-            <Card className="bg-gray-900/90 border-gray-700/50 backdrop-blur-sm">
-              <CardContent className="p-4">
-                <div className="flex space-x-2">
-                  <Input
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Type your message..."
-                    className="bg-gray-800/70 border-gray-600 text-white focus:border-teal-600"
-                    onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                    disabled={conversationStage !== 'initial'}
-                  />
-                  <Button 
-                    onClick={handleSend}
-                    className="bg-teal-600 hover:bg-teal-700"
-                    disabled={isTyping || conversationStage !== 'initial'}
-                  >
-                    <Send className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+          {/* Input */}
+          <Card className="bg-gray-900/90 border-gray-700/50 backdrop-blur-sm">
+            <CardContent className="p-4">
+              <div className="flex space-x-2">
+                <Input
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder={conversationStage === 'ended' ? "Conversation completed" : "Type your message..."}
+                  className="bg-gray-800/70 border-gray-600 text-white focus:border-teal-600"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                  disabled={conversationStage === 'ended' || isTyping}
+                />
+                <Button 
+                  onClick={handleSend}
+                  className="bg-teal-600 hover:bg-teal-700"
+                  disabled={isTyping || conversationStage === 'ended'}
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
