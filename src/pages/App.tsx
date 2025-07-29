@@ -1,9 +1,9 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageCircle, Send, Edit3, LogOut, Clock, User } from "lucide-react";
+import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const App = () => {
@@ -11,7 +11,7 @@ const App = () => {
     {
       id: 1,
       type: 'ai',
-      content: "Hi! I'm PropCore, your AI co-host. Please share your Airbnb listing link so I can analyze it and set you up.",
+      content: "Hi! I'm PropCore, your AI co-host. Please share your Airbnb listing link so I can analyze it and set you up with intelligent monitoring.",
       timestamp: new Date()
     }
   ]);
@@ -21,9 +21,22 @@ const App = () => {
   const [suggestedResponse, setSuggestedResponse] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editedResponse, setEditedResponse] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
   const navigate = useNavigate();
 
-  const handleSend = () => {
+  const addMessage = (message: any) => {
+    setMessages(prev => [...prev, message]);
+  };
+
+  const simulateTyping = (duration: number = 1500) => {
+    setIsTyping(true);
+    return new Promise(resolve => setTimeout(() => {
+      setIsTyping(false);
+      resolve(true);
+    }, duration));
+  };
+
+  const handleSend = async () => {
     if (!inputValue.trim()) return;
 
     const newMessage = {
@@ -33,76 +46,115 @@ const App = () => {
       timestamp: new Date()
     };
 
-    setMessages([...messages, newMessage]);
+    addMessage(newMessage);
     setInputValue('');
 
-    // Simulate AI response based on input
-    setTimeout(() => {
-      const aiResponse = {
-        id: messages.length + 2,
-        type: 'ai',
-        content: "Thanks! I've analyzed your Downtown Loft property. I can see it's a 2-bedroom with 4.9 stars and great amenities. I'll now monitor for any bookings or guest messages and notify you immediately. You're all set!",
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, aiResponse]);
-      
-      // Simulate guest message after 3 seconds
-      setTimeout(() => {
-        setShowGuestMessage(true);
-        simulateGuestMessage();
-      }, 3000);
-    }, 1000);
-  };
-
-  const simulateGuestMessage = () => {
-    const guestNotification = {
-      id: messages.length + 3,
-      type: 'notification',
-      content: "🔔 New message from Sarah (arriving today)",
+    // Simulate AI analysis
+    await simulateTyping(2000);
+    
+    const aiResponse = {
+      id: messages.length + 2,
+      type: 'ai',
+      content: "Perfect! I've analyzed your Downtown Loft property. I can see it's a 2-bedroom with 4.9 stars, averaging $180/night with 85% occupancy. I've identified your peak seasons and guest patterns. I'm now monitoring for bookings, messages, and market changes. You're all set!",
       timestamp: new Date()
     };
-
-    const guestMessage = {
-      id: messages.length + 4,
-      type: 'guest',
-      content: "Hi! I will be arriving 30 minutes early. Is an early check-in possible? Also, could you please let me know the WiFi password? I need to connect urgently when I arrive. Thanks!",
-      timestamp: new Date(),
-      sender: 'Sarah'
+    addMessage(aiResponse);
+    
+    // Show monitoring status
+    await simulateTyping(1000);
+    const monitoringMessage = {
+      id: messages.length + 3,
+      type: 'status',
+      content: "🔍 Monitoring active for bookings, guest messages, and pricing opportunities...",
+      timestamp: new Date()
     };
-
-    setMessages(prev => [...prev, guestNotification, guestMessage]);
-
-    // Show AI's suggested response
+    addMessage(monitoringMessage);
+    
+    // Simulate guest message after some time
     setTimeout(() => {
-      const aiSuggestion = {
-        id: messages.length + 5,
-        type: 'ai',
-        content: "I've drafted a response for Sarah. You can send it directly or edit it first:",
-        timestamp: new Date()
-      };
-      
-      setMessages(prev => [...prev, aiSuggestion]);
-      setSuggestedResponse("Hi Sarah! Yes, early check-in at 2:30 PM is perfectly fine. The WiFi password is 'DowntownLoft2024'. Looking forward to hosting you! Let me know if you need anything else.");
-      setShowResponseOptions(true);
-    }, 2000);
+      simulateGuestInteraction();
+    }, 4000);
   };
 
-  const handleSendResponse = () => {
-    const sentMessage = {
+  const simulateGuestInteraction = async () => {
+    // Guest message notification
+    const guestNotification = {
+      id: messages.length + 4,
+      type: 'notification',
+      content: "🔔 New message from Sarah Mitchell (Premium Guest, arriving today)",
+      timestamp: new Date()
+    };
+    addMessage(guestNotification);
+
+    await simulateTyping(1000);
+
+    // Guest message
+    const guestMessage = {
+      id: messages.length + 5,
+      type: 'guest',
+      content: "Hi! I'll be arriving 30 minutes early at 2:30 PM. Is early check-in possible? Also, what's the WiFi password? I have an important video call at 3 PM. Thanks!",
+      timestamp: new Date(),
+      sender: 'Sarah Mitchell',
+      guestType: 'Premium Guest'
+    };
+    addMessage(guestMessage);
+
+    // AI analyzes and suggests response
+    await simulateTyping(2500);
+    const aiSuggestion = {
       id: messages.length + 6,
+      type: 'ai',
+      content: "I've analyzed Sarah's message and her guest profile. She's a premium guest with a 5-star rating. I've crafted a personalized response considering her early arrival request and urgent WiFi need. You can send it directly or customize it:",
+      timestamp: new Date()
+    };
+    
+    addMessage(aiSuggestion);
+    setSuggestedResponse("Hi Sarah! Absolutely, early check-in at 2:30 PM is perfect - I'll have everything ready for you. The WiFi password is 'DowntownLoft2024' and the network is 'Downtown_Guest'. Since you have an important call at 3 PM, I've also included a backup hotspot password in your welcome guide. The lighting in the living room is ideal for video calls. Welcome to Downtown Loft!");
+    setShowResponseOptions(true);
+  };
+
+  const handleSendResponse = async () => {
+    const sentMessage = {
+      id: messages.length + 7,
       type: 'sent',
       content: isEditing ? editedResponse : suggestedResponse,
       timestamp: new Date()
     };
+    addMessage(sentMessage);
+
+    await simulateTyping(1000);
 
     const confirmationMessage = {
-      id: messages.length + 7,
-      type: 'ai',
-      content: "✅ Message sent to Sarah successfully! I'll continue monitoring for any new messages or bookings.",
+      id: messages.length + 8,
+      type: 'success',
+      content: "✅ Message sent to Sarah successfully! I'll continue monitoring for her response and any new bookings or messages.",
       timestamp: new Date()
     };
+    addMessage(confirmationMessage);
 
-    setMessages(prev => [...prev, sentMessage, confirmationMessage]);
+    // Guest response
+    setTimeout(async () => {
+      const guestResponse = {
+        id: messages.length + 9,
+        type: 'guest',
+        content: "Perfect! Thank you so much for accommodating the early check-in and providing the WiFi details. This is exactly what I needed. See you soon!",
+        timestamp: new Date(),
+        sender: 'Sarah Mitchell',
+        guestType: 'Premium Guest'
+      };
+      addMessage(guestResponse);
+
+      await simulateTyping(1500);
+      
+      const finalAI = {
+        id: messages.length + 10,
+        type: 'ai',
+        content: "Great! Sarah is all set. I've noted her positive response and will continue monitoring for any other needs. I'm also tracking two new booking inquiries and a pricing opportunity for next weekend. Want me to handle those too?",
+        timestamp: new Date()
+      };
+      addMessage(finalAI);
+    }, 5000);
+
     setShowResponseOptions(false);
     setIsEditing(false);
     setEditedResponse('');
@@ -120,17 +172,34 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* 3D Background Elements */}
+      {/* Enhanced 3D Space Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-8 h-8 bg-gradient-to-br from-teal-600 to-teal-800 opacity-20 transform rotate-45 animate-pulse"></div>
-        <div className="absolute bottom-40 right-20 w-12 h-12 bg-gradient-to-br from-teal-600 to-teal-800 opacity-15 transform rotate-12 animate-bounce"></div>
-        <div className="absolute top-1/2 left-1/4 w-6 h-6 bg-gradient-to-br from-teal-600 to-teal-800 opacity-25 rounded-full animate-ping"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-90"></div>
+        {/* Floating Stars */}
+        {Array.from({ length: 50 }, (_, i) => (
+          <div
+            key={i}
+            className="absolute bg-white rounded-full opacity-40"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: `${Math.random() * 2 + 1}px`,
+              height: `${Math.random() * 2 + 1}px`,
+              animationDelay: `${Math.random() * 3}s`,
+              animation: `twinkle ${Math.random() * 4 + 2}s infinite`
+            }}
+          />
+        ))}
+        
+        {/* 3D Geometric Elements */}
+        <div className="absolute top-20 left-10 w-8 h-8 bg-gradient-to-br from-teal-600/30 to-teal-800/20 opacity-20 transform rotate-45 animate-pulse"></div>
+        <div className="absolute bottom-40 right-20 w-12 h-12 bg-gradient-to-br from-teal-600/25 to-teal-800/15 opacity-15 transform rotate-12 animate-bounce"></div>
+        <div className="absolute top-1/2 left-1/4 w-6 h-6 bg-gradient-to-br from-teal-600/35 to-teal-800/25 opacity-25 rounded-full animate-ping"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/95 to-black opacity-90"></div>
       </div>
 
       <div className="relative z-10">
         {/* Header */}
-        <header className="bg-black/80 backdrop-blur-md border-b border-gray-800 p-4">
+        <header className="bg-black/90 backdrop-blur-xl border-b border-gray-800/50 p-4">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
             <div className="flex items-center space-x-3">
               <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-8 w-auto" />
@@ -138,7 +207,7 @@ const App = () => {
             <Button 
               variant="ghost" 
               onClick={handleLogout}
-              className="text-white hover:text-teal-600"
+              className="text-white hover:text-teal-600 transition-colors"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
@@ -154,24 +223,44 @@ const App = () => {
               <div key={message.id}>
                 {message.type === 'notification' && (
                   <div className="flex justify-center mb-4">
-                    <div className="bg-teal-600/20 border border-teal-600 rounded-lg px-4 py-2">
-                      <p className="text-teal-600 text-sm font-medium">{message.content}</p>
+                    <div className="bg-teal-600/30 border border-teal-600/50 rounded-lg px-4 py-2 backdrop-blur-sm">
+                      <p className="text-teal-400 text-sm font-medium">{message.content}</p>
+                    </div>
+                  </div>
+                )}
+
+                {message.type === 'status' && (
+                  <div className="flex justify-center mb-4">
+                    <div className="bg-blue-600/20 border border-blue-600/50 rounded-lg px-4 py-2 backdrop-blur-sm">
+                      <p className="text-blue-400 text-sm font-medium">{message.content}</p>
+                    </div>
+                  </div>
+                )}
+
+                {message.type === 'success' && (
+                  <div className="flex justify-center mb-4">
+                    <div className="bg-green-600/20 border border-green-600/50 rounded-lg px-4 py-2 backdrop-blur-sm">
+                      <p className="text-green-400 text-sm font-medium flex items-center">
+                        <CheckCircle className="h-4 w-4 mr-2" />
+                        {message.content}
+                      </p>
                     </div>
                   </div>
                 )}
                 
                 {message.type === 'guest' && (
                   <div className="flex items-start space-x-3 mb-4">
-                    <div className="bg-orange-500 rounded-full p-2">
+                    <div className="bg-orange-500 rounded-full p-2 flex-shrink-0">
                       <User className="h-4 w-4 text-white" />
                     </div>
-                    <div className="bg-gray-800/70 rounded-lg p-4 max-w-2xl border border-gray-700 backdrop-blur-sm">
+                    <div className="bg-gray-800/80 rounded-lg p-4 max-w-2xl border border-gray-700/50 backdrop-blur-sm">
                       <div className="flex items-center space-x-2 mb-2">
-                        <span className="text-orange-500 font-medium text-sm">Sarah</span>
+                        <span className="text-orange-400 font-medium text-sm">{message.sender}</span>
+                        <span className="text-gray-400 text-xs">• {message.guestType}</span>
                         <Clock className="h-3 w-3 text-gray-400" />
                         <span className="text-gray-400 text-xs">Just now</span>
                       </div>
-                      <p className="text-white text-sm">{message.content}</p>
+                      <p className="text-white text-sm leading-relaxed">{message.content}</p>
                     </div>
                   </div>
                 )}
@@ -181,9 +270,10 @@ const App = () => {
                     <div className="bg-teal-600 rounded-lg p-4 max-w-2xl">
                       <div className="flex items-center space-x-2 mb-2">
                         <span className="text-white font-medium text-sm">You → Sarah</span>
+                        <CheckCircle className="h-3 w-3 text-teal-100" />
                         <span className="text-teal-100 text-xs">Sent</span>
                       </div>
-                      <p className="text-white text-sm">{message.content}</p>
+                      <p className="text-white text-sm leading-relaxed">{message.content}</p>
                     </div>
                   </div>
                 )}
@@ -191,12 +281,12 @@ const App = () => {
                 {(message.type === 'user' || message.type === 'ai') && (
                   <div className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`flex items-start space-x-3 max-w-2xl ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                      <div className={`rounded-full p-2 ${message.type === 'ai' ? 'bg-teal-600' : 'bg-gray-600'}`}>
+                      <div className={`rounded-full p-2 flex-shrink-0 ${message.type === 'ai' ? 'bg-teal-600' : 'bg-gray-600'}`}>
                         <MessageCircle className="h-4 w-4 text-white" />
                       </div>
-                      <Card className={`${message.type === 'ai' ? 'bg-gray-800/70' : 'bg-teal-600'} border-gray-700 backdrop-blur-sm`}>
+                      <Card className={`${message.type === 'ai' ? 'bg-gray-800/80' : 'bg-teal-600'} border-gray-700/50 backdrop-blur-sm`}>
                         <CardContent className="p-4">
-                          <p className="text-white text-sm">{message.content}</p>
+                          <p className="text-white text-sm leading-relaxed">{message.content}</p>
                         </CardContent>
                       </Card>
                     </div>
@@ -205,16 +295,42 @@ const App = () => {
               </div>
             ))}
 
+            {/* Typing Indicator */}
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="flex items-start space-x-3 max-w-2xl">
+                  <div className="bg-teal-600 rounded-full p-2 flex-shrink-0">
+                    <MessageCircle className="h-4 w-4 text-white" />
+                  </div>
+                  <Card className="bg-gray-800/80 border-gray-700/50 backdrop-blur-sm">
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-2">
+                        <div className="flex space-x-1">
+                          <div className="w-2 h-2 bg-teal-600 rounded-full animate-pulse"></div>
+                          <div className="w-2 h-2 bg-teal-600 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                          <div className="w-2 h-2 bg-teal-600 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                        </div>
+                        <span className="text-gray-400 text-xs">PropCore is thinking...</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            )}
+
             {/* Response Options */}
             {showResponseOptions && (
-              <div className="bg-gray-900/80 border border-gray-700 rounded-lg p-4 backdrop-blur-sm">
-                <h3 className="text-white font-medium mb-3">Suggested Response:</h3>
+              <div className="bg-gray-900/90 border border-gray-700/50 rounded-lg p-4 backdrop-blur-sm">
+                <h3 className="text-white font-medium mb-3 flex items-center">
+                  <AlertCircle className="h-4 w-4 mr-2 text-teal-600" />
+                  Suggested Response:
+                </h3>
                 {isEditing ? (
                   <div className="space-y-3">
                     <textarea
                       value={editedResponse}
                       onChange={(e) => setEditedResponse(e.target.value)}
-                      className="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-white text-sm resize-none focus:border-teal-600"
+                      className="w-full bg-gray-800/70 border border-gray-600 rounded-lg p-3 text-white text-sm resize-none focus:border-teal-600 backdrop-blur-sm"
                       rows={4}
                     />
                     <div className="flex space-x-2">
@@ -236,8 +352,8 @@ const App = () => {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <div className="bg-gray-800 border border-gray-600 rounded-lg p-3">
-                      <p className="text-white text-sm">{suggestedResponse}</p>
+                    <div className="bg-gray-800/70 border border-gray-600 rounded-lg p-3 backdrop-blur-sm">
+                      <p className="text-white text-sm leading-relaxed">{suggestedResponse}</p>
                     </div>
                     <div className="flex space-x-2">
                       <Button
@@ -263,19 +379,20 @@ const App = () => {
           </div>
 
           {/* Input */}
-          <Card className="bg-gray-900/80 border-gray-700 backdrop-blur-sm">
+          <Card className="bg-gray-900/90 border-gray-700/50 backdrop-blur-sm">
             <CardContent className="p-4">
               <div className="flex space-x-2">
                 <Input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Type your message..."
-                  className="bg-gray-800 border-gray-600 text-white focus:border-teal-600"
+                  className="bg-gray-800/70 border-gray-600 text-white focus:border-teal-600"
                   onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                 />
                 <Button 
                   onClick={handleSend}
                   className="bg-teal-600 hover:bg-teal-700"
+                  disabled={isTyping}
                 >
                   <Send className="h-4 w-4" />
                 </Button>
@@ -284,6 +401,13 @@ const App = () => {
           </Card>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.2; }
+          50% { opacity: 0.8; }
+        }
+      `}</style>
     </div>
   );
 };
