@@ -39,13 +39,13 @@ const Index = () => {
         ))}
         
         {/* Animated 3D Geometric Shapes */}
-        <div className="absolute top-20 left-10 w-16 h-16 bg-gradient-to-br from-teal-600/30 to-teal-800/20 transform rotate-45 animate-pulse shadow-2xl shadow-teal-600/20"></div>
-        <div className="absolute top-60 right-20 w-20 h-20 bg-gradient-to-br from-teal-600/25 to-teal-800/15 transform rotate-12 animate-bounce shadow-2xl shadow-teal-600/15"></div>
-        <div className="absolute bottom-40 left-1/4 w-12 h-12 bg-gradient-to-br from-teal-600/35 to-teal-800/25 transform rotate-45 animate-pulse shadow-lg shadow-teal-600/25"></div>
+        <div className="absolute top-20 left-10 w-16 h-16 bg-gradient-to-br from-teal-600/30 to-teal-800/20 transform rotate-45 animate-pulse"></div>
+        <div className="absolute top-60 right-20 w-20 h-20 bg-gradient-to-br from-teal-600/25 to-teal-800/15 transform rotate-12 animate-bounce"></div>
+        <div className="absolute bottom-40 left-1/4 w-12 h-12 bg-gradient-to-br from-teal-600/35 to-teal-800/25 transform rotate-45 animate-pulse"></div>
         
         {/* Floating Orbs with Glow */}
-        <div className="absolute top-1/3 right-1/3 w-24 h-24 bg-gradient-radial from-teal-600/20 to-transparent rounded-full animate-ping shadow-2xl shadow-teal-600/30"></div>
-        <div className="absolute bottom-1/3 left-1/3 w-16 h-16 bg-gradient-radial from-teal-600/25 to-transparent rounded-full animate-pulse shadow-xl shadow-teal-600/20"></div>
+        <div className="absolute top-1/3 right-1/3 w-24 h-24 bg-gradient-radial from-teal-600/20 to-transparent rounded-full animate-ping"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-16 h-16 bg-gradient-radial from-teal-600/25 to-transparent rounded-full animate-pulse"></div>
         
         {/* Subtle Grid Pattern */}
         <div className="absolute inset-0 opacity-5">
@@ -80,7 +80,7 @@ const Index = () => {
         <header className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-xl border-b border-gray-800/50">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-8 w-auto" />
+              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
             </div>
             <nav className="hidden md:flex space-x-6">
               <a href="#features" className="text-white hover:text-teal-600 transition-colors duration-300">Features</a>
@@ -362,6 +362,9 @@ const Index = () => {
         {/* Footer */}
         <footer className="py-12 px-4 border-t border-gray-800/50">
           <div className="container mx-auto text-center text-white">
+            <div className="flex justify-center mb-6">
+              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
+            </div>
             <div className="mb-6">
               <p className="text-lg mb-2">
                 <a href="mailto:contact@propcloud.io" className="text-teal-600 hover:text-teal-400 transition-colors">

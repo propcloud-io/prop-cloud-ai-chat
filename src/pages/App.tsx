@@ -15,6 +15,8 @@ interface Message {
   guestType?: string;
 }
 
+type ConversationStage = 'initial' | 'guestInteraction' | 'pricingOpportunity' | 'pricingDecision' | 'completed';
+
 const App = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -31,6 +33,8 @@ const App = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedResponse, setEditedResponse] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationStage, setConversationStage] = useState<ConversationStage>('initial');
+  const [showDecisionButtons, setShowDecisionButtons] = useState(false);
   const navigate = useNavigate();
 
   const addMessage = (message: Message) => {
@@ -45,8 +49,8 @@ const App = () => {
     }, duration));
   };
 
-  const handleSend = async () => {
-    if (!inputValue.trim()) return;
+  const handleInitialSetup = async () => {
+    if (conversationStage !== 'initial') return;
 
     const newMessage: Message = {
       id: messages.length + 1,
@@ -79,13 +83,26 @@ const App = () => {
     };
     addMessage(monitoringMessage);
     
+    setConversationStage('guestInteraction');
+    
     // Simulate guest message after some time
     setTimeout(() => {
       simulateGuestInteraction();
     }, 4000);
   };
 
+  const handleSend = async () => {
+    if (!inputValue.trim()) return;
+
+    // Only process input if in 'initial' stage
+    if (conversationStage === 'initial') {
+      await handleInitialSetup();
+    }
+  };
+
   const simulateGuestInteraction = async () => {
+    if (conversationStage !== 'guestInteraction') return;
+
     // Guest message notification
     const guestNotification: Message = {
       id: messages.length + 4,
@@ -155,19 +172,70 @@ const App = () => {
 
       await simulateTyping(1500);
       
-      const finalAI: Message = {
-        id: messages.length + 10,
-        type: 'ai',
-        content: "Great! Sarah is all set. I've noted her positive response and will continue monitoring for any other needs. I'm also tracking two new booking inquiries and a pricing opportunity for next weekend. Want me to handle those too?",
-        timestamp: new Date()
-      };
-      addMessage(finalAI);
+      // Move to pricing opportunity stage
+      setConversationStage('pricingOpportunity');
+      
+      // Present pricing opportunity
+      setTimeout(() => {
+        presentPricingOpportunity();
+      }, 2000);
     }, 5000);
 
     setShowResponseOptions(false);
     setIsEditing(false);
     setEditedResponse('');
     setSuggestedResponse('');
+  };
+
+  const presentPricingOpportunity = async () => {
+    if (conversationStage !== 'pricingOpportunity') return;
+
+    await simulateTyping(1000);
+    
+    const pricingMessage: Message = {
+      id: messages.length + 10,
+      type: 'ai',
+      content: "Great! Sarah is all set. I've noted her positive response and will continue monitoring for any other needs. I'm also tracking two new booking inquiries and a pricing opportunity for next weekend. I recommend increasing your rate from $180 to $220/night for March 15-17 based on increased demand and competitor analysis. Want me to handle those too?",
+      timestamp: new Date()
+    };
+    addMessage(pricingMessage);
+    
+    setConversationStage('pricingDecision');
+    setShowDecisionButtons(true);
+  };
+
+  const handlePricingDecision = async (decision: 'yes' | 'no') => {
+    setShowDecisionButtons(false);
+    
+    const userDecision: Message = {
+      id: messages.length + 11,
+      type: 'user',
+      content: decision,
+      timestamp: new Date()
+    };
+    addMessage(userDecision);
+
+    await simulateTyping(1000);
+
+    if (decision === 'yes') {
+      const implementationMessage: Message = {
+        id: messages.length + 12,
+        type: 'ai',
+        content: "Perfect! I've updated your pricing to $220/night for March 15-17. This optimization could increase your revenue by approximately $120 for those dates. I'll continue monitoring market trends and guest communications. Your property is now fully optimized and monitored!",
+        timestamp: new Date()
+      };
+      addMessage(implementationMessage);
+    } else {
+      const rejectionMessage: Message = {
+        id: messages.length + 12,
+        type: 'ai',
+        content: "No problem! I'll keep monitoring pricing opportunities and will notify you of any significant changes. Your property monitoring remains active for bookings, messages, and market trends.",
+        timestamp: new Date()
+      };
+      addMessage(rejectionMessage);
+    }
+    
+    setConversationStage('completed');
   };
 
   const handleEditResponse = () => {
@@ -211,7 +279,7 @@ const App = () => {
         <header className="bg-black/90 backdrop-blur-xl border-b border-gray-800/50 p-4">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
             <div className="flex items-center space-x-3">
-              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-8 w-auto" />
+              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
             </div>
             <Button 
               variant="ghost" 
@@ -327,6 +395,25 @@ const App = () => {
               </div>
             )}
 
+            {/* Decision Buttons */}
+            {showDecisionButtons && (
+              <div className="flex justify-center space-x-4 mt-4">
+                <Button
+                  onClick={() => handlePricingDecision('yes')}
+                  className="bg-teal-600 hover:bg-teal-700 text-white"
+                >
+                  Yes
+                </Button>
+                <Button
+                  onClick={() => handlePricingDecision('no')}
+                  variant="outline"
+                  className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                >
+                  No
+                </Button>
+              </div>
+            )}
+
             {/* Response Options */}
             {showResponseOptions && (
               <div className="bg-gray-900/90 border border-gray-700/50 rounded-lg p-4 backdrop-blur-sm">
@@ -387,27 +474,29 @@ const App = () => {
             )}
           </div>
 
-          {/* Input */}
-          <Card className="bg-gray-900/90 border-gray-700/50 backdrop-blur-sm">
-            <CardContent className="p-4">
-              <div className="flex space-x-2">
-                <Input
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Type your message..."
-                  className="bg-gray-800/70 border-gray-600 text-white focus:border-teal-600"
-                  onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                />
-                <Button 
-                  onClick={handleSend}
-                  className="bg-teal-600 hover:bg-teal-700"
-                  disabled={isTyping}
-                >
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Input - Only show if conversation not completed */}
+          {conversationStage === 'initial' && (
+            <Card className="bg-gray-900/90 border-gray-700/50 backdrop-blur-sm">
+              <CardContent className="p-4">
+                <div className="flex space-x-2">
+                  <Input
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Type your message..."
+                    className="bg-gray-800/70 border-gray-600 text-white focus:border-teal-600"
+                    onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                  />
+                  <Button 
+                    onClick={handleSend}
+                    className="bg-teal-600 hover:bg-teal-700"
+                    disabled={isTyping}
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
 
