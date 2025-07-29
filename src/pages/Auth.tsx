@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageCircle, ArrowLeft } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
@@ -19,47 +18,37 @@ const Auth = () => {
     setError('');
 
     if (isLogin) {
-      // Check for admin credentials
+      // Check for authorized credentials
       if (email === 'contact@propcloud.io' && password === 'Admin123') {
         navigate('/app');
       } else {
         setError('Invalid credentials. Please check your email and password.');
       }
     } else {
-      // Signup - redirect to waitlist
+      // For signup, redirect to waitlist
       navigate('/?signup=true');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/')}
-            className="mb-6 text-teal-400 hover:text-teal-300"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
-          </Button>
-          <div className="flex items-center justify-center space-x-3 mb-6">
-            <img src="/lovable-uploads/2c4d779f-1c7c-4027-b6c6-a3cf1362deef.png" alt="PropCloud" className="h-8 w-8" />
-            <span className="text-2xl font-bold text-teal-400">PropCloud</span>
-          </div>
+        {/* Header */}
+        <div className="text-center mb-8">
+          <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-12 w-auto mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-white mb-2">
+            {isLogin ? 'Welcome Back' : 'Join PropCloud'}
+          </h1>
+          <p className="text-gray-400">
+            {isLogin ? 'Sign in to your account' : 'Create your account'}
+          </p>
         </div>
 
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-center text-white">
-              {isLogin ? 'Welcome Back' : 'Join PropCloud'}
+            <CardTitle className="text-white text-center">
+              {isLogin ? 'Sign In' : 'Sign Up'}
             </CardTitle>
-            <CardDescription className="text-center text-gray-300">
-              {isLogin 
-                ? 'Sign in to access your AI co-host' 
-                : 'Sign up to join our waitlist'
-              }
-            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -71,7 +60,7 @@ const Auth = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="bg-gray-800 border-gray-700 text-white"
                   placeholder="your@email.com"
                 />
               </div>
@@ -83,13 +72,13 @@ const Auth = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-slate-700 border-slate-600 text-white"
-                  placeholder="••••••••"
+                  className="bg-gray-800 border-gray-700 text-white"
+                  placeholder="Enter your password"
                 />
               </div>
               
               {error && (
-                <div className="p-3 bg-red-900/50 border border-red-700 rounded-md">
+                <div className="bg-red-900/20 border border-red-500 rounded-lg p-3">
                   <p className="text-red-400 text-sm">{error}</p>
                 </div>
               )}
@@ -98,23 +87,34 @@ const Auth = () => {
                 type="submit" 
                 className="w-full bg-teal-600 hover:bg-teal-700 text-white"
               >
-                {isLogin ? 'Sign In' : 'Join Waitlist'}
+                {isLogin ? 'Sign In' : 'Sign Up'}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
-              <button
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-teal-400 hover:text-teal-300 text-sm"
-              >
-                {isLogin 
-                  ? "Don't have access? Join the waitlist" 
-                  : "Already have access? Sign in"
-                }
-              </button>
+              <p className="text-gray-400">
+                {isLogin ? "Don't have an account?" : "Already have an account?"}
+                <Button
+                  variant="link"
+                  className="text-teal-500 hover:text-teal-400 ml-1"
+                  onClick={() => setIsLogin(!isLogin)}
+                >
+                  {isLogin ? 'Sign Up' : 'Sign In'}
+                </Button>
+              </p>
             </div>
           </CardContent>
         </Card>
+
+        <div className="mt-6 text-center">
+          <Button
+            variant="link"
+            className="text-gray-400 hover:text-white"
+            onClick={() => navigate('/')}
+          >
+            ← Back to Home
+          </Button>
+        </div>
       </div>
     </div>
   );
