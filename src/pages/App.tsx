@@ -6,8 +6,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+interface Message {
+  id: number;
+  type: string;
+  content: string;
+  timestamp: Date;
+  sender?: string;
+  guestType?: string;
+}
+
 const App = () => {
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
       type: 'ai',
@@ -24,7 +33,7 @@ const App = () => {
   const [isTyping, setIsTyping] = useState(false);
   const navigate = useNavigate();
 
-  const addMessage = (message: any) => {
+  const addMessage = (message: Message) => {
     setMessages(prev => [...prev, message]);
   };
 
@@ -39,7 +48,7 @@ const App = () => {
   const handleSend = async () => {
     if (!inputValue.trim()) return;
 
-    const newMessage = {
+    const newMessage: Message = {
       id: messages.length + 1,
       type: 'user',
       content: inputValue,
@@ -52,7 +61,7 @@ const App = () => {
     // Simulate AI analysis
     await simulateTyping(2000);
     
-    const aiResponse = {
+    const aiResponse: Message = {
       id: messages.length + 2,
       type: 'ai',
       content: "Perfect! I've analyzed your Downtown Loft property. I can see it's a 2-bedroom with 4.9 stars, averaging $180/night with 85% occupancy. I've identified your peak seasons and guest patterns. I'm now monitoring for bookings, messages, and market changes. You're all set!",
@@ -62,7 +71,7 @@ const App = () => {
     
     // Show monitoring status
     await simulateTyping(1000);
-    const monitoringMessage = {
+    const monitoringMessage: Message = {
       id: messages.length + 3,
       type: 'status',
       content: "🔍 Monitoring active for bookings, guest messages, and pricing opportunities...",
@@ -78,7 +87,7 @@ const App = () => {
 
   const simulateGuestInteraction = async () => {
     // Guest message notification
-    const guestNotification = {
+    const guestNotification: Message = {
       id: messages.length + 4,
       type: 'notification',
       content: "🔔 New message from Sarah Mitchell (Premium Guest, arriving today)",
@@ -89,7 +98,7 @@ const App = () => {
     await simulateTyping(1000);
 
     // Guest message
-    const guestMessage = {
+    const guestMessage: Message = {
       id: messages.length + 5,
       type: 'guest',
       content: "Hi! I'll be arriving 30 minutes early at 2:30 PM. Is early check-in possible? Also, what's the WiFi password? I have an important video call at 3 PM. Thanks!",
@@ -101,7 +110,7 @@ const App = () => {
 
     // AI analyzes and suggests response
     await simulateTyping(2500);
-    const aiSuggestion = {
+    const aiSuggestion: Message = {
       id: messages.length + 6,
       type: 'ai',
       content: "I've analyzed Sarah's message and her guest profile. She's a premium guest with a 5-star rating. I've crafted a personalized response considering her early arrival request and urgent WiFi need. You can send it directly or customize it:",
@@ -114,7 +123,7 @@ const App = () => {
   };
 
   const handleSendResponse = async () => {
-    const sentMessage = {
+    const sentMessage: Message = {
       id: messages.length + 7,
       type: 'sent',
       content: isEditing ? editedResponse : suggestedResponse,
@@ -124,7 +133,7 @@ const App = () => {
 
     await simulateTyping(1000);
 
-    const confirmationMessage = {
+    const confirmationMessage: Message = {
       id: messages.length + 8,
       type: 'success',
       content: "✅ Message sent to Sarah successfully! I'll continue monitoring for her response and any new bookings or messages.",
@@ -134,7 +143,7 @@ const App = () => {
 
     // Guest response
     setTimeout(async () => {
-      const guestResponse = {
+      const guestResponse: Message = {
         id: messages.length + 9,
         type: 'guest',
         content: "Perfect! Thank you so much for accommodating the early check-in and providing the WiFi details. This is exactly what I needed. See you soon!",
@@ -146,7 +155,7 @@ const App = () => {
 
       await simulateTyping(1500);
       
-      const finalAI = {
+      const finalAI: Message = {
         id: messages.length + 10,
         type: 'ai',
         content: "Great! Sarah is all set. I've noted her positive response and will continue monitoring for any other needs. I'm also tracking two new booking inquiries and a pricing opportunity for next weekend. Want me to handle those too?",
@@ -402,12 +411,14 @@ const App = () => {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.2; }
-          50% { opacity: 0.8; }
-        }
-      `}</style>
+      <style>
+        {`
+          @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+          }
+        `}
+      </style>
     </div>
   );
 };
