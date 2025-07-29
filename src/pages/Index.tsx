@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -80,7 +79,7 @@ const Index = () => {
         <header className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-xl border-b border-gray-800/50">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-8 w-auto" />
+              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-12 w-auto" />
             </div>
             <nav className="hidden md:flex space-x-6">
               <a href="#features" className="text-white hover:text-teal-600 transition-colors duration-300">Features</a>
@@ -362,6 +361,9 @@ const Index = () => {
         {/* Footer */}
         <footer className="py-12 px-4 border-t border-gray-800/50">
           <div className="container mx-auto text-center text-white">
+            <div className="flex items-center justify-center mb-6">
+              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-10 w-auto" />
+            </div>
             <div className="mb-6">
               <p className="text-lg mb-2">
                 <a href="mailto:contact@propcloud.io" className="text-teal-600 hover:text-teal-400 transition-colors">
