@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,6 +54,58 @@ const App = () => {
     }, duration));
   };
 
+  const handlePricingDecision = async (approved: boolean) => {
+    const userResponse: Message = {
+      id: messages.length + 1,
+      type: 'user',
+      content: approved ? 'Yes, update the pricing' : 'No, keep monitoring only',
+      timestamp: new Date()
+    };
+    addMessage(userResponse);
+
+    await simulateTyping(1500);
+
+    if (approved) {
+      const successMessage: Message = {
+        id: messages.length + 2,
+        type: 'success',
+        content: "✅ Perfect! I've updated your pricing to $220/night for March 15-17 weekend. The change will be reflected on your Airbnb listing within the next hour. I'll continue monitoring for more opportunities and guest messages.",
+        timestamp: new Date()
+      };
+      addMessage(successMessage);
+    } else {
+      const continuedMonitoring: Message = {
+        id: messages.length + 2,
+        type: 'ai',
+        content: "Understood! I'll keep monitoring the market and will only notify you of significant opportunities. I'm continuing to watch for new bookings, guest messages, and major pricing trends. You're all set!",
+        timestamp: new Date()
+      };
+      addMessage(continuedMonitoring);
+    }
+
+    setConversationStage('ended');
+  };
+
+  const handlePricingFlow = async () => {
+    setConversationStage('pricing-opportunity');
+    
+    await simulateTyping(2000);
+    
+    const pricingMessage: Message = {
+      id: messages.length + 1,
+      type: 'pricing',
+      content: "I've identified a pricing opportunity! Based on local events and demand patterns:",
+      timestamp: new Date(),
+      priceRecommendation: {
+        dates: "March 15-17 (Weekend)",
+        currentPrice: 180,
+        recommendedPrice: 220,
+        reason: "Local music festival + 90% area occupancy. Similar properties increased rates by 20-25%."
+      }
+    };
+    addMessage(pricingMessage);
+  };
+
   const handleSend = async () => {
     if (!inputValue.trim() || conversationStage === 'ended') return;
 
@@ -95,7 +148,7 @@ const App = () => {
       // Simulate guest message after some time
       setTimeout(() => {
         simulateGuestInteraction();
-      }, 3000);
+      }, 4000);
     } else if (conversationStage === 'guest-interaction' && (userInput.includes('yes') || userInput.includes('handle'))) {
       handlePricingFlow();
     }
@@ -103,8 +156,6 @@ const App = () => {
 
   const simulateGuestInteraction = async () => {
     if (conversationStage !== 'monitoring') return;
-    
-    setConversationStage('guest-interaction');
     
     // Guest message notification
     const guestNotification: Message = {
@@ -182,64 +233,13 @@ const App = () => {
         timestamp: new Date()
       };
       addMessage(finalAI);
-    }, 3000);
+      setConversationStage('guest-interaction');
+    }, 5000);
 
     setShowResponseOptions(false);
     setIsEditing(false);
     setEditedResponse('');
     setSuggestedResponse('');
-  };
-
-  const handlePricingFlow = async () => {
-    setConversationStage('pricing-opportunity');
-    
-    await simulateTyping(2000);
-    
-    const pricingMessage: Message = {
-      id: messages.length + 1,
-      type: 'pricing',
-      content: "I've identified a pricing opportunity! Based on local events and demand patterns:",
-      timestamp: new Date(),
-      priceRecommendation: {
-        dates: "March 15-17 (Weekend)",
-        currentPrice: 180,
-        recommendedPrice: 220,
-        reason: "Local music festival + 90% area occupancy. Similar properties increased rates by 20-25%."
-      }
-    };
-    addMessage(pricingMessage);
-  };
-
-  const handlePricingDecision = async (approved: boolean) => {
-    const userResponse: Message = {
-      id: messages.length + 1,
-      type: 'user',
-      content: approved ? 'Yes, update the pricing' : 'No, keep monitoring only',
-      timestamp: new Date()
-    };
-    addMessage(userResponse);
-
-    await simulateTyping(1500);
-
-    if (approved) {
-      const successMessage: Message = {
-        id: messages.length + 2,
-        type: 'success',
-        content: "✅ Perfect! I've updated your pricing to $220/night for March 15-17 weekend. The change will be reflected on your Airbnb listing within the next hour. I'll continue monitoring for more opportunities and guest messages.",
-        timestamp: new Date()
-      };
-      addMessage(successMessage);
-    } else {
-      const continuedMonitoring: Message = {
-        id: messages.length + 2,
-        type: 'ai',
-        content: "Understood! I'll keep monitoring the market and will only notify you of significant opportunities. I'm continuing to watch for new bookings, guest messages, and major pricing trends. You're all set!",
-        timestamp: new Date()
-      };
-      addMessage(continuedMonitoring);
-    }
-
-    setConversationStage('ended');
   };
 
   const handleEditResponse = () => {
@@ -280,10 +280,10 @@ const App = () => {
 
       <div className="relative z-10">
         {/* Header */}
-        <header className="backdrop-blur-xl border-b border-gray-800/30 p-4">
+        <header className="bg-black/90 backdrop-blur-xl border-b border-gray-800/50 p-4">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
-            <div className="flex items-center">
-              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
+            <div className="flex items-center space-x-3">
+              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-12 w-auto" />
             </div>
             <Button 
               variant="ghost" 

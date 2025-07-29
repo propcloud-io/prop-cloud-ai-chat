@@ -76,15 +76,15 @@ const Auth = () => {
       {/* Content */}
       <div className="relative z-10">
         {/* Header */}
-        <header className="fixed top-0 w-full z-50 backdrop-blur-xl border-b border-gray-800/30">
-          <div className="container mx-auto px-4 py-6 flex items-center justify-between">
-            <div className="flex items-center">
-              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
+        <header className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-xl border-b border-gray-800/50">
+          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-12 w-auto" />
             </div>
-            <nav className="hidden md:flex space-x-8">
-              <a href="/" className="text-white hover:text-teal-600 transition-colors duration-300 text-lg">Home</a>
-              <a href="/#features" className="text-white hover:text-teal-600 transition-colors duration-300 text-lg">Features</a>
-              <a href="/#demo" className="text-white hover:text-teal-600 transition-colors duration-300 text-lg">Demo</a>
+            <nav className="hidden md:flex space-x-6">
+              <a href="/" className="text-white hover:text-teal-600 transition-colors duration-300">Home</a>
+              <a href="/#features" className="text-white hover:text-teal-600 transition-colors duration-300">Features</a>
+              <a href="/#demo" className="text-white hover:text-teal-600 transition-colors duration-300">Demo</a>
             </nav>
           </div>
         </header>
