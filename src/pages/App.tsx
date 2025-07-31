@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle } from "lucide-react";
+import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle, Activity } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface Message {
@@ -34,6 +34,8 @@ const App = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [conversationStage, setConversationStage] = useState<ConversationStage>('initial');
   const [showDecisionButtons, setShowDecisionButtons] = useState(false);
+  const [monitoringActivity, setMonitoringActivity] = useState<string[]>([]);
+  const [showMonitoring, setShowMonitoring] = useState(false);
   const navigate = useNavigate();
 
   const addMessage = (message: Message) => {
@@ -52,7 +54,7 @@ const App = () => {
     if (conversationStage !== 'initial') return;
 
     const newMessage: Message = {
-      id: messages.length + 1,
+      id: Date.now() + 1,
       type: 'user',
       content: inputValue,
       timestamp: new Date()
@@ -61,40 +63,40 @@ const App = () => {
     addMessage(newMessage);
     setInputValue('');
 
-    // Simulate AI analysis
-    await simulateTyping(2000);
+    // Simulate AI analysis with better timing
+    await simulateTyping(2500);
     
     const aiResponse: Message = {
-      id: messages.length + 2,
+      id: Date.now() + 2,
       type: 'ai',
       content: "Perfect! I've analyzed your Downtown Loft property. I can see it's a 2-bedroom with 4.9 stars, averaging $180/night with 85% occupancy. I've identified your peak seasons and guest patterns. I'm now monitoring for bookings, messages, and market changes. You're all set!",
       timestamp: new Date()
     };
     addMessage(aiResponse);
     
-    // Show monitoring status
-    await simulateTyping(1000);
+    // Show monitoring status with smoother transition
+    await simulateTyping(1500);
     const monitoringMessage: Message = {
-      id: messages.length + 3,
+      id: Date.now() + 3,
       type: 'status',
       content: "🔍 Monitoring active for bookings, guest messages, and pricing opportunities...",
       timestamp: new Date()
     };
     addMessage(monitoringMessage);
     
-    // Set stage and continue to next phase
     setConversationStage('guestInteraction');
     
-    // Simulate guest message after some time
+    // Continue to next phase with better timing
     setTimeout(() => {
       simulateGuestInteraction();
-    }, 3000);
+    }, 2500);
   };
 
   const simulateGuestInteraction = async () => {
     console.log('Starting guest interaction, current stage:', conversationStage);
     
-    // Guest message notification
+    // Guest message notification with smoother appearance
+    await simulateTyping(1000);
     const guestNotification: Message = {
       id: Date.now() + 1,
       type: 'notification',
@@ -103,7 +105,7 @@ const App = () => {
     };
     addMessage(guestNotification);
 
-    await simulateTyping(1000);
+    await simulateTyping(1500);
 
     // Guest message
     const guestMessage: Message = {
@@ -116,8 +118,8 @@ const App = () => {
     };
     addMessage(guestMessage);
 
-    // AI analyzes and suggests response
-    await simulateTyping(2500);
+    // AI analyzes and suggests response with better timing
+    await simulateTyping(3000);
     const aiSuggestion: Message = {
       id: Date.now() + 3,
       type: 'ai',
@@ -139,7 +141,7 @@ const App = () => {
     };
     addMessage(sentMessage);
 
-    await simulateTyping(1000);
+    await simulateTyping(1500);
 
     const confirmationMessage: Message = {
       id: Date.now() + 5,
@@ -149,8 +151,10 @@ const App = () => {
     };
     addMessage(confirmationMessage);
 
-    // Guest response
+    // Guest response with improved timing
     setTimeout(async () => {
+      await simulateTyping(1000);
+      
       const guestResponse: Message = {
         id: Date.now() + 6,
         type: 'guest',
@@ -161,17 +165,16 @@ const App = () => {
       };
       addMessage(guestResponse);
 
-      await simulateTyping(1500);
+      await simulateTyping(2000);
       
-      // Move to pricing opportunity stage
       setConversationStage('pricingOpportunity');
       console.log('Moving to pricing opportunity stage');
       
-      // Present pricing opportunity
+      // Present pricing opportunity with smoother transition
       setTimeout(() => {
         presentPricingOpportunity();
-      }, 2000);
-    }, 3000);
+      }, 1500);
+    }, 2500);
 
     setShowResponseOptions(false);
     setIsEditing(false);
@@ -182,7 +185,7 @@ const App = () => {
   const presentPricingOpportunity = async () => {
     console.log('Presenting pricing opportunity, current stage:', conversationStage);
     
-    await simulateTyping(1000);
+    await simulateTyping(1500);
     
     const pricingMessage: Message = {
       id: Date.now() + 7,
@@ -208,7 +211,7 @@ const App = () => {
     };
     addMessage(userDecision);
 
-    await simulateTyping(1000);
+    await simulateTyping(1500);
 
     if (decision === 'yes') {
       const implementationMessage: Message = {
@@ -228,8 +231,43 @@ const App = () => {
       addMessage(rejectionMessage);
     }
     
+    // Start continuous monitoring mode
+    setTimeout(() => {
+      startContinuousMonitoring();
+    }, 2000);
+    
     setConversationStage('completed');
-    console.log('Conversation completed');
+    console.log('Conversation completed, starting monitoring mode');
+  };
+
+  const startContinuousMonitoring = () => {
+    setShowMonitoring(true);
+    
+    const activities = [
+      "📊 Analyzing market trends for March 18-20...",
+      "👀 Monitoring competitor pricing changes...",
+      "📱 Checking for new guest inquiries...",
+      "🔍 Scanning for booking opportunities...",
+      "💬 No new messages requiring attention",
+      "📈 Market analysis complete - no immediate actions needed",
+      "🎯 All systems monitoring actively..."
+    ];
+    
+    let activityIndex = 0;
+    
+    const showNextActivity = () => {
+      if (activityIndex < activities.length) {
+        setMonitoringActivity(prev => [...prev, activities[activityIndex]]);
+        activityIndex++;
+        
+        // Continue showing activities with varying intervals
+        const nextDelay = activityIndex < 4 ? 3000 : 5000;
+        setTimeout(showNextActivity, nextDelay);
+      }
+    };
+    
+    // Start showing activities
+    setTimeout(showNextActivity, 1000);
   };
 
   const handleEditResponse = () => {
@@ -300,7 +338,7 @@ const App = () => {
           {/* Messages */}
           <div className="flex-1 overflow-y-auto mb-4 space-y-4">
             {messages.map((message) => (
-              <div key={message.id}>
+              <div key={message.id} className="animate-fade-in">
                 {message.type === 'notification' && (
                   <div className="flex justify-center mb-4">
                     <div className="bg-teal-600/30 border border-teal-600/50 rounded-lg px-4 py-2 backdrop-blur-sm">
@@ -377,7 +415,7 @@ const App = () => {
 
             {/* Typing Indicator */}
             {isTyping && (
-              <div className="flex justify-start">
+              <div className="flex justify-start animate-fade-in">
                 <div className="flex items-start space-x-3 max-w-2xl">
                   <div className="bg-teal-600 rounded-full p-2 flex-shrink-0">
                     <MessageCircle className="h-4 w-4 text-white" />
@@ -390,7 +428,7 @@ const App = () => {
                           <div className="w-2 h-2 bg-teal-600 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
                           <div className="w-2 h-2 bg-teal-600 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
                         </div>
-                        <span className="text-gray-400 text-xs">PropCore is thinking...</span>
+                        <span className="text-gray-400 text-xs">PropCore is analyzing...</span>
                       </div>
                     </CardContent>
                   </Card>
@@ -400,20 +438,54 @@ const App = () => {
 
             {/* Decision Buttons */}
             {showDecisionButtons && (
-              <div className="flex justify-center space-x-4 mt-4">
+              <div className="flex justify-center space-x-4 mt-4 animate-fade-in">
                 <Button
                   onClick={() => handlePricingDecision('yes')}
-                  className="bg-teal-600 hover:bg-teal-700 text-white"
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-2 transition-all duration-200 hover:scale-105"
                 >
-                  Yes
+                  Yes, implement pricing change
                 </Button>
                 <Button
                   onClick={() => handlePricingDecision('no')}
                   variant="outline"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                  className="border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-2 transition-all duration-200 hover:scale-105"
                 >
-                  No
+                  No, keep current pricing
                 </Button>
+              </div>
+            )}
+
+            {/* Continuous Monitoring Display */}
+            {showMonitoring && (
+              <div className="mt-6 animate-fade-in">
+                <div className="bg-gradient-to-r from-teal-900/30 to-blue-900/30 border border-teal-600/50 rounded-lg p-6 backdrop-blur-sm">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="bg-teal-600 rounded-full p-2">
+                      <Activity className="h-5 w-5 text-white animate-pulse" />
+                    </div>
+                    <h3 className="text-teal-400 font-medium text-lg">Live Monitoring Active</h3>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {monitoringActivity.map((activity, index) => (
+                      <div 
+                        key={index} 
+                        className="flex items-center space-x-3 text-sm text-gray-300 animate-fade-in"
+                        style={{ animationDelay: `${index * 0.2}s` }}
+                      >
+                        <div className="w-2 h-2 bg-teal-500 rounded-full opacity-60"></div>
+                        <span>{activity}</span>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="mt-4 pt-4 border-t border-gray-700/50">
+                    <p className="text-xs text-gray-400 flex items-center">
+                      <Clock className="h-3 w-3 mr-1" />
+                      PropCore will notify you of any important updates or required actions
+                    </p>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -479,19 +551,19 @@ const App = () => {
 
           {/* Input - Only show if conversation not completed */}
           {conversationStage === 'initial' && (
-            <Card className="bg-gray-900/90 border-gray-700/50 backdrop-blur-sm">
+            <Card className="bg-gray-900/90 border-gray-700/50 backdrop-blur-sm animate-fade-in">
               <CardContent className="p-4">
                 <div className="flex space-x-2">
                   <Input
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Type your message..."
-                    className="bg-gray-800/70 border-gray-600 text-white focus:border-teal-600"
+                    placeholder="Share your Airbnb listing link..."
+                    className="bg-gray-800/70 border-gray-600 text-white focus:border-teal-600 transition-colors duration-200"
                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                   />
                   <Button 
                     onClick={handleSend}
-                    className="bg-teal-600 hover:bg-teal-700"
+                    className="bg-teal-600 hover:bg-teal-700 transition-all duration-200 hover:scale-105"
                     disabled={isTyping}
                   >
                     <Send className="h-4 w-4" />
