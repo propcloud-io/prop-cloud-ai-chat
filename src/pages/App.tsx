@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle, Activity } from "lucide-react";
+import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle, Activity, Brain, Search, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface Message {
@@ -40,11 +40,20 @@ const App = () => {
   const [bookingSuggestedResponse, setBookingSuggestedResponse] = useState('');
   const [isBookingEditing, setIsBookingEditing] = useState(false);
   const [editedBookingResponse, setEditedBookingResponse] = useState('');
+  const [aiWorkingStatus, setAiWorkingStatus] = useState('');
+  const [showAiWorking, setShowAiWorking] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const addMessage = (message: Message) => {
     setMessages(prev => [...prev, message]);
+  };
+
+  const showAiWorkingIndicator = async (status: string, duration: number = 2000) => {
+    setAiWorkingStatus(status);
+    setShowAiWorking(true);
+    await new Promise(resolve => setTimeout(resolve, duration));
+    setShowAiWorking(false);
   };
 
   const simulateTyping = (duration: number = 1500) => {
@@ -68,8 +77,13 @@ const App = () => {
     addMessage(newMessage);
     setInputValue('');
 
+    // Show AI working on analysis
+    await showAiWorkingIndicator("🔍 Analyzing property listing...", 1500);
+    await showAiWorkingIndicator("📊 Extracting property data and reviews...", 1500);
+    await showAiWorkingIndicator("🎯 Identifying guest patterns and pricing trends...", 1500);
+
     // Simulate AI analysis with better timing
-    await simulateTyping(2500);
+    await simulateTyping(1500);
     
     const aiResponse: Message = {
       id: Date.now() + 2,
@@ -79,7 +93,9 @@ const App = () => {
     };
     addMessage(aiResponse);
     
-    // Show monitoring status with smoother transition
+    // Show AI setting up monitoring
+    await showAiWorkingIndicator("⚙️ Setting up intelligent monitoring systems...", 1000);
+    
     await simulateTyping(1500);
     const monitoringMessage: Message = {
       id: Date.now() + 3,
@@ -99,6 +115,9 @@ const App = () => {
 
   const simulateGuestInteraction = async () => {
     console.log('Starting guest interaction, current stage:', conversationStage);
+    
+    // Show AI detecting new message
+    await showAiWorkingIndicator("📱 Detecting new guest message...", 1000);
     
     // Guest message notification with smoother appearance
     await simulateTyping(1000);
@@ -123,8 +142,13 @@ const App = () => {
     };
     addMessage(guestMessage);
 
+    // Show AI analyzing the guest message
+    await showAiWorkingIndicator("🧠 Analyzing guest profile and message context...", 1500);
+    await showAiWorkingIndicator("📋 Checking availability and property details...", 1500);
+    await showAiWorkingIndicator("✍️ Crafting personalized response...", 1500);
+
     // AI analyzes and suggests response with better timing
-    await simulateTyping(3000);
+    await simulateTyping(1500);
     const aiSuggestion: Message = {
       id: Date.now() + 3,
       type: 'ai',
@@ -146,6 +170,9 @@ const App = () => {
     };
     addMessage(sentMessage);
 
+    // Show AI sending message
+    await showAiWorkingIndicator("📤 Sending message to guest...", 1000);
+
     await simulateTyping(1500);
 
     const confirmationMessage: Message = {
@@ -158,6 +185,9 @@ const App = () => {
 
     // Guest response with improved timing
     setTimeout(async () => {
+      // Show AI detecting guest response
+      await showAiWorkingIndicator("👀 Monitoring for guest response...", 1000);
+      
       await simulateTyping(1000);
       
       const guestResponse: Message = {
@@ -169,6 +199,10 @@ const App = () => {
         guestType: 'Premium Guest'
       };
       addMessage(guestResponse);
+
+      // Show AI analyzing market conditions
+      await showAiWorkingIndicator("📊 Scanning market conditions and competitor pricing...", 1500);
+      await showAiWorkingIndicator("🎯 Identifying revenue optimization opportunities...", 1500);
 
       await simulateTyping(2000);
       
@@ -215,6 +249,12 @@ const App = () => {
       timestamp: new Date()
     };
     addMessage(userDecision);
+
+    if (decision === 'yes') {
+      // Show AI implementing pricing changes
+      await showAiWorkingIndicator("⚙️ Updating pricing for March 15-17...", 1500);
+      await showAiWorkingIndicator("💰 Optimizing revenue settings...", 1000);
+    }
 
     await simulateTyping(1500);
 
@@ -284,6 +324,9 @@ const App = () => {
     console.log('Starting booking inquiry flow');
     setConversationStage('bookingInquiry');
 
+    // Show AI detecting new booking inquiry
+    await showAiWorkingIndicator("📧 New booking inquiry detected...", 1000);
+
     // New guest booking inquiry notification
     await simulateTyping(1000);
     const bookingNotification: Message = {
@@ -307,8 +350,13 @@ const App = () => {
     };
     addMessage(bookingMessage);
 
-    // AI analyzes the booking inquiry
-    await simulateTyping(3500);
+    // Show AI analyzing the booking inquiry
+    await showAiWorkingIndicator("🔍 Analyzing guest profile and requirements...", 1500);
+    await showAiWorkingIndicator("📅 Checking availability for requested dates...", 1500);
+    await showAiWorkingIndicator("💼 Matching business traveler preferences...", 1500);
+    await showAiWorkingIndicator("✍️ Crafting professional booking response...", 1000);
+
+    await simulateTyping(1500);
     const aiBookingAnalysis: Message = {
       id: Date.now() + 3,
       type: 'ai',
@@ -330,6 +378,9 @@ const App = () => {
     };
     addMessage(sentMessage);
 
+    // Show AI sending booking response
+    await showAiWorkingIndicator("📤 Sending booking response to Mike...", 1000);
+
     await simulateTyping(2000);
 
     const confirmationMessage: Message = {
@@ -342,6 +393,9 @@ const App = () => {
 
     // Guest response to booking inquiry
     setTimeout(async () => {
+      // Show AI monitoring for guest response
+      await showAiWorkingIndicator("👀 Monitoring for booking confirmation...", 1000);
+      
       await simulateTyping(1500);
       
       const guestBookingResponse: Message = {
@@ -353,6 +407,9 @@ const App = () => {
         guestType: 'Business Traveler'
       };
       addMessage(guestBookingResponse);
+
+      // Show AI processing successful lead
+      await showAiWorkingIndicator("🎉 Processing successful booking lead...", 1500);
 
       await simulateTyping(2000);
 
@@ -509,7 +566,7 @@ const App = () => {
                   <div className="flex justify-end mb-4">
                     <div className="bg-teal-600 rounded-lg p-4 max-w-2xl">
                       <div className="flex items-center space-x-2 mb-2">
-                        <span className="text-white font-medium text-sm">You → Sarah</span>
+                        <span className="text-white font-medium text-sm">You → {message.content.includes('Mike') ? 'Mike' : 'Sarah'}</span>
                         <CheckCircle className="h-3 w-3 text-teal-100" />
                         <span className="text-teal-100 text-xs">Sent</span>
                       </div>
@@ -548,6 +605,26 @@ const App = () => {
               </div>
             ))}
 
+            {/* AI Working Indicator */}
+            {showAiWorking && (
+              <div className="flex justify-center animate-fade-in">
+                <div className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 border border-purple-600/50 rounded-lg px-6 py-3 backdrop-blur-sm">
+                  <div className="flex items-center space-x-3">
+                    <div className="relative">
+                      <Brain className="h-5 w-5 text-purple-400 animate-pulse" />
+                      <div className="absolute inset-0 bg-purple-400 rounded-full opacity-20 animate-ping"></div>
+                    </div>
+                    <span className="text-purple-300 text-sm font-medium">{aiWorkingStatus}</span>
+                    <div className="flex space-x-1">
+                      <div className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse"></div>
+                      <div className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                      <div className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Typing Indicator */}
             {isTyping && (
               <div className="flex justify-start animate-fade-in">
@@ -563,7 +640,7 @@ const App = () => {
                           <div className="w-2 h-2 bg-teal-600 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
                           <div className="w-2 h-2 bg-teal-600 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
                         </div>
-                        <span className="text-gray-400 text-xs">PropCore is analyzing...</span>
+                        <span className="text-gray-400 text-xs">PropCore is thinking...</span>
                       </div>
                     </CardContent>
                   </Card>
