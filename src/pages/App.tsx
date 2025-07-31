@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -83,29 +82,21 @@ const App = () => {
     };
     addMessage(monitoringMessage);
     
+    // Set stage and continue to next phase
     setConversationStage('guestInteraction');
     
     // Simulate guest message after some time
     setTimeout(() => {
       simulateGuestInteraction();
-    }, 4000);
-  };
-
-  const handleSend = async () => {
-    if (!inputValue.trim()) return;
-
-    // Only process input if in 'initial' stage
-    if (conversationStage === 'initial') {
-      await handleInitialSetup();
-    }
+    }, 3000);
   };
 
   const simulateGuestInteraction = async () => {
-    if (conversationStage !== 'guestInteraction') return;
-
+    console.log('Starting guest interaction, current stage:', conversationStage);
+    
     // Guest message notification
     const guestNotification: Message = {
-      id: messages.length + 4,
+      id: Date.now() + 1,
       type: 'notification',
       content: "🔔 New message from Sarah Mitchell (Premium Guest, arriving today)",
       timestamp: new Date()
@@ -116,7 +107,7 @@ const App = () => {
 
     // Guest message
     const guestMessage: Message = {
-      id: messages.length + 5,
+      id: Date.now() + 2,
       type: 'guest',
       content: "Hi! I'll be arriving 30 minutes early at 2:30 PM. Is early check-in possible? Also, what's the WiFi password? I have an important video call at 3 PM. Thanks!",
       timestamp: new Date(),
@@ -128,7 +119,7 @@ const App = () => {
     // AI analyzes and suggests response
     await simulateTyping(2500);
     const aiSuggestion: Message = {
-      id: messages.length + 6,
+      id: Date.now() + 3,
       type: 'ai',
       content: "I've analyzed Sarah's message and her guest profile. She's a premium guest with a 5-star rating. I've crafted a personalized response considering her early arrival request and urgent WiFi need. You can send it directly or customize it:",
       timestamp: new Date()
@@ -141,7 +132,7 @@ const App = () => {
 
   const handleSendResponse = async () => {
     const sentMessage: Message = {
-      id: messages.length + 7,
+      id: Date.now() + 4,
       type: 'sent',
       content: isEditing ? editedResponse : suggestedResponse,
       timestamp: new Date()
@@ -151,7 +142,7 @@ const App = () => {
     await simulateTyping(1000);
 
     const confirmationMessage: Message = {
-      id: messages.length + 8,
+      id: Date.now() + 5,
       type: 'success',
       content: "✅ Message sent to Sarah successfully! I'll continue monitoring for her response and any new bookings or messages.",
       timestamp: new Date()
@@ -161,7 +152,7 @@ const App = () => {
     // Guest response
     setTimeout(async () => {
       const guestResponse: Message = {
-        id: messages.length + 9,
+        id: Date.now() + 6,
         type: 'guest',
         content: "Perfect! Thank you so much for accommodating the early check-in and providing the WiFi details. This is exactly what I needed. See you soon!",
         timestamp: new Date(),
@@ -174,12 +165,13 @@ const App = () => {
       
       // Move to pricing opportunity stage
       setConversationStage('pricingOpportunity');
+      console.log('Moving to pricing opportunity stage');
       
       // Present pricing opportunity
       setTimeout(() => {
         presentPricingOpportunity();
       }, 2000);
-    }, 5000);
+    }, 3000);
 
     setShowResponseOptions(false);
     setIsEditing(false);
@@ -188,14 +180,14 @@ const App = () => {
   };
 
   const presentPricingOpportunity = async () => {
-    if (conversationStage !== 'pricingOpportunity') return;
-
+    console.log('Presenting pricing opportunity, current stage:', conversationStage);
+    
     await simulateTyping(1000);
     
     const pricingMessage: Message = {
-      id: messages.length + 10,
+      id: Date.now() + 7,
       type: 'ai',
-      content: "Great! Sarah is all set. I've noted her positive response and will continue monitoring for any other needs. I'm also tracking two new booking inquiries and a pricing opportunity for next weekend. I recommend increasing your rate from $180 to $220/night for March 15-17 based on increased demand and competitor analysis. Want me to handle those too?",
+      content: "Great! Sarah is all set. I've been monitoring the market and found a pricing opportunity for this weekend (March 15-17). Based on local events and competitor analysis, I recommend increasing your rate from $180 to $220/night. This could generate an additional $120 in revenue. Would you like me to implement this pricing change?",
       timestamp: new Date()
     };
     addMessage(pricingMessage);
@@ -205,10 +197,11 @@ const App = () => {
   };
 
   const handlePricingDecision = async (decision: 'yes' | 'no') => {
+    console.log('Handling pricing decision:', decision);
     setShowDecisionButtons(false);
     
     const userDecision: Message = {
-      id: messages.length + 11,
+      id: Date.now() + 8,
       type: 'user',
       content: decision,
       timestamp: new Date()
@@ -219,7 +212,7 @@ const App = () => {
 
     if (decision === 'yes') {
       const implementationMessage: Message = {
-        id: messages.length + 12,
+        id: Date.now() + 9,
         type: 'ai',
         content: "Perfect! I've updated your pricing to $220/night for March 15-17. This optimization could increase your revenue by approximately $120 for those dates. I'll continue monitoring market trends and guest communications. Your property is now fully optimized and monitored!",
         timestamp: new Date()
@@ -227,7 +220,7 @@ const App = () => {
       addMessage(implementationMessage);
     } else {
       const rejectionMessage: Message = {
-        id: messages.length + 12,
+        id: Date.now() + 9,
         type: 'ai',
         content: "No problem! I'll keep monitoring pricing opportunities and will notify you of any significant changes. Your property monitoring remains active for bookings, messages, and market trends.",
         timestamp: new Date()
@@ -236,11 +229,21 @@ const App = () => {
     }
     
     setConversationStage('completed');
+    console.log('Conversation completed');
   };
 
   const handleEditResponse = () => {
     setIsEditing(true);
     setEditedResponse(suggestedResponse);
+  };
+
+  const handleSend = async () => {
+    if (!inputValue.trim()) return;
+
+    // Only process input if in 'initial' stage
+    if (conversationStage === 'initial') {
+      await handleInitialSetup();
+    }
   };
 
   const handleLogout = () => {
