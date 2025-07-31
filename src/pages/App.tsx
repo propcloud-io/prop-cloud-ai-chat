@@ -14,7 +14,7 @@ interface Message {
   guestType?: string;
 }
 
-type ConversationStage = 'initial' | 'guestInteraction' | 'pricingOpportunity' | 'pricingDecision' | 'completed';
+type ConversationStage = 'initial' | 'guestInteraction' | 'pricingOpportunity' | 'pricingDecision' | 'completed' | 'bookingInquiry' | 'bookingResponse';
 
 const App = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -36,6 +36,10 @@ const App = () => {
   const [showDecisionButtons, setShowDecisionButtons] = useState(false);
   const [monitoringActivity, setMonitoringActivity] = useState<string[]>([]);
   const [showMonitoring, setShowMonitoring] = useState(false);
+  const [showBookingResponseOptions, setShowBookingResponseOptions] = useState(false);
+  const [bookingSuggestedResponse, setBookingSuggestedResponse] = useState('');
+  const [isBookingEditing, setIsBookingEditing] = useState(false);
+  const [editedBookingResponse, setEditedBookingResponse] = useState('');
   const navigate = useNavigate();
 
   const addMessage = (message: Message) => {
@@ -263,11 +267,116 @@ const App = () => {
         // Continue showing activities with varying intervals
         const nextDelay = activityIndex < 4 ? 3000 : 5000;
         setTimeout(showNextActivity, nextDelay);
+      } else {
+        // After monitoring is complete, trigger booking inquiry
+        setTimeout(() => {
+          simulateBookingInquiry();
+        }, 10000);
       }
     };
     
     // Start showing activities
     setTimeout(showNextActivity, 1000);
+  };
+
+  const simulateBookingInquiry = async () => {
+    console.log('Starting booking inquiry flow');
+    setConversationStage('bookingInquiry');
+
+    // New guest booking inquiry notification
+    await simulateTyping(1000);
+    const bookingNotification: Message = {
+      id: Date.now() + 1,
+      type: 'notification',
+      content: "🔔 New booking inquiry from Mike Chen (Business Traveler)",
+      timestamp: new Date()
+    };
+    addMessage(bookingNotification);
+
+    await simulateTyping(1500);
+
+    // Booking inquiry message
+    const bookingMessage: Message = {
+      id: Date.now() + 2,
+      type: 'guest',
+      content: "Hello! I'm interested in booking your Downtown Loft for March 22-25 (3 nights) for a business trip. I need good WiFi and a quiet workspace. What's your availability and rate for these dates? Also, is there parking available?",
+      timestamp: new Date(),
+      sender: 'Mike Chen',
+      guestType: 'Business Traveler'
+    };
+    addMessage(bookingMessage);
+
+    // AI analyzes the booking inquiry
+    await simulateTyping(3500);
+    const aiBookingAnalysis: Message = {
+      id: Date.now() + 3,
+      type: 'ai',
+      content: "I've analyzed Mike's booking inquiry for March 22-25. He's a business traveler with excellent reviews (4.8 stars). Those dates are available at your current rate of $180/night ($540 total). I've crafted a professional response highlighting your business-friendly amenities:",
+      timestamp: new Date()
+    };
+    
+    addMessage(aiBookingAnalysis);
+    setBookingSuggestedResponse("Hi Mike! Great to hear from you. Your dates March 22-25 (3 nights) are available at $180/night ($540 total). The Downtown Loft is perfect for business travelers - we have high-speed fiber WiFi (100+ Mbps), a dedicated workspace with ergonomic chair, and free secure parking. The space is very quiet with blackout curtains for rest. I can hold these dates for you - would you like to proceed with the booking?");
+    setShowBookingResponseOptions(true);
+  };
+
+  const handleSendBookingResponse = async () => {
+    const sentMessage: Message = {
+      id: Date.now() + 4,
+      type: 'sent',
+      content: isBookingEditing ? editedBookingResponse : bookingSuggestedResponse,
+      timestamp: new Date()
+    };
+    addMessage(sentMessage);
+
+    await simulateTyping(2000);
+
+    const confirmationMessage: Message = {
+      id: Date.now() + 5,
+      type: 'success',
+      content: "✅ Booking inquiry response sent to Mike successfully! I'll continue monitoring for his reply and any new opportunities.",
+      timestamp: new Date()
+    };
+    addMessage(confirmationMessage);
+
+    // Guest response to booking inquiry
+    setTimeout(async () => {
+      await simulateTyping(1500);
+      
+      const guestBookingResponse: Message = {
+        id: Date.now() + 6,
+        type: 'guest',
+        content: "Perfect! That sounds exactly what I need. The workspace and parking are essential for my trip. Please hold those dates - I'll complete the booking within the next hour. Thank you!",
+        timestamp: new Date(),
+        sender: 'Mike Chen',
+        guestType: 'Business Traveler'
+      };
+      addMessage(guestBookingResponse);
+
+      await simulateTyping(2000);
+
+      // Final AI message
+      const finalMessage: Message = {
+        id: Date.now() + 7,
+        type: 'ai',
+        content: "Excellent! Mike is very interested and will complete the booking soon. I've noted his requirements and will continue monitoring for the booking confirmation. Your property is performing well with great guest engagement and revenue optimization!",
+        timestamp: new Date()
+      };
+      addMessage(finalMessage);
+
+      setConversationStage('completed');
+      console.log('Full demo cycle completed');
+    }, 3000);
+
+    setShowBookingResponseOptions(false);
+    setIsBookingEditing(false);
+    setEditedBookingResponse('');
+    setBookingSuggestedResponse('');
+  };
+
+  const handleEditBookingResponse = () => {
+    setIsBookingEditing(true);
+    setEditedBookingResponse(bookingSuggestedResponse);
   };
 
   const handleEditResponse = () => {
@@ -536,6 +645,65 @@ const App = () => {
                       </Button>
                       <Button
                         onClick={handleEditResponse}
+                        variant="outline"
+                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                      >
+                        <Edit3 className="h-4 w-4 mr-2" />
+                        Edit
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Booking Response Options */}
+            {showBookingResponseOptions && (
+              <div className="bg-gray-900/90 border border-gray-700/50 rounded-lg p-4 backdrop-blur-sm animate-fade-in">
+                <h3 className="text-white font-medium mb-3 flex items-center">
+                  <AlertCircle className="h-4 w-4 mr-2 text-teal-600" />
+                  Suggested Booking Response:
+                </h3>
+                {isBookingEditing ? (
+                  <div className="space-y-3">
+                    <textarea
+                      value={editedBookingResponse}
+                      onChange={(e) => setEditedBookingResponse(e.target.value)}
+                      className="w-full bg-gray-800/70 border border-gray-600 rounded-lg p-3 text-white text-sm resize-none focus:border-teal-600 backdrop-blur-sm"
+                      rows={5}
+                    />
+                    <div className="flex space-x-2">
+                      <Button
+                        onClick={handleSendBookingResponse}
+                        className="bg-teal-600 hover:bg-teal-700 text-white"
+                      >
+                        <Send className="h-4 w-4 mr-2" />
+                        Send Edited Response
+                      </Button>
+                      <Button
+                        onClick={() => setIsBookingEditing(false)}
+                        variant="outline"
+                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="bg-gray-800/70 border border-gray-600 rounded-lg p-3 backdrop-blur-sm">
+                      <p className="text-white text-sm leading-relaxed">{bookingSuggestedResponse}</p>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button
+                        onClick={handleSendBookingResponse}
+                        className="bg-teal-600 hover:bg-teal-700 text-white"
+                      >
+                        <Send className="h-4 w-4 mr-2" />
+                        Send
+                      </Button>
+                      <Button
+                        onClick={handleEditBookingResponse}
                         variant="outline"
                         className="border-gray-600 text-gray-300 hover:bg-gray-800"
                       >
