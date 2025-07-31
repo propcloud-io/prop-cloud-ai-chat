@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,7 +21,7 @@ const App = () => {
     {
       id: 1,
       type: 'ai',
-      content: "Hi! I'm PropCore, your AI co-host. Please share your Airbnb listing link so I can analyze it and set you up with intelligent monitoring.",
+      content: "Hi! I'm PropCore, your AI co-host. Please share your Airbnb listing link so I can analyze it and set you up with intelligent monitoring.\n\nTry this sample property: https://airbnb.com/rooms/12345678",
       timestamp: new Date()
     }
   ]);
@@ -40,6 +40,7 @@ const App = () => {
   const [bookingSuggestedResponse, setBookingSuggestedResponse] = useState('');
   const [isBookingEditing, setIsBookingEditing] = useState(false);
   const [editedBookingResponse, setEditedBookingResponse] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const addMessage = (message: Message) => {
@@ -397,6 +398,18 @@ const App = () => {
     navigate('/');
   };
 
+  const handleSampleLinkClick = () => {
+    setInputValue("https://airbnb.com/rooms/12345678");
+  };
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
       {/* Enhanced 3D Space Background */}
@@ -513,7 +526,20 @@ const App = () => {
                       </div>
                       <Card className={`${message.type === 'ai' ? 'bg-gray-800/80' : 'bg-teal-600'} border-gray-700/50 backdrop-blur-sm`}>
                         <CardContent className="p-4">
-                          <p className="text-white text-sm leading-relaxed">{message.content}</p>
+                          {message.content.includes("https://airbnb.com/rooms/12345678") ? (
+                            <div className="text-white text-sm leading-relaxed">
+                              <p>Hi! I'm PropCore, your AI co-host. Please share your Airbnb listing link so I can analyze it and set you up with intelligent monitoring.</p>
+                              <p className="mt-3">Try this sample property:</p>
+                              <button
+                                onClick={handleSampleLinkClick}
+                                className="mt-2 text-teal-400 hover:text-teal-300 underline transition-colors duration-200 cursor-pointer"
+                              >
+                                https://airbnb.com/rooms/12345678
+                              </button>
+                            </div>
+                          ) : (
+                            <p className="text-white text-sm leading-relaxed">{message.content}</p>
+                          )}
                         </CardContent>
                       </Card>
                     </div>
@@ -715,6 +741,9 @@ const App = () => {
                 )}
               </div>
             )}
+
+            {/* Scroll anchor */}
+            <div ref={messagesEndRef} />
           </div>
 
           {/* Input - Only show if conversation not completed */}
