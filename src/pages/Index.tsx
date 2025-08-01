@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageCircle, Zap, Shield, Users, Star, Sparkles, Clock } from "lucide-react";
+import { MessageCircle, Zap, Shield, Users, Star, Sparkles, Clock, ArrowRight, CheckCircle } from "lucide-react";
 
 const Index = () => {
   const [email, setEmail] = useState('');
@@ -116,18 +116,20 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button 
                   size="lg" 
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25"
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25 group"
                   onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   Join the Revolution
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className="border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300"
+                  className="border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 group"
                   onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   Experience the Demo
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </div>
             </div>
@@ -193,19 +195,43 @@ const Index = () => {
               <h2 className="text-5xl font-bold mb-4">
                 <span className="text-teal-600">Experience</span> <span className="text-white">PropCloud Live</span>
               </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
                 See how PropCore transforms complex property management into simple conversations. This is real AI in action.
               </p>
+              
+              {/* Progress Indicators */}
+              <div className="flex items-center justify-center space-x-4 mb-12">
+                <div className="flex items-center space-x-2">
+                  <div className="bg-teal-600 rounded-full p-2">
+                    <CheckCircle className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="text-sm text-teal-400 font-medium">Share Link</span>
+                </div>
+                <div className="h-0.5 w-8 bg-teal-600"></div>
+                <div className="flex items-center space-x-2">
+                  <div className="bg-teal-600 rounded-full p-2">
+                    <CheckCircle className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="text-sm text-teal-400 font-medium">AI Analysis</span>
+                </div>
+                <div className="h-0.5 w-8 bg-teal-600"></div>
+                <div className="flex items-center space-x-2">
+                  <div className="bg-teal-600 rounded-full p-2">
+                    <CheckCircle className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="text-sm text-teal-400 font-medium">Setup Complete</span>
+                </div>
+              </div>
             </div>
             
             <div className="max-w-4xl mx-auto">
               <div className="bg-gray-900/80 rounded-2xl p-8 border border-gray-800/50 backdrop-blur-xl shadow-2xl">
                 <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-teal-600 rounded-full p-3 flex-shrink-0">
+                  <div className="flex items-start space-x-4 group cursor-pointer">
+                    <div className="bg-teal-600 rounded-full p-3 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                       <MessageCircle className="h-5 w-5 text-white" />
                     </div>
-                    <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm">
+                    <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm group-hover:bg-gray-800/90 group-hover:scale-105 transition-all duration-300">
                       <p className="text-sm text-white leading-relaxed">
                         Hi! I'm PropCore, your AI co-host. Share your Airbnb listing link and I'll analyze your property, 
                         understand your guest patterns, and set up intelligent monitoring in under 60 seconds.
@@ -213,20 +239,20 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  <div className="flex items-start space-x-4 justify-end">
-                    <div className="bg-teal-600 rounded-2xl p-4 max-w-md">
+                  <div className="flex items-start space-x-4 justify-end group cursor-pointer">
+                    <div className="bg-teal-600 rounded-2xl p-4 max-w-md group-hover:bg-teal-700 group-hover:scale-105 transition-all duration-300">
                       <p className="text-sm text-white">https://airbnb.com/rooms/downtown-loft-2024</p>
                     </div>
-                    <div className="bg-gray-600 rounded-full p-3 flex-shrink-0">
+                    <div className="bg-gray-600 rounded-full p-3 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                       <Users className="h-5 w-5 text-white" />
                     </div>
                   </div>
                   
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-teal-600 rounded-full p-3 flex-shrink-0">
+                  <div className="flex items-start space-x-4 group cursor-pointer">
+                    <div className="bg-teal-600 rounded-full p-3 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                       <MessageCircle className="h-5 w-5 text-white" />
                     </div>
-                    <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm">
+                    <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm group-hover:bg-gray-800/90 group-hover:scale-105 transition-all duration-300">
                       <p className="text-sm text-white leading-relaxed">
                         Perfect! I've analyzed your Downtown Loft - 2BR, 4.9★ rating, $180/night average. 
                         I can see your peak season is summer with 85% occupancy. I'm now monitoring for bookings, 
@@ -236,7 +262,7 @@ const Index = () => {
                   </div>
                   
                   <div className="flex justify-center">
-                    <div className="bg-teal-600/30 border border-teal-600/50 rounded-2xl px-6 py-3 backdrop-blur-sm">
+                    <div className="bg-teal-600/30 border border-teal-600/50 rounded-2xl px-6 py-3 backdrop-blur-sm hover:bg-teal-600/40 transition-colors duration-300 cursor-pointer">
                       <p className="text-teal-400 text-sm font-medium flex items-center">
                         <Clock className="h-4 w-4 mr-2" />
                         🔔 New message from Sarah (Premium Guest, arriving today)
@@ -244,11 +270,11 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-orange-500 rounded-full p-3 flex-shrink-0">
+                  <div className="flex items-start space-x-4 group cursor-pointer">
+                    <div className="bg-orange-500 rounded-full p-3 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                       <Users className="h-5 w-5 text-white" />
                     </div>
-                    <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm">
+                    <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm group-hover:bg-gray-800/90 group-hover:scale-105 transition-all duration-300">
                       <div className="flex items-center space-x-2 mb-2">
                         <span className="text-orange-400 font-medium text-sm">Sarah Mitchell</span>
                         <span className="text-gray-400 text-xs">• Premium Guest</span>
@@ -260,11 +286,11 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-teal-600 rounded-full p-3 flex-shrink-0">
+                  <div className="flex items-start space-x-4 group cursor-pointer">
+                    <div className="bg-teal-600 rounded-full p-3 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                       <MessageCircle className="h-5 w-5 text-white" />
                     </div>
-                    <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm">
+                    <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm group-hover:bg-gray-800/90 group-hover:scale-105 transition-all duration-300">
                       <p className="text-sm text-white leading-relaxed">
                         I've crafted a personalized response for Sarah based on her premium guest status and urgency. 
                         You can send it instantly or edit it to match your style.
@@ -273,6 +299,94 @@ const Index = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section className="py-20 px-4">
+          <div className="container mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold mb-4">
+                <span className="text-white">What STR Owners</span> <span className="text-teal-600">Are Saying</span>
+              </h2>
+              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+                Join the growing community of property owners who are revolutionizing their operations with PropCloud.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              <Card className="bg-gray-900/60 border-gray-800/50 hover:border-teal-600/30 transition-all duration-500 backdrop-blur-lg shadow-xl">
+                <CardContent className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="flex text-teal-600">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-300 mb-6 leading-relaxed">
+                    "PropCore handles my 12 properties like a seasoned co-host. I went from spending 3 hours daily on guest messages to just 15 minutes reviewing suggestions. Game changer!"
+                  </p>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-medium text-sm">MR</span>
+                    </div>
+                    <div>
+                      <p className="text-white font-medium">Marcus Rodriguez</p>
+                      <p className="text-gray-400 text-sm">12 Properties • Austin, TX</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-gray-900/60 border-gray-800/50 hover:border-teal-600/30 transition-all duration-500 backdrop-blur-lg shadow-xl">
+                <CardContent className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="flex text-teal-600">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-300 mb-6 leading-relaxed">
+                    "The AI understands context like a human. When a guest mentioned they're celebrating an anniversary, it suggested local romantic restaurants. My 5-star reviews doubled!"
+                  </p>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-medium text-sm">SC</span>
+                    </div>
+                    <div>
+                      <p className="text-white font-medium">Sarah Chen</p>
+                      <p className="text-gray-400 text-sm">7 Properties • San Diego, CA</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-gray-900/60 border-gray-800/50 hover:border-teal-600/30 transition-all duration-500 backdrop-blur-lg shadow-xl">
+                <CardContent className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="flex text-teal-600">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-300 mb-6 leading-relaxed">
+                    "PropCore caught pricing inefficiencies I missed for months. Revenue up 23% in two months. It's like having a revenue manager, guest relations expert, and assistant all in one."
+                  </p>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-medium text-sm">DJ</span>
+                    </div>
+                    <div>
+                      <p className="text-white font-medium">David Kim</p>
+                      <p className="text-gray-400 text-sm">5 Properties • Miami, FL</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -346,10 +460,11 @@ const Index = () => {
                       </div>
                       <Button 
                         type="submit" 
-                        className="w-full bg-teal-600 hover:bg-teal-700 text-white h-12 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25"
+                        className="w-full bg-teal-600 hover:bg-teal-700 text-white h-12 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25 group"
                         disabled={!email}
                       >
                         Secure Your Spot
+                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                       </Button>
                     </form>
                   </CardContent>
