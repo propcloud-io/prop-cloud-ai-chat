@@ -49,7 +49,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Navigation */}
+      {/* Navigation with improved hover states and active indicators */}
       <nav className="border-b border-gray-800 bg-gray-950/80 backdrop-blur-sm">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
@@ -59,68 +59,98 @@ const App = () => {
               <div className="hidden md:flex items-center space-x-6">
                 <a
                   href="#"
-                  className={`text-gray-400 hover:text-white transition-colors ${activeLink === 'dashboard' ? 'text-white' : ''}`}
+                  className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                    activeLink === 'dashboard' 
+                      ? 'text-teal-400 bg-teal-400/10 border-b-2 border-teal-400' 
+                      : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                  }`}
                   onClick={() => setActiveLink('dashboard')}
                 >
-                  <Home className="h-5 w-5 mr-2 inline-block" />
+                  <Home className="h-4 w-4 mr-2" />
                   Dashboard
                 </a>
                 <a
                   href="#"
-                  className={`text-gray-400 hover:text-white transition-colors ${activeLink === 'properties' ? 'text-white' : ''}`}
+                  className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                    activeLink === 'properties' 
+                      ? 'text-teal-400 bg-teal-400/10 border-b-2 border-teal-400' 
+                      : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                  }`}
                   onClick={() => setActiveLink('properties')}
                 >
-                  <Building className="h-5 w-5 mr-2 inline-block" />
+                  <Building className="h-4 w-4 mr-2" />
                   Properties
                 </a>
                 <a
                   href="#"
-                  className={`text-gray-400 hover:text-white transition-colors ${activeLink === 'revenue' ? 'text-white' : ''}`}
+                  className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                    activeLink === 'revenue' 
+                      ? 'text-teal-400 bg-teal-400/10 border-b-2 border-teal-400' 
+                      : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                  }`}
                   onClick={() => setActiveLink('revenue')}
                 >
-                  <DollarSign className="h-5 w-5 mr-2 inline-block" />
+                  <DollarSign className="h-4 w-4 mr-2" />
                   Revenue
                 </a>
                 <a
                   href="#"
-                  className={`text-gray-400 hover:text-white transition-colors ${activeLink === 'analytics' ? 'text-white' : ''}`}
+                  className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                    activeLink === 'analytics' 
+                      ? 'text-teal-400 bg-teal-400/10 border-b-2 border-teal-400' 
+                      : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                  }`}
                   onClick={() => setActiveLink('analytics')}
                 >
-                  <BarChart3 className="h-5 w-5 mr-2 inline-block" />
+                  <BarChart3 className="h-4 w-4 mr-2" />
                   Analytics
                 </a>
                 <a
                   href="#"
-                  className={`text-gray-400 hover:text-white transition-colors ${activeLink === 'calendar' ? 'text-white' : ''}`}
+                  className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                    activeLink === 'calendar' 
+                      ? 'text-teal-400 bg-teal-400/10 border-b-2 border-teal-400' 
+                      : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                  }`}
                   onClick={() => setActiveLink('calendar')}
                 >
-                  <Calendar className="h-5 w-5 mr-2 inline-block" />
+                  <Calendar className="h-4 w-4 mr-2" />
                   Calendar
                 </a>
               </div>
 
               <div className="flex items-center space-x-4">
-                <button onClick={toggleSettings} className="text-gray-400 hover:text-white focus:outline-none transition-colors">
+                <button 
+                  onClick={toggleSettings} 
+                  className="text-gray-400 hover:text-white focus:outline-none transition-colors p-2 rounded-md hover:bg-gray-800/50"
+                >
                   <Settings className="h-5 w-5" />
                 </button>
-                <button onClick={toggleNotifications} className="text-gray-400 hover:text-white focus:outline-none transition-colors relative">
+                <button 
+                  onClick={toggleNotifications} 
+                  className="text-gray-400 hover:text-white focus:outline-none transition-colors relative p-2 rounded-md hover:bg-gray-800/50"
+                >
                   <Bell className="h-5 w-5" />
-                  <span className="absolute top-0 right-0 h-2 w-2 bg-teal-500 rounded-full"></span>
+                  <span className="absolute top-1 right-1 h-2 w-2 bg-teal-500 rounded-full animate-pulse"></span>
                 </button>
                 <div className="relative">
-                  <button onClick={toggleUserMenu} className="focus:outline-none transition-colors">
-                    <User className="h-6 w-6 text-gray-400 hover:text-white" />
+                  <button 
+                    onClick={toggleUserMenu} 
+                    className="focus:outline-none transition-colors p-2 rounded-md hover:bg-gray-800/50"
+                  >
+                    <User className="h-5 w-5 text-gray-400 hover:text-white" />
                   </button>
                   {isUserMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-gray-900 rounded-md shadow-lg z-10">
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                        Profile
+                    <div className="absolute right-0 mt-2 w-48 bg-gray-900 rounded-lg shadow-xl border border-gray-800 z-10">
+                      <a href="#" className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors rounded-t-lg">
+                        Profile Settings
                       </a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                        Settings
+                      <a href="#" className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        Account Preferences
                       </a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                        Logout
+                      <hr className="border-gray-800" />
+                      <a href="#" className="block px-4 py-3 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 transition-colors rounded-b-lg">
+                        Sign Out
                       </a>
                     </div>
                   )}
