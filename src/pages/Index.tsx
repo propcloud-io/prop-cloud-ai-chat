@@ -1,10 +1,11 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { MessageCircle, Zap, Shield, Users, Star, Sparkles, Clock, ArrowRight, CheckCircle, AlertCircle, TrendingUp, Calendar, Bot } from "lucide-react";
+import Logo from "@/components/Logo";
+import EnhancedBackground from "@/components/EnhancedBackground";
 
 const Index = () => {
   const [email, setEmail] = useState('');
@@ -20,68 +21,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Enhanced 3D Space Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Floating Stars */}
-        {Array.from({ length: 100 }, (_, i) => (
-          <div
-            key={i}
-            className="absolute bg-white rounded-full opacity-60"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 3 + 1}px`,
-              height: `${Math.random() * 3 + 1}px`,
-              animationDelay: `${Math.random() * 3}s`,
-              animation: `twinkle ${Math.random() * 4 + 2}s infinite`
-            }}
-          />
-        ))}
-        
-        {/* Animated 3D Geometric Shapes */}
-        <div className="absolute top-20 left-10 w-16 h-16 bg-gradient-to-br from-teal-600/30 to-teal-800/20 transform rotate-45 animate-pulse"></div>
-        <div className="absolute top-60 right-20 w-20 h-20 bg-gradient-to-br from-teal-600/25 to-teal-800/15 transform rotate-12 animate-bounce"></div>
-        <div className="absolute bottom-40 left-1/4 w-12 h-12 bg-gradient-to-br from-teal-600/35 to-teal-800/25 transform rotate-45 animate-pulse"></div>
-        
-        {/* Floating Orbs with Glow */}
-        <div className="absolute top-1/3 right-1/3 w-24 h-24 bg-gradient-radial from-teal-600/20 to-transparent rounded-full animate-ping"></div>
-        <div className="absolute bottom-1/3 left-1/3 w-16 h-16 bg-gradient-radial from-teal-600/25 to-transparent rounded-full animate-pulse"></div>
-        
-        {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="grid grid-cols-20 gap-2 h-full">
-            {Array.from({ length: 400 }, (_, i) => (
-              <div key={i} className="border border-teal-600/30 rounded-sm"></div>
-            ))}
-          </div>
-        </div>
-        
-        {/* Floating Particles */}
-        {Array.from({ length: 20 }, (_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-teal-600/40 rounded-full animate-ping"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${Math.random() * 3 + 2}s`
-            }}
-          />
-        ))}
-        
-        {/* Deep Space Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/95 to-black opacity-85"></div>
-      </div>
+      {/* Enhanced Background */}
+      <EnhancedBackground />
 
       {/* Content */}
       <div className="relative z-10">
         {/* Header */}
         <header className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-xl border-b border-gray-800/50">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
-            </div>
+            <Logo />
             <nav className="hidden md:flex space-x-6">
               <a href="#problem" className="text-white hover:text-teal-600 transition-colors duration-300">The Challenge</a>
               <a href="#solution" className="text-white hover:text-teal-600 transition-colors duration-300">Our AI</a>
@@ -678,11 +626,26 @@ const Index = () => {
         </footer>
       </div>
 
+      {/* Enhanced CSS animations */}
       <style>
         {`
           @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
+            0%, 100% { opacity: 0.2; }
             50% { opacity: 1; }
+          }
+          
+          @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-15px); }
+            75% { transform: translateY(-30px) translateX(5px); }
+          }
+          
+          @keyframes drift {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
           }
         `}
       </style>
