@@ -539,7 +539,7 @@ const App = () => {
 
   // Show dashboard if in dashboard mode
   if (viewMode === 'dashboard') {
-    return <Dashboard onStartChat={handleStartChat} onBackToHome={handleBackToHome} />;
+    return <Dashboard onStartChat={handleStartChat} onBackToHome={handleBackToHome} propertyData={propertyData} />;
   }
 
   return (

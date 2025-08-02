@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
     <footer className="py-12 px-4 border-t border-gray-800/50">
       <div className="container mx-auto text-center text-white">
         <div className="flex justify-center mb-6">
-          <Logo showText={false} className="h-16" />
+          <Logo showText={true} />
         </div>
         <div className="mb-6">
           <p className="text-lg mb-2">

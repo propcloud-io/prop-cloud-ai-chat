@@ -4,20 +4,33 @@ import { Button } from "@/components/ui/button";
 import { Home, MessageCircle, BarChart3, ArrowLeft } from "lucide-react";
 import Logo from './Logo';
 
+interface PropertyData {
+  name: string;
+  rating: number;
+  price: number;
+  occupancy: number;
+  reviews: number;
+}
+
 interface DashboardProps {
   onStartChat: () => void;
   onBackToHome?: () => void;
+  propertyData?: PropertyData | null;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ onStartChat, onBackToHome }) => {
+const Dashboard: React.FC<DashboardProps> = ({ onStartChat, onBackToHome, propertyData }) => {
   const handleViewProperties = () => {
-    // Placeholder for future properties functionality
-    console.log('View Properties clicked');
+    // Show property data from conversation
+    if (propertyData) {
+      alert(`Property: ${propertyData.name}\nRating: ${propertyData.rating}⭐\nPrice: $${propertyData.price}/night\nOccupancy: ${propertyData.occupancy}%\nReviews: ${propertyData.reviews}`);
+    }
   };
 
   const handleViewAnalytics = () => {
-    // Placeholder for future analytics functionality  
-    console.log('View Analytics clicked');
+    // Show analytics data from conversation
+    if (propertyData) {
+      alert(`Analytics for ${propertyData.name}\n\nPerformance Metrics:\n• Revenue: $${(propertyData.price * propertyData.occupancy * 30 / 100).toFixed(0)}/month\n• Occupancy Rate: ${propertyData.occupancy}%\n• Avg Rating: ${propertyData.rating}⭐\n• Total Reviews: ${propertyData.reviews}\n• Market Position: Top 15% in area`);
+    }
   };
 
   return (
