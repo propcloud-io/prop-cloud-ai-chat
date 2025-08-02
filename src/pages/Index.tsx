@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,48 +20,127 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Enhanced 3D Space Background */}
+      {/* Revolutionary 3D AI-Inspired Space Background */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Brighter Floating Stars */}
-        {Array.from({ length: 150 }, (_, i) => (
+        {/* Dynamic Star Field with AI Processing Patterns */}
+        {Array.from({ length: 200 }, (_, i) => {
+          const size = Math.random() * 3 + 1;
+          const brightness = Math.random() * 0.8 + 0.2;
+          return (
+            <div
+              key={`star-${i}`}
+              className="absolute bg-white rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                width: `${size}px`,
+                height: `${size}px`,
+                opacity: brightness,
+                animation: `twinkle ${Math.random() * 4 + 2}s infinite`,
+                animationDelay: `${Math.random() * 3}s`,
+                boxShadow: `0 0 ${size * 3}px rgba(20, 184, 166, ${brightness * 0.6}), 0 0 ${size * 6}px rgba(6, 182, 212, ${brightness * 0.3})`
+              }}
+            />
+          );
+        })}
+        
+        {/* AI Neural Network Connections - Floating Data Streams */}
+        {Array.from({ length: 15 }, (_, i) => (
           <div
-            key={i}
-            className="absolute bg-white rounded-full opacity-80"
+            key={`neural-${i}`}
+            className="absolute bg-gradient-to-r from-transparent via-teal-400/40 to-transparent rounded-full animate-pulse"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 4 + 1}px`,
-              height: `${Math.random() * 4 + 1}px`,
-              animationDelay: `${Math.random() * 3}s`,
-              animation: `twinkle ${Math.random() * 4 + 2}s infinite`,
-              boxShadow: `0 0 ${Math.random() * 10 + 5}px rgba(20, 184, 166, 0.4)`
+              left: `${Math.random() * 80}%`,
+              top: `${Math.random() * 80}%`,
+              width: `${Math.random() * 300 + 150}px`,
+              height: '2px',
+              transform: `rotate(${Math.random() * 360}deg)`,
+              animationDelay: `${Math.random() * 4}s`,
+              animationDuration: `${Math.random() * 3 + 2}s`,
+              filter: 'blur(0.5px)'
             }}
           />
         ))}
         
-        {/* Enhanced 3D Geometric Shapes with Glow */}
-        <div className="absolute top-20 left-10 w-16 h-16 bg-gradient-to-br from-teal-400/40 to-teal-600/30 transform rotate-45 animate-pulse shadow-lg shadow-teal-500/20"></div>
-        <div className="absolute top-60 right-20 w-20 h-20 bg-gradient-to-br from-cyan-400/35 to-teal-600/25 transform rotate-12 animate-bounce shadow-lg shadow-cyan-500/20"></div>
-        <div className="absolute bottom-40 left-1/4 w-12 h-12 bg-gradient-to-br from-teal-500/45 to-cyan-500/35 transform rotate-45 animate-pulse shadow-lg shadow-teal-400/25"></div>
-        
-        {/* Brighter Floating Orbs with Enhanced Glow */}
-        <div className="absolute top-1/3 right-1/3 w-32 h-32 bg-gradient-radial from-teal-400/30 to-transparent rounded-full animate-ping shadow-2xl shadow-teal-400/20"></div>
-        <div className="absolute bottom-1/3 left-1/3 w-20 h-20 bg-gradient-radial from-cyan-400/35 to-transparent rounded-full animate-pulse shadow-xl shadow-cyan-400/25"></div>
-        
-        {/* Enhanced Grid Pattern */}
-        <div className="absolute inset-0 opacity-8">
-          <div className="grid grid-cols-20 gap-2 h-full">
-            {Array.from({ length: 400 }, (_, i) => (
-              <div key={i} className="border border-teal-500/40 rounded-sm shadow-sm shadow-teal-500/10"></div>
-            ))}
+        {/* Floating Data Nodes - AI Processing Units */}
+        {Array.from({ length: 12 }, (_, i) => (
+          <div
+            key={`node-${i}`}
+            className="absolute w-4 h-4 border border-teal-400/60 rounded-full bg-teal-500/20 animate-pulse"
+            style={{
+              left: `${Math.random() * 90}%`,
+              top: `${Math.random() * 90}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${Math.random() * 4 + 2}s`,
+              boxShadow: `0 0 15px rgba(20, 184, 166, 0.4), inset 0 0 10px rgba(6, 182, 212, 0.3)`
+            }}
+          >
+            <div className="w-1 h-1 bg-teal-300 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-ping" />
           </div>
+        ))}
+        
+        {/* Quantum Computing Inspired Geometric Shapes */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-teal-400/30 to-cyan-600/20 transform rotate-45 animate-spin shadow-2xl shadow-teal-500/30"
+             style={{ animationDuration: '20s' }}>
+          <div className="w-full h-full border-2 border-teal-400/50 rounded-lg animate-pulse"></div>
         </div>
         
-        {/* Brighter Flying Particles */}
-        {Array.from({ length: 30 }, (_, i) => (
+        <div className="absolute top-60 right-20 w-16 h-16 bg-gradient-to-br from-cyan-400/25 to-teal-600/15 transform rotate-12 animate-bounce shadow-xl shadow-cyan-500/25"
+             style={{ animationDuration: '6s' }}>
+          <div className="w-full h-full border border-cyan-400/60 transform rotate-45 animate-spin" style={{ animationDuration: '15s' }}></div>
+        </div>
+        
+        <div className="absolute bottom-40 left-1/4 w-12 h-12 bg-gradient-to-br from-teal-500/35 to-cyan-500/25 transform rotate-45 animate-pulse shadow-lg shadow-teal-400/30">
+          <div className="w-full h-full bg-gradient-to-br from-transparent to-teal-300/20 animate-ping"></div>
+        </div>
+        
+        {/* AI Brain Processing Orbs with Data Flow */}
+        <div className="absolute top-1/3 right-1/3 w-32 h-32 bg-gradient-radial from-teal-400/25 to-transparent rounded-full animate-ping shadow-2xl shadow-teal-400/30"
+             style={{ animationDuration: '4s' }}>
+          <div className="absolute inset-4 border border-teal-300/40 rounded-full animate-spin" style={{ animationDuration: '8s' }}></div>
+          <div className="absolute inset-8 bg-teal-500/20 rounded-full animate-pulse"></div>
+        </div>
+        
+        <div className="absolute bottom-1/3 left-1/3 w-24 h-24 bg-gradient-radial from-cyan-400/30 to-transparent rounded-full animate-pulse shadow-xl shadow-cyan-400/25"
+             style={{ animationDuration: '5s' }}>
+          <div className="absolute inset-2 border-2 border-cyan-300/50 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '12s' }}></div>
+        </div>
+        
+        {/* Matrix-Style Data Rain */}
+        {Array.from({ length: 8 }, (_, i) => (
           <div
-            key={i}
-            className="absolute w-2 h-2 bg-teal-400/60 rounded-full animate-ping shadow-lg shadow-teal-400/30"
+            key={`rain-${i}`}
+            className="absolute top-0 w-px bg-gradient-to-b from-teal-400/60 via-teal-300/30 to-transparent animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              height: `${Math.random() * 400 + 200}px`,
+              animationDelay: `${Math.random() * 2}s`,
+              animationDuration: `${Math.random() * 3 + 2}s`
+            }}
+          />
+        ))}
+        
+        {/* Cosmic AI Energy Waves */}
+        {Array.from({ length: 6 }, (_, i) => (
+          <div
+            key={`wave-${i}`}
+            className="absolute rounded-full border border-teal-400/20 animate-ping"
+            style={{
+              left: `${Math.random() * 60 + 20}%`,
+              top: `${Math.random() * 60 + 20}%`,
+              width: `${Math.random() * 200 + 100}px`,
+              height: `${Math.random() * 200 + 100}px`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${Math.random() * 4 + 3}s`
+            }}
+          />
+        ))}
+        
+        {/* AI Processing Particles */}
+        {Array.from({ length: 25 }, (_, i) => (
+          <div
+            key={`particle-${i}`}
+            className="absolute w-1 h-1 bg-teal-400/70 rounded-full animate-ping shadow-lg shadow-teal-400/40"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -72,15 +150,15 @@ const Index = () => {
           />
         ))}
         
-        {/* Flying Light Trails */}
-        {Array.from({ length: 8 }, (_, i) => (
+        {/* Flying AI Data Streams */}
+        {Array.from({ length: 10 }, (_, i) => (
           <div
-            key={i}
-            className="absolute h-0.5 bg-gradient-to-r from-transparent via-teal-400/60 to-transparent animate-pulse"
+            key={`stream-${i}`}
+            className="absolute h-px bg-gradient-to-r from-transparent via-teal-400/50 to-transparent animate-pulse"
             style={{
               left: `${Math.random() * 70}%`,
               top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 200 + 100}px`,
+              width: `${Math.random() * 300 + 150}px`,
               transform: `rotate(${Math.random() * 360}deg)`,
               animationDelay: `${Math.random() * 3}s`,
               animationDuration: `${Math.random() * 4 + 3}s`
@@ -88,12 +166,22 @@ const Index = () => {
           />
         ))}
         
-        {/* Subtle Cosmic Dust Clouds */}
-        <div className="absolute top-1/4 left-1/6 w-40 h-20 bg-gradient-to-r from-teal-600/10 via-cyan-500/15 to-teal-400/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/6 w-32 h-16 bg-gradient-to-r from-cyan-600/10 via-teal-500/15 to-cyan-400/10 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        {/* Quantum Field Distortions */}
+        <div className="absolute top-1/4 left-1/6 w-48 h-32 bg-gradient-to-r from-teal-600/8 via-cyan-500/12 to-teal-400/8 rounded-full blur-2xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/6 w-40 h-24 bg-gradient-to-r from-cyan-600/8 via-teal-500/12 to-cyan-400/8 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
         
-        {/* Deep Space Gradient with better contrast */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/90 to-black opacity-80"></div>
+        {/* Deep Space Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/95 to-black opacity-85"></div>
+        
+        {/* AI Consciousness Grid */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="grid grid-cols-12 gap-1 h-full">
+            {Array.from({ length: 144 }, (_, i) => (
+              <div key={i} className="border border-teal-500/30 rounded-sm shadow-sm shadow-teal-500/10 animate-pulse" 
+                   style={{ animationDelay: `${i * 0.1}s`, animationDuration: '8s' }}></div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Content */}
@@ -701,8 +789,12 @@ const Index = () => {
       <style>
         {`
           @keyframes twinkle {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+          }
+          
+          .bg-gradient-radial {
+            background: radial-gradient(circle, var(--tw-gradient-stops));
           }
         `}
       </style>
