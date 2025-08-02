@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Home, Star, DollarSign, Users, Calendar, TrendingUp, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Logo from '@/components/Logo';
-
 interface PropertyMetrics {
   occupancyRate: number;
   revenue: number;
@@ -14,7 +13,6 @@ interface PropertyMetrics {
   avgNightly: number;
   nextBooking: string;
 }
-
 const Properties: React.FC = () => {
   const navigate = useNavigate();
   const [metrics, setMetrics] = useState<PropertyMetrics>({
@@ -38,21 +36,14 @@ const Properties: React.FC = () => {
         avgNightly: Math.max(150, Math.min(220, prev.avgNightly + (Math.random() - 0.5) * 5))
       }));
     }, 2000);
-
     return () => clearInterval(interval);
   }, []);
-
-  return (
-    <div className="min-h-screen bg-black text-white">
+  return <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <header className="border-b border-gray-800/50 bg-gray-900/30 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Logo />
-          <Button
-            variant="outline"
-            onClick={() => navigate('/app')}
-            className="border-gray-600 text-gray-300 hover:bg-gray-800"
-          >
+          <Button variant="outline" onClick={() => navigate('/app')} className="border-gray-600 text-gray-300 bg-teal-900 hover:bg-teal-800">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
           </Button>
@@ -224,8 +215,6 @@ const Properties: React.FC = () => {
           </div>
         </div>
       </main>
-    </div>
-  );
+    </div>;
 };
-
 export default Properties;

@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, TrendingUp, DollarSign, Users, Star, Calendar, BarChart3, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Logo from '@/components/Logo';
-
 interface AnalyticsData {
   revenue: number;
   occupancy: number;
@@ -15,7 +14,6 @@ interface AnalyticsData {
   avgBookingValue: number;
   repeatGuests: number;
 }
-
 const Analytics: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<AnalyticsData>({
@@ -42,21 +40,14 @@ const Analytics: React.FC = () => {
         bookings: prev.bookings + (Math.random() > 0.98 ? 1 : 0)
       }));
     }, 3000);
-
     return () => clearInterval(interval);
   }, []);
-
-  return (
-    <div className="min-h-screen bg-black text-white">
+  return <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <header className="border-b border-gray-800/50 bg-gray-900/30 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Logo />
-          <Button
-            variant="outline"
-            onClick={() => navigate('/app')}
-            className="border-gray-600 text-gray-300 hover:bg-gray-800"
-          >
+          <Button variant="outline" onClick={() => navigate('/app')} className="border-gray-600 text-gray-300 bg-teal-900 hover:bg-teal-800">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
           </Button>
@@ -288,8 +279,6 @@ const Analytics: React.FC = () => {
           </Card>
         </div>
       </main>
-    </div>
-  );
+    </div>;
 };
-
 export default Analytics;
