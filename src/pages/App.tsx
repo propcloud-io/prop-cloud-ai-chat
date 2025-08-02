@@ -560,13 +560,13 @@ const App = () => {
 
         {/* Chat Interface */}
         <div className="max-w-4xl mx-auto p-4 h-[calc(100vh-80px)] flex flex-col">
-          {/* Property Data Visualization - Fixed contrast issues */}
+          {/* Property Data Visualization - Fixed with proper background colors */}
           {propertyData && (
             <div className="mb-4 animate-fade-in">
-              <Card className="bg-gradient-to-r from-teal-900/40 to-blue-900/40 border border-teal-600/60 backdrop-blur-sm">
+              <Card className="bg-gradient-to-r from-teal-900/60 to-blue-900/60 border border-teal-500/70 backdrop-blur-sm">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-teal-300 font-medium flex items-center">
+                    <h3 className="text-teal-200 font-medium flex items-center">
                       <TrendingUp className="h-4 w-4 mr-2" />
                       {propertyData.name} - Analytics Overview
                     </h3>
@@ -574,25 +574,25 @@ const App = () => {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="text-center">
                       <div className="flex items-center justify-center mb-1">
-                        <Star className="h-4 w-4 text-yellow-400 mr-1" />
-                        <span className="text-gray-200 font-semibold">{propertyData.rating}</span>
+                        <Star className="h-4 w-4 text-yellow-300 mr-1" />
+                        <span className="text-white font-semibold">{propertyData.rating}</span>
                       </div>
-                      <p className="text-xs text-gray-400">{propertyData.reviews} reviews</p>
+                      <p className="text-xs text-teal-200">{propertyData.reviews} reviews</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-gray-200 font-semibold mb-1">${propertyData.price}</div>
-                      <p className="text-xs text-gray-400">avg/night</p>
+                      <div className="text-white font-semibold mb-1">${propertyData.price}</div>
+                      <p className="text-xs text-teal-200">avg/night</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-gray-200 font-semibold mb-1">{propertyData.occupancy}%</div>
-                      <p className="text-xs text-gray-400">occupancy</p>
+                      <div className="text-white font-semibold mb-1">{propertyData.occupancy}%</div>
+                      <p className="text-xs text-teal-200">occupancy</p>
                     </div>
                     <div className="text-center">
                       <div className="flex items-center justify-center mb-1">
-                        <Calendar className="h-4 w-4 text-teal-400 mr-1" />
-                        <span className="text-gray-200 font-semibold text-sm">Active</span>
+                        <Calendar className="h-4 w-4 text-teal-300 mr-1" />
+                        <span className="text-white font-semibold text-sm">Active</span>
                       </div>
-                      <p className="text-xs text-gray-400">monitoring</p>
+                      <p className="text-xs text-teal-200">monitoring</p>
                     </div>
                   </div>
                 </CardContent>
@@ -812,7 +812,7 @@ const App = () => {
               </div>
             )}
 
-            {/* Response Options - Fixed edit button visibility */}
+            {/* Response Options - Fixed edit button colors */}
             {showResponseOptions && (
               <div className="bg-gray-900/90 border border-gray-700/50 rounded-lg p-4 backdrop-blur-sm">
                 <h3 className="text-white font-medium mb-3 flex items-center justify-between">
@@ -869,7 +869,7 @@ const App = () => {
                       <Button
                         onClick={handleEditResponse}
                         variant="outline"
-                        className="border-gray-600 text-gray-200 hover:text-white hover:bg-gray-800"
+                        className="border-teal-600 text-teal-300 hover:text-white hover:bg-teal-700/20"
                       >
                         <Edit3 className="h-4 w-4 mr-2" />
                         Edit
@@ -880,7 +880,7 @@ const App = () => {
               </div>
             )}
 
-            {/* Booking Response Options - Fixed edit button visibility */}
+            {/* Booking Response Options - Fixed edit button colors */}
             {showBookingResponseOptions && (
               <div className="bg-gray-900/90 border border-gray-700/50 rounded-lg p-4 backdrop-blur-sm animate-fade-in">
                 <h3 className="text-white font-medium mb-3 flex items-center justify-between">
@@ -937,7 +937,7 @@ const App = () => {
                       <Button
                         onClick={handleEditBookingResponse}
                         variant="outline"
-                        className="border-gray-600 text-gray-200 hover:text-white hover:bg-gray-800"
+                        className="border-teal-600 text-teal-300 hover:text-white hover:bg-teal-700/20"
                       >
                         <Edit3 className="h-4 w-4 mr-2" />
                         Edit
