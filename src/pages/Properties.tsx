@@ -134,9 +134,9 @@ const Properties: React.FC = () => {
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-teal-600 mb-2">
-                    ${metrics.avgNightly}
-                  </div>
+                 <div className="text-3xl font-bold text-teal-600 mb-2">
+                ${Math.round(metrics.avgNightly)}
+               </div>
                   <div className="text-gray-400 text-sm">Avg Nightly Rate</div>
                   <div className="text-xs text-yellow-400 mt-1">
                     <Calendar className="h-3 w-3 inline mr-1" />
