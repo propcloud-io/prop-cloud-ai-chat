@@ -15,63 +15,18 @@ const Logo: React.FC<LogoProps> = ({ className = '', size = 'md' }) => {
 
   return (
     <div className={`flex items-center space-x-3 ${className}`}>
-      {/* PropCloud Official Logo - Exact Teal P */}
+      {/* PropCloud Official Logo */}
       <div className={`${sizeClasses[size]} aspect-square relative group`}>
-        <svg
-          viewBox="0 0 100 100"
-          className="w-full h-full filter drop-shadow-lg group-hover:drop-shadow-xl transition-all duration-500 group-hover:scale-105"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Glow effect */}
-          <defs>
-            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-              <feMerge> 
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#14b8a6" />
-              <stop offset="50%" stopColor="#0d9488" />
-              <stop offset="100%" stopColor="#0f766e" />
-            </linearGradient>
-          </defs>
-          
-          {/* Speech Bubble Shape - Exact replica of your teal P logo */}
-          <path
-            d="M25 15 C25 10, 30 5, 45 5 C70 5, 80 15, 80 35 C80 55, 70 65, 45 65 L30 65 L30 75 C30 80, 25 85, 20 85 C15 85, 10 80, 10 75 L10 25 C10 20, 15 15, 25 15 Z"
-            fill="url(#logoGradient)"
-            filter="url(#glow)"
-            className="animate-pulse"
-            style={{ animationDuration: '4s' }}
-          />
-          
-          {/* Inner Circle - The "P" hole */}
-          <circle
-            cx="50"
-            cy="35"
-            r="18"
-            fill="transparent"
-            stroke="transparent"
-            strokeWidth="36"
-            className="animate-pulse"
-            style={{ animationDelay: '0.5s', animationDuration: '4s' }}
-          />
-          
-          {/* Chat bubble tail */}
-          <path
-            d="M20 80 L30 65 L30 75 C30 77.5, 22.5 80, 20 80 Z"
-            fill="url(#logoGradient)"
-            filter="url(#glow)"
-          />
-          
-          {/* AI spark effects around logo */}
-          <circle cx="70" cy="20" r="1" fill="#14b8a6" className="animate-ping" style={{ animationDelay: '1s' }} />
-          <circle cx="20" cy="45" r="0.8" fill="#0d9488" className="animate-ping" style={{ animationDelay: '1.8s' }} />
-          <circle cx="75" cy="50" r="0.6" fill="#0f766e" className="animate-ping" style={{ animationDelay: '2.5s' }} />
-        </svg>
+        <img
+          src="/lovable-uploads/2c4d779f-1c7c-4027-b6c6-a3cf1362deef.png"
+          alt="PropCloud Logo"
+          className="w-full h-full object-contain filter drop-shadow-lg group-hover:drop-shadow-xl transition-all duration-500 group-hover:scale-105"
+        />
+        
+        {/* AI spark effects around logo */}
+        <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-teal-400 animate-ping opacity-75" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-1 left-1 w-1.5 h-1.5 rounded-full bg-teal-500 animate-ping opacity-60" style={{ animationDelay: '1.8s' }} />
+        <div className="absolute top-2 left-2 w-1 h-1 rounded-full bg-teal-600 animate-ping opacity-50" style={{ animationDelay: '2.5s' }} />
       </div>
       
       {/* PropCloud Text */}
