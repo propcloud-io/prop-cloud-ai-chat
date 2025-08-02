@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle, Activity, Brain, Search, MessageSquare } from "lucide-react";
+import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle, Activity, Brain, Copy, Star, TrendingUp, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface Message {
   id: number;
@@ -14,9 +15,18 @@ interface Message {
   guestType?: string;
 }
 
+interface PropertyData {
+  name: string;
+  rating: number;
+  price: number;
+  occupancy: number;
+  reviews: number;
+}
+
 type ConversationStage = 'initial' | 'guestInteraction' | 'pricingOpportunity' | 'pricingDecision' | 'completed' | 'bookingInquiry' | 'bookingResponse';
 
 const App = () => {
+  const [sessionStartTime] = useState(new Date());
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -32,6 +42,7 @@ const App = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedResponse, setEditedResponse] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [typingStatus, setTypingStatus] = useState('');
   const [conversationStage, setConversationStage] = useState<ConversationStage>('initial');
   const [showDecisionButtons, setShowDecisionButtons] = useState(false);
   const [monitoringActivity, setMonitoringActivity] = useState<string[]>([]);
@@ -42,11 +53,25 @@ const App = () => {
   const [editedBookingResponse, setEditedBookingResponse] = useState('');
   const [aiWorkingStatus, setAiWorkingStatus] = useState('');
   const [showAiWorking, setShowAiWorking] = useState(false);
+  const [propertyData, setPropertyData] = useState<PropertyData | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const addMessage = (message: Message) => {
     setMessages(prev => [...prev, message]);
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success("Copied to clipboard!");
+    } catch (err) {
+      toast.error("Failed to copy text");
+    }
+  };
+
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
   const showAiWorkingIndicator = async (status: string, duration: number = 2000) => {
@@ -56,10 +81,12 @@ const App = () => {
     setShowAiWorking(false);
   };
 
-  const simulateTyping = (duration: number = 1500) => {
+  const simulateTyping = (duration: number = 1500, status: string = 'analyzing your request...') => {
     setIsTyping(true);
+    setTypingStatus(status);
     return new Promise(resolve => setTimeout(() => {
       setIsTyping(false);
+      setTypingStatus('');
       resolve(true);
     }, duration));
   };
@@ -82,8 +109,17 @@ const App = () => {
     await showAiWorkingIndicator("📊 Extracting property data and reviews...", 1500);
     await showAiWorkingIndicator("🎯 Identifying guest patterns and pricing trends...", 1500);
 
+    // Set property data
+    setPropertyData({
+      name: "Downtown Loft",
+      rating: 4.9,
+      price: 180,
+      occupancy: 85,
+      reviews: 247
+    });
+
     // Simulate AI analysis with better timing
-    await simulateTyping(1500);
+    await simulateTyping(1500, 'processing property data...');
     
     const aiResponse: Message = {
       id: Date.now() + 2,
@@ -96,7 +132,7 @@ const App = () => {
     // Show AI setting up monitoring
     await showAiWorkingIndicator("⚙️ Setting up intelligent monitoring systems...", 1000);
     
-    await simulateTyping(1500);
+    await simulateTyping(1500, 'configuring monitoring systems...');
     const monitoringMessage: Message = {
       id: Date.now() + 3,
       type: 'status',
@@ -120,7 +156,7 @@ const App = () => {
     await showAiWorkingIndicator("📱 Detecting new guest message...", 1000);
     
     // Guest message notification with smoother appearance
-    await simulateTyping(1000);
+    await simulateTyping(1000, 'processing new message...');
     const guestNotification: Message = {
       id: Date.now() + 1,
       type: 'notification',
@@ -129,7 +165,7 @@ const App = () => {
     };
     addMessage(guestNotification);
 
-    await simulateTyping(1500);
+    await simulateTyping(1500, 'loading guest message...');
 
     // Guest message
     const guestMessage: Message = {
@@ -148,7 +184,7 @@ const App = () => {
     await showAiWorkingIndicator("✍️ Crafting personalized response...", 1500);
 
     // AI analyzes and suggests response with better timing
-    await simulateTyping(1500);
+    await simulateTyping(1500, 'crafting personalized response...');
     const aiSuggestion: Message = {
       id: Date.now() + 3,
       type: 'ai',
@@ -173,7 +209,7 @@ const App = () => {
     // Show AI sending message
     await showAiWorkingIndicator("📤 Sending message to guest...", 1000);
 
-    await simulateTyping(1500);
+    await simulateTyping(1500, 'message sent successfully...');
 
     const confirmationMessage: Message = {
       id: Date.now() + 5,
@@ -188,7 +224,7 @@ const App = () => {
       // Show AI detecting guest response
       await showAiWorkingIndicator("👀 Monitoring for guest response...", 1000);
       
-      await simulateTyping(1000);
+      await simulateTyping(1000, 'guest responded...');
       
       const guestResponse: Message = {
         id: Date.now() + 6,
@@ -204,7 +240,7 @@ const App = () => {
       await showAiWorkingIndicator("📊 Scanning market conditions and competitor pricing...", 1500);
       await showAiWorkingIndicator("🎯 Identifying revenue optimization opportunities...", 1500);
 
-      await simulateTyping(2000);
+      await simulateTyping(2000, 'analyzing market opportunities...');
       
       setConversationStage('pricingOpportunity');
       console.log('Moving to pricing opportunity stage');
@@ -224,7 +260,7 @@ const App = () => {
   const presentPricingOpportunity = async () => {
     console.log('Presenting pricing opportunity, current stage:', conversationStage);
     
-    await simulateTyping(1500);
+    await simulateTyping(1500, 'analyzing pricing opportunities...');
     
     const pricingMessage: Message = {
       id: Date.now() + 7,
@@ -256,7 +292,7 @@ const App = () => {
       await showAiWorkingIndicator("💰 Optimizing revenue settings...", 1000);
     }
 
-    await simulateTyping(1500);
+    await simulateTyping(1500, decision === 'yes' ? 'implementing pricing changes...' : 'noted your preference...');
 
     if (decision === 'yes') {
       const implementationMessage: Message = {
@@ -328,7 +364,7 @@ const App = () => {
     await showAiWorkingIndicator("📧 New booking inquiry detected...", 1000);
 
     // New guest booking inquiry notification
-    await simulateTyping(1000);
+    await simulateTyping(1000, 'processing booking inquiry...');
     const bookingNotification: Message = {
       id: Date.now() + 1,
       type: 'notification',
@@ -337,7 +373,7 @@ const App = () => {
     };
     addMessage(bookingNotification);
 
-    await simulateTyping(1500);
+    await simulateTyping(1500, 'loading inquiry details...');
 
     // Booking inquiry message
     const bookingMessage: Message = {
@@ -356,7 +392,7 @@ const App = () => {
     await showAiWorkingIndicator("💼 Matching business traveler preferences...", 1500);
     await showAiWorkingIndicator("✍️ Crafting professional booking response...", 1000);
 
-    await simulateTyping(1500);
+    await simulateTyping(1500, 'crafting booking response...');
     const aiBookingAnalysis: Message = {
       id: Date.now() + 3,
       type: 'ai',
@@ -381,7 +417,7 @@ const App = () => {
     // Show AI sending booking response
     await showAiWorkingIndicator("📤 Sending booking response to Mike...", 1000);
 
-    await simulateTyping(2000);
+    await simulateTyping(2000, 'booking response sent...');
 
     const confirmationMessage: Message = {
       id: Date.now() + 5,
@@ -396,7 +432,7 @@ const App = () => {
       // Show AI monitoring for guest response
       await showAiWorkingIndicator("👀 Monitoring for booking confirmation...", 1000);
       
-      await simulateTyping(1500);
+      await simulateTyping(1500, 'Mike responded...');
       
       const guestBookingResponse: Message = {
         id: Date.now() + 6,
@@ -411,7 +447,7 @@ const App = () => {
       // Show AI processing successful lead
       await showAiWorkingIndicator("🎉 Processing successful booking lead...", 1500);
 
-      await simulateTyping(2000);
+      await simulateTyping(2000, 'processing booking confirmation...');
 
       // Final AI message
       const finalMessage: Message = {
@@ -500,6 +536,12 @@ const App = () => {
           <div className="flex items-center justify-between max-w-4xl mx-auto">
             <div className="flex items-center space-x-3">
               <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
+              <div className="hidden md:block">
+                <div className="flex items-center space-x-2 text-xs text-gray-400">
+                  <Clock className="h-3 w-3" />
+                  <span>Session started at {formatTime(sessionStartTime)}</span>
+                </div>
+              </div>
             </div>
             <Button 
               variant="ghost" 
@@ -514,14 +556,55 @@ const App = () => {
 
         {/* Chat Interface */}
         <div className="max-w-4xl mx-auto p-4 h-[calc(100vh-80px)] flex flex-col">
+          {/* Property Data Visualization */}
+          {propertyData && (
+            <div className="mb-4 animate-fade-in">
+              <Card className="bg-gradient-to-r from-teal-900/30 to-blue-900/30 border border-teal-600/50 backdrop-blur-sm">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-teal-400 font-medium flex items-center">
+                      <TrendingUp className="h-4 w-4 mr-2" />
+                      {propertyData.name} - Analytics Overview
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="flex items-center justify-center mb-1">
+                        <Star className="h-4 w-4 text-yellow-400 mr-1" />
+                        <span className="text-white font-semibold">{propertyData.rating}</span>
+                      </div>
+                      <p className="text-xs text-gray-400">{propertyData.reviews} reviews</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-white font-semibold mb-1">${propertyData.price}</div>
+                      <p className="text-xs text-gray-400">avg/night</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-white font-semibold mb-1">{propertyData.occupancy}%</div>
+                      <p className="text-xs text-gray-400">occupancy</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="flex items-center justify-center mb-1">
+                        <Calendar className="h-4 w-4 text-teal-400 mr-1" />
+                        <span className="text-white font-semibold text-sm">Active</span>
+                      </div>
+                      <p className="text-xs text-gray-400">monitoring</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto mb-4 space-y-4">
+          <div className="flex-1 overflow-y-auto mb-4 space-y-4 pb-4">
             {messages.map((message) => (
               <div key={message.id} className="animate-fade-in">
                 {message.type === 'notification' && (
                   <div className="flex justify-center mb-4">
                     <div className="bg-teal-600/30 border border-teal-600/50 rounded-lg px-4 py-2 backdrop-blur-sm">
                       <p className="text-teal-400 text-sm font-medium">{message.content}</p>
+                      <p className="text-xs text-gray-400 mt-1">{formatTime(message.timestamp)}</p>
                     </div>
                   </div>
                 )}
@@ -530,6 +613,7 @@ const App = () => {
                   <div className="flex justify-center mb-4">
                     <div className="bg-blue-600/20 border border-blue-600/50 rounded-lg px-4 py-2 backdrop-blur-sm">
                       <p className="text-blue-400 text-sm font-medium">{message.content}</p>
+                      <p className="text-xs text-gray-400 mt-1">{formatTime(message.timestamp)}</p>
                     </div>
                   </div>
                 )}
@@ -541,21 +625,22 @@ const App = () => {
                         <CheckCircle className="h-4 w-4 mr-2" />
                         {message.content}
                       </p>
+                      <p className="text-xs text-gray-400 mt-1">{formatTime(message.timestamp)}</p>
                     </div>
                   </div>
                 )}
                 
                 {message.type === 'guest' && (
-                  <div className="flex items-start space-x-3 mb-4">
+                  <div className="flex items-start space-x-3 mb-4 hover:bg-gray-900/30 p-2 rounded-lg transition-colors">
                     <div className="bg-orange-500 rounded-full p-2 flex-shrink-0">
                       <User className="h-4 w-4 text-white" />
                     </div>
-                    <div className="bg-gray-800/80 rounded-lg p-4 max-w-2xl border border-gray-700/50 backdrop-blur-sm">
+                    <div className="bg-gray-800/80 rounded-lg p-4 max-w-2xl border border-gray-700/50 backdrop-blur-sm flex-1">
                       <div className="flex items-center space-x-2 mb-2">
                         <span className="text-orange-400 font-medium text-sm">{message.sender}</span>
                         <span className="text-gray-400 text-xs">• {message.guestType}</span>
                         <Clock className="h-3 w-3 text-gray-400" />
-                        <span className="text-gray-400 text-xs">Just now</span>
+                        <span className="text-gray-400 text-xs">{formatTime(message.timestamp)}</span>
                       </div>
                       <p className="text-white text-sm leading-relaxed">{message.content}</p>
                     </div>
@@ -563,26 +648,44 @@ const App = () => {
                 )}
 
                 {message.type === 'sent' && (
-                  <div className="flex justify-end mb-4">
+                  <div className="flex justify-end mb-4 hover:bg-gray-900/20 p-2 rounded-lg transition-colors">
                     <div className="bg-teal-600 rounded-lg p-4 max-w-2xl">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <span className="text-white font-medium text-sm">You → {message.content.includes('Mike') ? 'Mike' : 'Sarah'}</span>
-                        <CheckCircle className="h-3 w-3 text-teal-100" />
-                        <span className="text-teal-100 text-xs">Sent</span>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-white font-medium text-sm">You → {message.content.includes('Mike') ? 'Mike' : 'Sarah'}</span>
+                          <CheckCircle className="h-3 w-3 text-teal-100" />
+                        </div>
+                        <button
+                          onClick={() => copyToClipboard(message.content)}
+                          className="text-teal-100 hover:text-white transition-colors p-1"
+                          title="Copy message"
+                        >
+                          <Copy className="h-3 w-3" />
+                        </button>
                       </div>
                       <p className="text-white text-sm leading-relaxed">{message.content}</p>
+                      <p className="text-xs text-teal-100 mt-2">{formatTime(message.timestamp)}</p>
                     </div>
                   </div>
                 )}
 
                 {(message.type === 'user' || message.type === 'ai') && (
                   <div className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`flex items-start space-x-3 max-w-2xl ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                    <div className={`flex items-start space-x-3 max-w-2xl ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''} hover:bg-gray-900/20 p-2 rounded-lg transition-colors`}>
                       <div className={`rounded-full p-2 flex-shrink-0 ${message.type === 'ai' ? 'bg-teal-600' : 'bg-gray-600'}`}>
                         <MessageCircle className="h-4 w-4 text-white" />
                       </div>
-                      <Card className={`${message.type === 'ai' ? 'bg-gray-800/80' : 'bg-teal-600'} border-gray-700/50 backdrop-blur-sm`}>
+                      <Card className={`${message.type === 'ai' ? 'bg-gray-800/80' : 'bg-teal-600'} border-gray-700/50 backdrop-blur-sm relative group`}>
                         <CardContent className="p-4">
+                          {message.type === 'ai' && (
+                            <button
+                              onClick={() => copyToClipboard(message.content)}
+                              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-white p-1"
+                              title="Copy response"
+                            >
+                              <Copy className="h-3 w-3" />
+                            </button>
+                          )}
                           {message.content.includes("https://airbnb.com/rooms/12345678") ? (
                             <div className="text-white text-sm leading-relaxed">
                               <p>Hi! I'm PropCore, your AI co-host. Please share your Airbnb listing link so I can analyze it and set you up with intelligent monitoring.</p>
@@ -597,6 +700,7 @@ const App = () => {
                           ) : (
                             <p className="text-white text-sm leading-relaxed">{message.content}</p>
                           )}
+                          <p className="text-xs text-gray-400 mt-2">{formatTime(message.timestamp)}</p>
                         </CardContent>
                       </Card>
                     </div>
@@ -625,7 +729,7 @@ const App = () => {
               </div>
             )}
 
-            {/* Typing Indicator */}
+            {/* Enhanced Typing Indicator */}
             {isTyping && (
               <div className="flex justify-start animate-fade-in">
                 <div className="flex items-start space-x-3 max-w-2xl">
@@ -634,13 +738,13 @@ const App = () => {
                   </div>
                   <Card className="bg-gray-800/80 border-gray-700/50 backdrop-blur-sm">
                     <CardContent className="p-4">
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-3">
                         <div className="flex space-x-1">
                           <div className="w-2 h-2 bg-teal-600 rounded-full animate-pulse"></div>
                           <div className="w-2 h-2 bg-teal-600 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
                           <div className="w-2 h-2 bg-teal-600 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
                         </div>
-                        <span className="text-gray-400 text-xs">PropCore is thinking...</span>
+                        <span className="text-gray-400 text-xs">PropCore is {typingStatus}</span>
                       </div>
                     </CardContent>
                   </Card>
@@ -687,6 +791,9 @@ const App = () => {
                       >
                         <div className="w-2 h-2 bg-teal-500 rounded-full opacity-60"></div>
                         <span>{activity}</span>
+                        <div className="ml-auto text-xs text-gray-500">
+                          {formatTime(new Date())}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -704,9 +811,18 @@ const App = () => {
             {/* Response Options */}
             {showResponseOptions && (
               <div className="bg-gray-900/90 border border-gray-700/50 rounded-lg p-4 backdrop-blur-sm">
-                <h3 className="text-white font-medium mb-3 flex items-center">
-                  <AlertCircle className="h-4 w-4 mr-2 text-teal-600" />
-                  Suggested Response:
+                <h3 className="text-white font-medium mb-3 flex items-center justify-between">
+                  <div className="flex items-center">
+                    <AlertCircle className="h-4 w-4 mr-2 text-teal-600" />
+                    Suggested Response:
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard(isEditing ? editedResponse : suggestedResponse)}
+                    className="text-gray-400 hover:text-white transition-colors p-1"
+                    title="Copy suggested response"
+                  >
+                    <Copy className="h-3 w-3" />
+                  </button>
                 </h3>
                 {isEditing ? (
                   <div className="space-y-3">
@@ -763,9 +879,18 @@ const App = () => {
             {/* Booking Response Options */}
             {showBookingResponseOptions && (
               <div className="bg-gray-900/90 border border-gray-700/50 rounded-lg p-4 backdrop-blur-sm animate-fade-in">
-                <h3 className="text-white font-medium mb-3 flex items-center">
-                  <AlertCircle className="h-4 w-4 mr-2 text-teal-600" />
-                  Suggested Booking Response:
+                <h3 className="text-white font-medium mb-3 flex items-center justify-between">
+                  <div className="flex items-center">
+                    <AlertCircle className="h-4 w-4 mr-2 text-teal-600" />
+                    Suggested Booking Response:
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard(isBookingEditing ? editedBookingResponse : bookingSuggestedResponse)}
+                    className="text-gray-400 hover:text-white transition-colors p-1"
+                    title="Copy suggested response"
+                  >
+                    <Copy className="h-3 w-3" />
+                  </button>
                 </h3>
                 {isBookingEditing ? (
                   <div className="space-y-3">
@@ -825,7 +950,7 @@ const App = () => {
 
           {/* Input - Only show if conversation not completed */}
           {conversationStage === 'initial' && (
-            <Card className="bg-gray-900/90 border-gray-700/50 backdrop-blur-sm animate-fade-in">
+            <Card className="bg-gray-900/90 border-gray-700/50 backdrop-blur-sm animate-fade-in sticky bottom-0">
               <CardContent className="p-4">
                 <div className="flex space-x-2">
                   <Input
@@ -854,6 +979,15 @@ const App = () => {
           @keyframes twinkle {
             0%, 100% { opacity: 0.2; }
             50% { opacity: 0.8; }
+          }
+          
+          /* Mobile-specific improvements */
+          @media (max-width: 768px) {
+            .sticky {
+              position: -webkit-sticky;
+              position: sticky;
+              bottom: env(keyboard-inset-height, 0px);
+            }
           }
         `}
       </style>
