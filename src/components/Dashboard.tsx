@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Home, MessageCircle, BarChart3, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Logo from './Logo';
 
 interface PropertyData {
@@ -19,18 +20,14 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onStartChat, onBackToHome, propertyData }) => {
+  const navigate = useNavigate();
+
   const handleViewProperties = () => {
-    // Show property data from conversation
-    if (propertyData) {
-      alert(`Property: ${propertyData.name}\nRating: ${propertyData.rating}⭐\nPrice: $${propertyData.price}/night\nOccupancy: ${propertyData.occupancy}%\nReviews: ${propertyData.reviews}`);
-    }
+    navigate('/properties');
   };
 
   const handleViewAnalytics = () => {
-    // Show analytics data from conversation
-    if (propertyData) {
-      alert(`Analytics for ${propertyData.name}\n\nPerformance Metrics:\n• Revenue: $${(propertyData.price * propertyData.occupancy * 30 / 100).toFixed(0)}/month\n• Occupancy Rate: ${propertyData.occupancy}%\n• Avg Rating: ${propertyData.rating}⭐\n• Total Reviews: ${propertyData.reviews}\n• Market Position: Top 15% in area`);
-    }
+    navigate('/analytics');
   };
 
   return (

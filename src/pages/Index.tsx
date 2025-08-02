@@ -31,11 +31,20 @@ const Index = () => {
         <header className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-xl border-b border-gray-800/50">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <Logo />
-            <nav className="hidden md:flex space-x-6">
-              <a href="#problem" className="text-white hover:text-teal-600 transition-colors duration-300">The Challenge</a>
-              <a href="#solution" className="text-white hover:text-teal-600 transition-colors duration-300">Our AI</a>
-              <a href="#demo" className="text-white hover:text-teal-600 transition-colors duration-300">Demo</a>
-              <a href="#waitlist" className="text-white hover:text-teal-600 transition-colors duration-300">Early Access</a>
+            <nav className="flex items-center space-x-6">
+              <div className="hidden md:flex space-x-6">
+                <a href="#problem" className="text-white hover:text-teal-600 transition-colors duration-300">The Challenge</a>
+                <a href="#solution" className="text-white hover:text-teal-600 transition-colors duration-300">Our AI</a>
+                <a href="#demo" className="text-white hover:text-teal-600 transition-colors duration-300">Demo</a>
+                <a href="#waitlist" className="text-white hover:text-teal-600 transition-colors duration-300">Early Access</a>
+              </div>
+              <Button
+                variant="outline"
+                className="border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white"
+                onClick={() => window.location.href = '/auth'}
+              >
+                Login
+              </Button>
             </nav>
           </div>
         </header>

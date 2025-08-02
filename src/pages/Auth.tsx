@@ -59,7 +59,7 @@ const Auth = () => {
       <div className="w-full max-w-md relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <Logo showText={false} className="h-12 mx-auto mb-4" />
+          <Logo showText={true} className="mx-auto mb-4" />
           <h1 className="text-3xl font-bold mb-2">
             {isLogin ? (
               <>
