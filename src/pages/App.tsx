@@ -560,14 +560,14 @@ const App = () => {
 
         {/* Chat Interface */}
         <div className="max-w-4xl mx-auto p-4 h-[calc(100vh-80px)] flex flex-col">
-          {/* Property Data Visualization - Fixed with proper background colors */}
+          {/* Property Data Visualization - Fixed with dark background */}
           {propertyData && (
             <div className="mb-4 animate-fade-in">
-              <Card className="bg-gradient-to-r from-teal-900/60 to-blue-900/60 border border-teal-500/70 backdrop-blur-sm">
+              <Card className="bg-gray-900 border border-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-teal-200 font-medium flex items-center">
-                      <TrendingUp className="h-4 w-4 mr-2" />
+                    <h3 className="text-white font-medium flex items-center">
+                      <TrendingUp className="h-4 w-4 mr-2 text-teal-400" />
                       {propertyData.name} - Analytics Overview
                     </h3>
                   </div>
@@ -577,22 +577,22 @@ const App = () => {
                         <Star className="h-4 w-4 text-yellow-300 mr-1" />
                         <span className="text-white font-semibold">{propertyData.rating}</span>
                       </div>
-                      <p className="text-xs text-teal-200">{propertyData.reviews} reviews</p>
+                      <p className="text-xs text-gray-300">{propertyData.reviews} reviews</p>
                     </div>
                     <div className="text-center">
                       <div className="text-white font-semibold mb-1">${propertyData.price}</div>
-                      <p className="text-xs text-teal-200">avg/night</p>
+                      <p className="text-xs text-gray-300">avg/night</p>
                     </div>
                     <div className="text-center">
                       <div className="text-white font-semibold mb-1">{propertyData.occupancy}%</div>
-                      <p className="text-xs text-teal-200">occupancy</p>
+                      <p className="text-xs text-gray-300">occupancy</p>
                     </div>
                     <div className="text-center">
                       <div className="flex items-center justify-center mb-1">
                         <Calendar className="h-4 w-4 text-teal-300 mr-1" />
                         <span className="text-white font-semibold text-sm">Active</span>
                       </div>
-                      <p className="text-xs text-teal-200">monitoring</p>
+                      <p className="text-xs text-gray-300">monitoring</p>
                     </div>
                   </div>
                 </CardContent>
@@ -869,7 +869,7 @@ const App = () => {
                       <Button
                         onClick={handleEditResponse}
                         variant="outline"
-                        className="border-teal-600 text-teal-300 hover:text-white hover:bg-teal-700/20"
+                        className="bg-gray-900 border-gray-600 text-white hover:bg-gray-800"
                       >
                         <Edit3 className="h-4 w-4 mr-2" />
                         Edit
@@ -937,7 +937,7 @@ const App = () => {
                       <Button
                         onClick={handleEditBookingResponse}
                         variant="outline"
-                        className="border-teal-600 text-teal-300 hover:text-white hover:bg-teal-700/20"
+                        className="bg-gray-900 border-gray-600 text-white hover:bg-gray-800"
                       >
                         <Edit3 className="h-4 w-4 mr-2" />
                         Edit
