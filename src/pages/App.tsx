@@ -496,12 +496,16 @@ const App = () => {
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    const timer = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [messages, showResponseOptions, showBookingResponseOptions, showDecisionButtons, showMonitoring]);
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
@@ -556,13 +560,13 @@ const App = () => {
 
         {/* Chat Interface */}
         <div className="max-w-4xl mx-auto p-4 h-[calc(100vh-80px)] flex flex-col">
-          {/* Property Data Visualization */}
+          {/* Property Data Visualization - Fixed contrast issues */}
           {propertyData && (
             <div className="mb-4 animate-fade-in">
-              <Card className="bg-gradient-to-r from-teal-900/30 to-blue-900/30 border border-teal-600/50 backdrop-blur-sm">
+              <Card className="bg-gradient-to-r from-teal-900/40 to-blue-900/40 border border-teal-600/60 backdrop-blur-sm">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-teal-400 font-medium flex items-center">
+                    <h3 className="text-teal-300 font-medium flex items-center">
                       <TrendingUp className="h-4 w-4 mr-2" />
                       {propertyData.name} - Analytics Overview
                     </h3>
@@ -571,22 +575,22 @@ const App = () => {
                     <div className="text-center">
                       <div className="flex items-center justify-center mb-1">
                         <Star className="h-4 w-4 text-yellow-400 mr-1" />
-                        <span className="text-white font-semibold">{propertyData.rating}</span>
+                        <span className="text-gray-200 font-semibold">{propertyData.rating}</span>
                       </div>
                       <p className="text-xs text-gray-400">{propertyData.reviews} reviews</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-white font-semibold mb-1">${propertyData.price}</div>
+                      <div className="text-gray-200 font-semibold mb-1">${propertyData.price}</div>
                       <p className="text-xs text-gray-400">avg/night</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-white font-semibold mb-1">{propertyData.occupancy}%</div>
+                      <div className="text-gray-200 font-semibold mb-1">{propertyData.occupancy}%</div>
                       <p className="text-xs text-gray-400">occupancy</p>
                     </div>
                     <div className="text-center">
                       <div className="flex items-center justify-center mb-1">
                         <Calendar className="h-4 w-4 text-teal-400 mr-1" />
-                        <span className="text-white font-semibold text-sm">Active</span>
+                        <span className="text-gray-200 font-semibold text-sm">Active</span>
                       </div>
                       <p className="text-xs text-gray-400">monitoring</p>
                     </div>
@@ -597,7 +601,7 @@ const App = () => {
           )}
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto mb-4 space-y-4 pb-4">
+          <div className="flex-1 overflow-y-auto mb-4 space-y-4 pb-4 scroll-smooth">
             {messages.map((message) => (
               <div key={message.id} className="animate-fade-in">
                 {message.type === 'notification' && (
@@ -808,7 +812,7 @@ const App = () => {
               </div>
             )}
 
-            {/* Response Options */}
+            {/* Response Options - Fixed edit button visibility */}
             {showResponseOptions && (
               <div className="bg-gray-900/90 border border-gray-700/50 rounded-lg p-4 backdrop-blur-sm">
                 <h3 className="text-white font-medium mb-3 flex items-center justify-between">
@@ -865,7 +869,7 @@ const App = () => {
                       <Button
                         onClick={handleEditResponse}
                         variant="outline"
-                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                        className="border-gray-600 text-gray-200 hover:text-white hover:bg-gray-800"
                       >
                         <Edit3 className="h-4 w-4 mr-2" />
                         Edit
@@ -876,7 +880,7 @@ const App = () => {
               </div>
             )}
 
-            {/* Booking Response Options */}
+            {/* Booking Response Options - Fixed edit button visibility */}
             {showBookingResponseOptions && (
               <div className="bg-gray-900/90 border border-gray-700/50 rounded-lg p-4 backdrop-blur-sm animate-fade-in">
                 <h3 className="text-white font-medium mb-3 flex items-center justify-between">
@@ -933,7 +937,7 @@ const App = () => {
                       <Button
                         onClick={handleEditBookingResponse}
                         variant="outline"
-                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                        className="border-gray-600 text-gray-200 hover:text-white hover:bg-gray-800"
                       >
                         <Edit3 className="h-4 w-4 mr-2" />
                         Edit
