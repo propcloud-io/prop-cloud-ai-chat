@@ -1,10 +1,10 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { MessageCircle, Zap, Shield, Users, Star, Sparkles, Clock, ArrowRight, CheckCircle, AlertCircle, TrendingUp, Calendar, Bot } from "lucide-react";
-import Logo from "@/components/Logo";
 
 const Index = () => {
   const [email, setEmail] = useState('');
@@ -20,88 +20,73 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Enhanced 3D Space Background with Brighter Colors */}
+      {/* Enhanced 3D Space Background */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Brighter Floating Stars */}
-        {Array.from({ length: 150 }, (_, i) => (
+        {/* Floating Stars */}
+        {Array.from({ length: 100 }, (_, i) => (
           <div
             key={i}
-            className="absolute bg-gradient-to-r from-teal-300 to-cyan-200 rounded-full"
+            className="absolute bg-white rounded-full opacity-60"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 4 + 2}px`,
-              height: `${Math.random() * 4 + 2}px`,
+              width: `${Math.random() * 3 + 1}px`,
+              height: `${Math.random() * 3 + 1}px`,
               animationDelay: `${Math.random() * 3}s`,
-              animation: `twinkle ${Math.random() * 4 + 2}s infinite`,
-              filter: `hue-rotate(${Math.random() * 60}deg)`,
-              boxShadow: '0 0 10px currentColor'
+              animation: `twinkle ${Math.random() * 4 + 2}s infinite`
             }}
           />
         ))}
         
-        {/* Enhanced 3D Geometric Shapes with Glow */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-teal-400/60 to-cyan-500/40 transform rotate-45 animate-pulse shadow-lg shadow-teal-400/30" style={{ filter: 'blur(0.5px)' }}></div>
-        <div className="absolute top-60 right-20 w-24 h-24 bg-gradient-to-br from-cyan-400/50 to-teal-500/35 transform rotate-12 animate-bounce shadow-lg shadow-cyan-400/25" style={{ filter: 'blur(0.5px)' }}></div>
-        <div className="absolute bottom-40 left-1/4 w-16 h-16 bg-gradient-to-br from-teal-500/55 to-cyan-400/45 transform rotate-45 animate-pulse shadow-lg shadow-teal-500/35" style={{ filter: 'blur(0.5px)' }}></div>
-        <div className="absolute top-1/2 left-20 w-14 h-14 bg-gradient-to-br from-cyan-300/60 to-teal-400/40 transform rotate-30 animate-spin-slow shadow-lg shadow-cyan-300/30"></div>
+        {/* Animated 3D Geometric Shapes */}
+        <div className="absolute top-20 left-10 w-16 h-16 bg-gradient-to-br from-teal-600/30 to-teal-800/20 transform rotate-45 animate-pulse"></div>
+        <div className="absolute top-60 right-20 w-20 h-20 bg-gradient-to-br from-teal-600/25 to-teal-800/15 transform rotate-12 animate-bounce"></div>
+        <div className="absolute bottom-40 left-1/4 w-12 h-12 bg-gradient-to-br from-teal-600/35 to-teal-800/25 transform rotate-45 animate-pulse"></div>
         
-        {/* Brighter Floating Orbs with Enhanced Glow */}
-        <div className="absolute top-1/3 right-1/3 w-32 h-32 bg-gradient-radial from-teal-400/40 to-transparent rounded-full animate-ping shadow-2xl shadow-teal-400/20"></div>
-        <div className="absolute bottom-1/3 left-1/3 w-24 h-24 bg-gradient-radial from-cyan-400/45 to-transparent rounded-full animate-pulse shadow-2xl shadow-cyan-400/25"></div>
-        <div className="absolute top-1/4 left-1/2 w-20 h-20 bg-gradient-radial from-teal-300/50 to-transparent rounded-full animate-ping shadow-2xl shadow-teal-300/30" style={{ animationDelay: '1s' }}></div>
+        {/* Floating Orbs with Glow */}
+        <div className="absolute top-1/3 right-1/3 w-24 h-24 bg-gradient-radial from-teal-600/20 to-transparent rounded-full animate-ping"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-16 h-16 bg-gradient-radial from-teal-600/25 to-transparent rounded-full animate-pulse"></div>
         
-        {/* Enhanced Grid Pattern with Glow */}
-        <div className="absolute inset-0 opacity-10">
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0 opacity-5">
           <div className="grid grid-cols-20 gap-2 h-full">
             {Array.from({ length: 400 }, (_, i) => (
-              <div key={i} className="border border-teal-400/50 rounded-sm shadow-sm shadow-teal-400/20" style={{ 
-                animationDelay: `${Math.random() * 5}s`,
-                animation: `pulse ${Math.random() * 6 + 4}s infinite`
-              }}></div>
+              <div key={i} className="border border-teal-600/30 rounded-sm"></div>
             ))}
           </div>
         </div>
         
-        {/* Enhanced Floating Particles with Motion */}
-        {Array.from({ length: 30 }, (_, i) => (
+        {/* Floating Particles */}
+        {Array.from({ length: 20 }, (_, i) => (
           <div
             key={i}
-            className="absolute w-3 h-3 bg-gradient-to-r from-teal-400/60 to-cyan-300/50 rounded-full animate-ping shadow-lg shadow-current"
+            className="absolute w-2 h-2 bg-teal-600/40 rounded-full animate-ping"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${Math.random() * 3 + 2}s`,
-              transform: `scale(${Math.random() * 0.5 + 0.5})`,
-              filter: `hue-rotate(${Math.random() * 30}deg)`
+              animationDuration: `${Math.random() * 3 + 2}s`
             }}
           />
         ))}
         
-        {/* Animated Light Beams */}
-        <div className="absolute top-0 left-1/4 w-1 h-full bg-gradient-to-b from-transparent via-teal-400/20 to-transparent animate-pulse"></div>
-        <div className="absolute top-0 right-1/3 w-1 h-full bg-gradient-to-b from-transparent via-cyan-300/15 to-transparent animate-pulse" style={{ animationDelay: '1s' }}></div>
-        
-        {/* Dynamic Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-gray-900/80 to-black/70"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40"></div>
-        
-        {/* Breathing Light Effect */}
-        <div className="absolute inset-0 bg-gradient-radial from-teal-600/5 via-transparent to-transparent animate-pulse" style={{ animationDuration: '4s' }}></div>
+        {/* Deep Space Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/95 to-black opacity-85"></div>
       </div>
 
       {/* Content */}
       <div className="relative z-10">
-        {/* Header with New Logo */}
+        {/* Header */}
         <header className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-xl border-b border-gray-800/50">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <Logo size="md" animate={true} />
+            <div className="flex items-center space-x-3">
+              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
+            </div>
             <nav className="hidden md:flex space-x-6">
-              <a href="#problem" className="text-white hover:text-teal-400 transition-colors duration-300">The Challenge</a>
-              <a href="#solution" className="text-white hover:text-teal-400 transition-colors duration-300">Our AI</a>
-              <a href="#demo" className="text-white hover:text-teal-400 transition-colors duration-300">Demo</a>
-              <a href="#waitlist" className="text-white hover:text-teal-400 transition-colors duration-300">Early Access</a>
+              <a href="#problem" className="text-white hover:text-teal-600 transition-colors duration-300">The Challenge</a>
+              <a href="#solution" className="text-white hover:text-teal-600 transition-colors duration-300">Our AI</a>
+              <a href="#demo" className="text-white hover:text-teal-600 transition-colors duration-300">Demo</a>
+              <a href="#waitlist" className="text-white hover:text-teal-600 transition-colors duration-300">Early Access</a>
             </nav>
           </div>
         </header>
@@ -111,15 +96,15 @@ const Index = () => {
           <div className="container mx-auto text-center">
             <div className="max-w-5xl mx-auto">
               <div className="flex items-center justify-center mb-6">
-                <Bot className="h-8 w-8 text-teal-400 mr-3 animate-pulse" />
+                <Bot className="h-8 w-8 text-teal-500 mr-3 animate-pulse" />
                 <span className="text-lg text-gray-300 font-medium">The Future of Property Management is AI</span>
-                <Bot className="h-8 w-8 text-teal-400 ml-3 animate-pulse" />
+                <Bot className="h-8 w-8 text-teal-500 ml-3 animate-pulse" />
               </div>
               
               <h1 className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
                 <span className="text-white">Meet Your</span>
                 <br />
-                <span className="bg-gradient-to-r from-teal-400 to-cyan-300 bg-clip-text text-transparent">AI Co-Host</span>
+                <span className="text-teal-600">AI Co-Host</span>
                 <br />
                 <span className="text-gray-200">for Short-Term Rentals</span>
               </h1>
@@ -151,17 +136,17 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button 
                   size="lg" 
-                  className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-500/30 group relative overflow-hidden"
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25 group relative overflow-hidden"
                   onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-teal-300/20 to-cyan-300/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-teal-400 to-teal-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                   <span className="relative">See PropCore in Action</span>
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300 relative" />
                 </Button>
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className="border-teal-400 text-teal-400 hover:bg-teal-400/20 hover:text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 group backdrop-blur-sm"
+                  className="border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 group"
                   onClick={() => document.getElementById('problem')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   Learn About the Tech
@@ -671,19 +656,19 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Footer with Enhanced Logo */}
+        {/* Footer */}
         <footer className="py-12 px-4 border-t border-gray-800/50">
           <div className="container mx-auto text-center text-white">
             <div className="flex justify-center mb-6">
-              <Logo size="lg" animate={false} />
+              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
             </div>
             <div className="mb-6">
               <p className="text-lg mb-2">
-                <a href="mailto:contact@propcloud.io" className="text-teal-400 hover:text-teal-300 transition-colors">
+                <a href="mailto:contact@propcloud.io" className="text-teal-600 hover:text-teal-400 transition-colors">
                   contact@propcloud.io
                 </a>
                 {" • "}
-                <a href="tel:+13022133107" className="text-teal-400 hover:text-teal-300 transition-colors">
+                <a href="tel:+13022133107" className="text-teal-600 hover:text-teal-400 transition-colors">
                   (302) 213-3107
                 </a>
               </p>
@@ -696,17 +681,8 @@ const Index = () => {
       <style>
         {`
           @keyframes twinkle {
-            0%, 100% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-          }
-          
-          @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-          }
-          
-          .animate-spin-slow {
-            animation: spin-slow 8s linear infinite;
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
           }
         `}
       </style>
