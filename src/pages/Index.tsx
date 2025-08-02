@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageCircle, Zap, Shield, Users, Star, Sparkles, Clock, ArrowRight, CheckCircle, AlertCircle, TrendingUp, Calendar } from "lucide-react";
+import { MessageCircle, Zap, Shield, Users, Star, Sparkles, Clock, ArrowRight, CheckCircle, AlertCircle, TrendingUp, Calendar, Bot } from "lucide-react";
 
 const Index = () => {
   const [email, setEmail] = useState('');
@@ -82,10 +83,10 @@ const Index = () => {
               <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
             </div>
             <nav className="hidden md:flex space-x-6">
-              <a href="#problem" className="text-white hover:text-teal-600 transition-colors duration-300">The Problem</a>
-              <a href="#solution" className="text-white hover:text-teal-600 transition-colors duration-300">Our Solution</a>
-              <a href="#demo" className="text-white hover:text-teal-600 transition-colors duration-300">See It In Action</a>
-              <a href="#waitlist" className="text-white hover:text-teal-600 transition-colors duration-300">Join Waitlist</a>
+              <a href="#problem" className="text-white hover:text-teal-600 transition-colors duration-300">The Challenge</a>
+              <a href="#solution" className="text-white hover:text-teal-600 transition-colors duration-300">Our AI</a>
+              <a href="#demo" className="text-white hover:text-teal-600 transition-colors duration-300">Demo</a>
+              <a href="#waitlist" className="text-white hover:text-teal-600 transition-colors duration-300">Early Access</a>
             </nav>
           </div>
         </header>
@@ -95,39 +96,39 @@ const Index = () => {
           <div className="container mx-auto text-center">
             <div className="max-w-5xl mx-auto">
               <div className="flex items-center justify-center mb-6">
-                <AlertCircle className="h-8 w-8 text-red-500 mr-3 animate-pulse" />
-                <span className="text-lg text-gray-300 font-medium">STR Owners Are Drowning in Daily Management</span>
-                <AlertCircle className="h-8 w-8 text-red-500 ml-3 animate-pulse" />
+                <Bot className="h-8 w-8 text-teal-500 mr-3 animate-pulse" />
+                <span className="text-lg text-gray-300 font-medium">The Future of Property Management is AI</span>
+                <Bot className="h-8 w-8 text-teal-500 ml-3 animate-pulse" />
               </div>
               
               <h1 className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
-                <span className="text-white">Stop Losing</span>
+                <span className="text-white">Meet Your</span>
                 <br />
-                <span className="text-red-500">$2,000+ Monthly</span>
+                <span className="text-teal-600">AI Co-Host</span>
                 <br />
-                <span className="text-teal-600">to Poor Guest Communication</span>
+                <span className="text-gray-200">for Short-Term Rentals</span>
               </h1>
               
               <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
-                You didn't buy rental properties to become a 24/7 customer service agent. Yet here you are, 
-                losing bookings because you missed that 11 PM check-in question, getting 3-star reviews because 
-                guests couldn't find the WiFi password, and burning out from managing the same repetitive conversations.
+                PropCore is building the world's most intelligent AI assistant for property managers. 
+                While you sleep, our AI handles guest communications, monitors your listings, 
+                and optimizes your revenue — 24/7, in your voice, with superhuman efficiency.
               </p>
 
-              <div className="bg-gray-900/80 rounded-2xl p-6 mb-10 backdrop-blur-sm border border-red-500/30">
-                <h3 className="text-2xl font-semibold mb-4 text-red-400">The Hidden Cost of Manual Management</h3>
+              <div className="bg-gray-900/80 rounded-2xl p-6 mb-10 backdrop-blur-sm border border-teal-500/30">
+                <h3 className="text-2xl font-semibold mb-4 text-teal-400">Early Results from Beta Users</h3>
                 <div className="grid md:grid-cols-3 gap-6 text-center">
                   <div>
-                    <div className="text-3xl font-bold text-red-500 mb-2">$2,247</div>
-                    <p className="text-gray-300 text-sm">Average monthly revenue lost per property from delayed responses</p>
+                    <div className="text-3xl font-bold text-teal-500 mb-2">+$2,200</div>
+                    <p className="text-gray-300 text-sm">Average monthly revenue increase per property</p>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-red-500 mb-2">4.2 hrs</div>
-                    <p className="text-gray-300 text-sm">Daily time spent on guest communication and coordination</p>
+                    <div className="text-3xl font-bold text-teal-500 mb-2">95%</div>
+                    <p className="text-gray-300 text-sm">Reduction in time spent on guest communication</p>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-red-500 mb-2">23%</div>
-                    <p className="text-gray-300 text-sm">Booking conversion loss from slow or missed responses</p>
+                    <div className="text-3xl font-bold text-teal-500 mb-2">4.9★</div>
+                    <p className="text-gray-300 text-sm">Average guest satisfaction score with AI responses</p>
                   </div>
                 </div>
               </div>
@@ -135,11 +136,12 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button 
                   size="lg" 
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25 group"
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25 group relative overflow-hidden"
                   onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  See How We Fix This
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-teal-400 to-teal-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                  <span className="relative">See PropCore in Action</span>
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300 relative" />
                 </Button>
                 <Button 
                   variant="outline" 
@@ -147,7 +149,7 @@ const Index = () => {
                   className="border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 group"
                   onClick={() => document.getElementById('problem')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  Learn More
+                  Learn About the Tech
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </div>
@@ -160,105 +162,105 @@ const Index = () => {
           <div className="container mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-5xl font-bold mb-4">
-                <span className="text-red-500">The Reality</span> <span className="text-white">of STR Management</span>
+                <span className="text-teal-500">The Challenge</span> <span className="text-white">We're Solving</span>
               </h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Most STR owners started with 1-2 properties, thinking it would be passive income. 
-                Here's what actually happens when you scale...
+                Short-term rental management is broken. Property owners are drowning in operational complexity 
+                while missing massive revenue opportunities. We're building AI to fix this.
               </p>
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="bg-gray-900/60 border-red-500/30 hover:border-red-500/50 transition-all duration-500 backdrop-blur-lg shadow-xl">
+              <Card className="bg-gray-900/60 border-teal-500/30 hover:border-teal-500/50 transition-all duration-500 backdrop-blur-lg shadow-xl hover:shadow-teal-500/20 transform hover:scale-105">
                 <CardContent className="p-6 text-center">
-                  <div className="bg-red-500/20 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                    <MessageCircle className="h-8 w-8 text-red-500" />
+                  <div className="bg-teal-500/20 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <MessageCircle className="h-8 w-8 text-teal-500" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-3 text-white">Message Overload</h3>
+                  <h3 className="text-lg font-semibold mb-3 text-white">Communication Overload</h3>
                   <p className="text-gray-300 text-sm leading-relaxed">
-                    50+ messages daily across Airbnb, VRBO, direct bookings. Same questions asked repeatedly.
+                    50+ daily messages across platforms. Same questions, different guests, endless repetition.
                   </p>
                 </CardContent>
               </Card>
               
-              <Card className="bg-gray-900/60 border-red-500/30 hover:border-red-500/50 transition-all duration-500 backdrop-blur-lg shadow-xl">
+              <Card className="bg-gray-900/60 border-teal-500/30 hover:border-teal-500/50 transition-all duration-500 backdrop-blur-lg shadow-xl hover:shadow-teal-500/20 transform hover:scale-105">
                 <CardContent className="p-6 text-center">
-                  <div className="bg-red-500/20 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                    <Clock className="h-8 w-8 text-red-500" />
+                  <div className="bg-teal-500/20 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <Clock className="h-8 w-8 text-teal-500" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-3 text-white">24/7 Availability</h3>
+                  <h3 className="text-lg font-semibold mb-3 text-white">24/7 Expectations</h3>
                   <p className="text-gray-300 text-sm leading-relaxed">
-                    Guests expect instant responses. Miss a message at 11 PM? Lost booking by morning.
+                    Guests expect instant responses. Delayed replies = lost bookings and poor reviews.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-900/60 border-red-500/30 hover:border-red-500/50 transition-all duration-500 backdrop-blur-lg shadow-xl">
+              <Card className="bg-gray-900/60 border-teal-500/30 hover:border-teal-500/50 transition-all duration-500 backdrop-blur-lg shadow-xl hover:shadow-teal-500/20 transform hover:scale-105">
                 <CardContent className="p-6 text-center">
-                  <div className="bg-red-500/20 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                    <TrendingUp className="h-8 w-8 text-red-500" />
+                  <div className="bg-teal-500/20 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <TrendingUp className="h-8 w-8 text-teal-500" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-3 text-white">Revenue Leakage</h3>
+                  <h3 className="text-lg font-semibold mb-3 text-white">Revenue Optimization Gap</h3>
                   <p className="text-gray-300 text-sm leading-relaxed">
-                    Delayed responses = lower conversion rates = thousands lost monthly per property.
+                    Missing pricing opportunities, upselling chances, and market insights daily.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-900/60 border-red-500/30 hover:border-red-500/50 transition-all duration-500 backdrop-blur-lg shadow-xl">
+              <Card className="bg-gray-900/60 border-teal-500/30 hover:border-teal-500/50 transition-all duration-500 backdrop-blur-lg shadow-xl hover:shadow-teal-500/20 transform hover:scale-105">
                 <CardContent className="p-6 text-center">
-                  <div className="bg-red-500/20 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                    <Calendar className="h-8 w-8 text-red-500" />
+                  <div className="bg-teal-500/20 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <Calendar className="h-8 w-8 text-teal-500" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-3 text-white">Scaling Nightmare</h3>
+                  <h3 className="text-lg font-semibold mb-3 text-white">Scaling Impossibility</h3>
                   <p className="text-gray-300 text-sm leading-relaxed">
-                    Each new property multiplies the chaos. Your "passive income" becomes a full-time job.
+                    Each property multiplies complexity exponentially. Growth becomes unsustainable.
                   </p>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="mt-16 bg-gradient-to-r from-red-900/40 to-orange-900/40 rounded-2xl p-8 border border-red-500/30">
-              <h3 className="text-3xl font-bold mb-6 text-center text-white">Sound Familiar?</h3>
+            <div className="mt-16 bg-gradient-to-r from-teal-900/40 to-blue-900/40 rounded-2xl p-8 border border-teal-500/30">
+              <h3 className="text-3xl font-bold mb-6 text-center text-white">The Data Speaks</h3>
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
-                    <div className="bg-red-500 rounded-full p-1 mt-1">
+                    <div className="bg-teal-500 rounded-full p-1 mt-1">
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
-                    <p className="text-gray-300">"I check my phone constantly, even on vacation, afraid I'll miss an important guest message."</p>
+                    <p className="text-gray-300">"I spend 4+ hours daily just responding to the same questions over and over."</p>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="bg-red-500 rounded-full p-1 mt-1">
+                    <div className="bg-teal-500 rounded-full p-1 mt-1">
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
-                    <p className="text-gray-300">"I've typed 'The WiFi password is...' literally 847 times this year."</p>
+                    <p className="text-gray-300">"My conversion rate drops 23% when I can't respond within 2 hours."</p>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="bg-red-500 rounded-full p-1 mt-1">
+                    <div className="bg-teal-500 rounded-full p-1 mt-1">
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
-                    <p className="text-gray-300">"My family complains I'm always on my phone dealing with 'Airbnb stuff.'"</p>
+                    <p className="text-gray-300">"I wanted passive income but got a 24/7 customer service job."</p>
                   </div>
                 </div>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
-                    <div className="bg-red-500 rounded-full p-1 mt-1">
+                    <div className="bg-teal-500 rounded-full p-1 mt-1">
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
-                    <p className="text-gray-300">"I wanted to buy more properties but can't handle the workload I have now."</p>
+                    <p className="text-gray-300">"I can't scale beyond 5 properties without losing my mind."</p>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="bg-red-500 rounded-full p-1 mt-1">
+                    <div className="bg-teal-500 rounded-full p-1 mt-1">
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
-                    <p className="text-gray-300">"Every guest emergency feels like MY emergency at 2 AM."</p>
+                    <p className="text-gray-300">"Guest emergencies at 2 AM shouldn't be my responsibility."</p>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="bg-red-500 rounded-full p-1 mt-1">
+                    <div className="bg-teal-500 rounded-full p-1 mt-1">
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
-                    <p className="text-gray-300">"I'm spending more time managing properties than I did at my day job."</p>
+                    <p className="text-gray-300">"I'm leaving money on the table but don't know how much."</p>
                   </div>
                 </div>
               </div>
@@ -271,11 +273,11 @@ const Index = () => {
           <div className="container mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-5xl font-bold mb-4">
-                <span className="text-teal-600">Meet PropCore:</span> <span className="text-white">Your AI Co-Host</span>
+                <span className="text-teal-600">PropCore AI:</span> <span className="text-white">The Breakthrough</span>
               </h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Instead of another complicated dashboard, we built an AI that works like your best employee. 
-                One who never sleeps, never forgets, and gets smarter every day.
+                We're not just building another property management tool. PropCore is an AI that thinks, 
+                learns, and communicates like your best employee — but with superhuman capabilities.
               </p>
             </div>
             
@@ -285,10 +287,10 @@ const Index = () => {
                   <div className="bg-teal-600/20 rounded-full p-4 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
                     <MessageCircle className="h-10 w-10 text-teal-600" />
                   </div>
-                  <h3 className="text-2xl font-semibold mb-4 text-white">Instant Guest Responses</h3>
+                  <h3 className="text-2xl font-semibold mb-4 text-white">Conversational Intelligence</h3>
                   <p className="text-gray-300 leading-relaxed">
-                    PropCore responds to 95% of guest messages within 30 seconds. Check-in instructions, 
-                    WiFi passwords, local recommendations - all handled instantly in your voice and style.
+                    Advanced NLP that understands context, emotion, and intent. Responds instantly 
+                    in your voice with personalized, human-like conversations that guests love.
                   </p>
                 </CardContent>
               </Card>
@@ -298,10 +300,10 @@ const Index = () => {
                   <div className="bg-teal-600/20 rounded-full p-4 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
                     <Zap className="h-10 w-10 text-teal-600" />
                   </div>
-                  <h3 className="text-2xl font-semibold mb-4 text-white">Proactive Property Management</h3>
+                  <h3 className="text-2xl font-semibold mb-4 text-white">Predictive Automation</h3>
                   <p className="text-gray-300 leading-relaxed">
-                    Beyond responding, PropCore monitors your listings 24/7. Price changes, booking issues, 
-                    maintenance needs - you get intelligent alerts with suggested actions.
+                    Machine learning algorithms that predict guest needs, identify revenue opportunities, 
+                    and automate complex workflows before issues arise.
                   </p>
                 </CardContent>
               </Card>
@@ -311,32 +313,32 @@ const Index = () => {
                   <div className="bg-teal-600/20 rounded-full p-4 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
                     <TrendingUp className="h-10 w-10 text-teal-600" />
                   </div>
-                  <h3 className="text-2xl font-semibold mb-4 text-white">Revenue Optimization</h3>
+                  <h3 className="text-2xl font-semibold mb-4 text-white">Revenue Intelligence</h3>
                   <p className="text-gray-300 leading-relaxed">
-                    PropCore learns your market patterns and guest preferences. Automatic pricing suggestions, 
-                    upselling opportunities, and conversion optimization that adds $1,500+ monthly per property.
+                    Deep market analysis, dynamic pricing optimization, and upselling automation 
+                    that consistently outperforms human decision-making.
                   </p>
                 </CardContent>
               </Card>
             </div>
 
             <div className="mt-16 bg-gradient-to-r from-teal-900/40 to-blue-900/40 rounded-2xl p-8 border border-teal-500/30">
-              <h3 className="text-3xl font-bold mb-6 text-center text-white">The Result? Your Life Back.</h3>
+              <h3 className="text-3xl font-bold mb-6 text-center text-white">The AI Advantage</h3>
               <div className="grid md:grid-cols-3 gap-8 text-center">
                 <div>
-                  <div className="text-4xl font-bold text-teal-400 mb-2">95%</div>
-                  <p className="text-white font-medium mb-2">Reduction in Daily Messages</p>
-                  <p className="text-gray-300 text-sm">From 50+ messages to 2-3 that actually need your attention</p>
+                  <div className="text-4xl font-bold text-teal-400 mb-2">∞</div>
+                  <p className="text-white font-medium mb-2">Never Sleeps</p>
+                  <p className="text-gray-300 text-sm">24/7/365 monitoring and instant response capabilities</p>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-teal-400 mb-2">4.8★</div>
-                  <p className="text-white font-medium mb-2">Average Guest Rating</p>
-                  <p className="text-gray-300 text-sm">Instant, personalized responses lead to higher satisfaction</p>
+                  <div className="text-4xl font-bold text-teal-400 mb-2">10x</div>
+                  <p className="text-white font-medium mb-2">Faster Learning</p>
+                  <p className="text-gray-300 text-sm">Processes patterns from millions of interactions instantly</p>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold text-teal-400 mb-2">3x</div>
-                  <p className="text-white font-medium mb-2">Property Scaling Capacity</p>
-                  <p className="text-gray-300 text-sm">Manage 15 properties with less effort than you managed 5</p>
+                  <div className="text-4xl font-bold text-teal-400 mb-2">0%</div>
+                  <p className="text-white font-medium mb-2">Human Error</p>
+                  <p className="text-gray-300 text-sm">Consistent, accurate responses every single time</p>
                 </div>
               </div>
             </div>
@@ -348,11 +350,11 @@ const Index = () => {
           <div className="container mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-5xl font-bold mb-4">
-                <span className="text-teal-600">See PropCore</span> <span className="text-white">In Action</span>
+                <span className="text-teal-600">PropCore</span> <span className="text-white">Demo</span>
               </h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-                Watch how a real guest interaction gets handled. This is exactly what happens 
-                when PropCore takes over your guest communication.
+                Watch our AI in action. This is a real conversation flow showing how PropCore 
+                transforms from onboarding to guest management in under 60 seconds.
               </p>
               
               {/* Progress Indicators */}
@@ -385,12 +387,12 @@ const Index = () => {
                 <div className="space-y-6">
                   <div className="flex items-start space-x-4 group cursor-pointer hover:bg-gray-800/30 rounded-lg p-2 transition-all duration-300">
                     <div className="bg-teal-600 rounded-full p-3 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                      <MessageCircle className="h-5 w-5 text-white" />
+                      <Bot className="h-5 w-5 text-white" />
                     </div>
                     <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm group-hover:bg-gray-800/90 group-hover:scale-105 transition-all duration-300">
                       <p className="text-sm text-white leading-relaxed">
-                        Hi! I'm PropCore, your AI co-host. Share your Airbnb listing link and I'll analyze your property, 
-                        understand your guest patterns, and set up intelligent monitoring in under 60 seconds.
+                        Hi! I'm PropCore, your AI property assistant. Share your listing URL and I'll analyze 
+                        your property, understand your guest patterns, and set up intelligent monitoring in under 60 seconds.
                       </p>
                     </div>
                   </div>
@@ -406,13 +408,12 @@ const Index = () => {
                   
                   <div className="flex items-start space-x-4 group cursor-pointer hover:bg-gray-800/30 rounded-lg p-2 transition-all duration-300">
                     <div className="bg-teal-600 rounded-full p-3 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                      <MessageCircle className="h-5 w-5 text-white" />
+                      <Bot className="h-5 w-5 text-white" />
                     </div>
                     <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm group-hover:bg-gray-800/90 group-hover:scale-105 transition-all duration-300">
                       <p className="text-sm text-white leading-relaxed">
-                        Perfect! I've analyzed your Downtown Loft - 2BR, 4.9★ rating, $180/night average. 
-                        I can see your peak season is summer with 85% occupancy. I'm now monitoring for bookings, 
-                        messages, and market changes. You're all set!
+                        Perfect! Analyzed your Downtown Loft - 2BR, 4.9★, $180/night avg. Peak season: summer, 85% occupancy. 
+                        I'm now monitoring for bookings, messages, and market changes. Setup complete!
                       </p>
                     </div>
                   </div>
@@ -436,20 +437,20 @@ const Index = () => {
                         <span className="text-gray-400 text-xs">• Premium Guest</span>
                       </div>
                       <p className="text-sm text-white leading-relaxed">
-                        Hi! I'll be arriving 30 minutes early at 2:30 PM. Is early check-in possible? 
-                        Also, what's the WiFi password? I have an important video call at 3 PM. Thanks!
+                        Hi! Arriving 30 min early at 2:30 PM. Early check-in possible? Also need WiFi password 
+                        for important 3 PM video call. Thanks!
                       </p>
                     </div>
                   </div>
                   
                   <div className="flex items-start space-x-4 group cursor-pointer hover:bg-gray-800/30 rounded-lg p-2 transition-all duration-300">
                     <div className="bg-teal-600 rounded-full p-3 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                      <MessageCircle className="h-5 w-5 text-white" />
+                      <Bot className="h-5 w-5 text-white" />
                     </div>
                     <div className="bg-gray-800/70 rounded-2xl p-4 max-w-md backdrop-blur-sm group-hover:bg-gray-800/90 group-hover:scale-105 transition-all duration-300">
                       <p className="text-sm text-white leading-relaxed">
-                        I've crafted a personalized response for Sarah based on her premium guest status and urgency. 
-                        You can send it instantly or edit it to match your style.
+                        I've crafted a personalized response for Sarah based on her premium status and urgency. 
+                        Early check-in approved, WiFi details included, plus local café backup options. Ready to send!
                       </p>
                     </div>
                   </div>
@@ -464,10 +465,10 @@ const Index = () => {
           <div className="container mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold mb-4">
-                <span className="text-white">STR Owners Are</span> <span className="text-teal-600">Getting Their Lives Back</span>
+                <span className="text-white">Early Adopters Are</span> <span className="text-teal-600">Scaling Fast</span>
               </h2>
               <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                Real results from property owners who stopped drowning in daily management tasks.
+                Beta users who joined our AI revolution are seeing transformative results.
               </p>
             </div>
             
@@ -480,12 +481,12 @@ const Index = () => {
                         <Star key={i} className="h-4 w-4 fill-current" />
                       ))}
                     </div>
-                    <span className="ml-2 text-teal-400 text-sm font-medium">Verified Owner</span>
+                    <span className="ml-2 text-teal-400 text-sm font-medium">Beta User</span>
                   </div>
                   <p className="text-gray-300 mb-6 leading-relaxed">
-                    "PropCore handles my 12 properties like a seasoned co-host. I went from spending 3 hours daily 
-                    on guest messages to just 15 minutes reviewing suggestions. My revenue is up 23% and I actually 
-                    took a vacation without checking my phone every 5 minutes."
+                    "PropCore handles my 12 properties like a seasoned co-host. I went from 4 hours daily 
+                    on guest messages to 15 minutes reviewing AI suggestions. Revenue up 23% and I finally 
+                    took a vacation without constant phone checking."
                   </p>
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center">
@@ -493,7 +494,7 @@ const Index = () => {
                     </div>
                     <div>
                       <p className="text-white font-medium">Marcus Rodriguez</p>
-                      <p className="text-gray-400 text-sm">12 Properties • Austin, TX • $47K monthly revenue</p>
+                      <p className="text-gray-400 text-sm">12 Properties • Austin, TX • $47K monthly</p>
                     </div>
                   </div>
                 </CardContent>
@@ -507,12 +508,12 @@ const Index = () => {
                         <Star key={i} className="h-4 w-4 fill-current" />
                       ))}
                     </div>
-                    <span className="ml-2 text-teal-400 text-sm font-medium">Verified Owner</span>
+                    <span className="ml-2 text-teal-400 text-sm font-medium">Beta User</span>
                   </div>
                   <p className="text-gray-300 mb-6 leading-relaxed">
-                    "The AI understands context like a human. When a guest mentioned they're celebrating an anniversary, 
-                    it suggested local romantic restaurants and even offered a welcome bottle of wine. My 5-star reviews 
-                    doubled and guests specifically mention the 'exceptional hospitality.'"
+                    "The AI understands context like a human. When guests mentioned anniversary celebration, 
+                    it suggested romantic restaurants and offered welcome wine. My 5-star reviews doubled 
+                    and guests specifically praise the 'exceptional hospitality.'"
                   </p>
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
@@ -520,7 +521,7 @@ const Index = () => {
                     </div>
                     <div>
                       <p className="text-white font-medium">Sarah Chen</p>
-                      <p className="text-gray-400 text-sm">7 Properties • San Diego, CA • $31K monthly revenue</p>
+                      <p className="text-gray-400 text-sm">7 Properties • San Diego, CA • $31K monthly</p>
                     </div>
                   </div>
                 </CardContent>
@@ -534,20 +535,20 @@ const Index = () => {
                         <Star key={i} className="h-4 w-4 fill-current" />
                       ))}
                     </div>
-                    <span className="ml-2 text-teal-400 text-sm font-medium">Verified Owner</span>
+                    <span className="ml-2 text-teal-400 text-sm font-medium">Beta User</span>
                   </div>
                   <p className="text-gray-300 mb-6 leading-relaxed">
-                    "PropCore caught pricing inefficiencies I missed for months. It noticed my competitor dropped 
-                    prices and automatically suggested adjustments. Revenue up 28% in two months. It's like having 
-                    a revenue manager, guest relations expert, and assistant all in one - but smarter."
+                    "PropCore caught pricing inefficiencies I missed for months. Noticed competitor price drops 
+                    and auto-suggested adjustments. Revenue up 28% in two months. It's like having a revenue 
+                    manager, guest relations expert, and assistant — but smarter."
                   </p>
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                      <span className="text-white font-medium text-sm">DJ</span>
+                      <span className="text-white font-medium text-sm">DK</span>
                     </div>
                     <div>
                       <p className="text-white font-medium">David Kim</p>
-                      <p className="text-gray-400 text-sm">5 Properties • Miami, FL • $22K monthly revenue</p>
+                      <p className="text-gray-400 text-sm">5 Properties • Miami, FL • $22K monthly</p>
                     </div>
                   </div>
                 </CardContent>
@@ -562,14 +563,15 @@ const Index = () => {
             <div className="max-w-lg mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-5xl font-bold mb-4">
-                  <span className="text-white">Stop the</span> <span className="text-red-500">Revenue Bleeding</span>
+                  <span className="text-white">Join the</span> <span className="text-teal-500">AI Revolution</span>
                 </h2>
                 <p className="text-xl text-gray-300 leading-relaxed mb-6">
-                  Every day you wait is another $75+ lost per property in missed opportunities and poor guest experiences.
+                  Be among the first property managers to experience superhuman AI assistance. 
+                  Early access is limited and exclusive.
                 </p>
-                <div className="bg-red-900/40 border border-red-500/30 rounded-lg p-4 mb-8">
-                  <p className="text-red-300 font-medium">⚠️ Limited Beta Access: Only 100 spots available</p>
-                  <p className="text-gray-300 text-sm mt-1">Join 847 forward-thinking STR owners already on the waitlist</p>
+                <div className="bg-teal-900/40 border border-teal-500/30 rounded-lg p-4 mb-8">
+                  <p className="text-teal-300 font-medium">🚀 Limited Beta Spots: 100 Forward-Thinking Operators Only</p>
+                  <p className="text-gray-300 text-sm mt-1">Join 847 innovative property managers already in line</p>
                 </div>
               </div>
               
@@ -581,14 +583,14 @@ const Index = () => {
                         <CheckCircle className="h-10 w-10" />
                       </div>
                     </div>
-                    <h3 className="text-2xl font-semibold mb-4 text-white">You're In! Welcome to the Revolution.</h3>
+                    <h3 className="text-2xl font-semibold mb-4 text-white">Welcome to the Future! 🚀</h3>
                     <p className="text-gray-300 leading-relaxed">
-                      You're now part of an exclusive group of innovators who refuse to let property management 
-                      consume their lives. We'll notify you the moment PropCore is ready to transform your business.
+                      You're now part of an exclusive group of AI-forward property managers. 
+                      We'll notify you the moment PropCore is ready to transform your operations.
                     </p>
                     <div className="mt-6 p-4 bg-teal-900/30 rounded-lg border border-teal-600/30">
                       <p className="text-teal-300 text-sm">
-                        🎁 <strong>Beta Bonus:</strong> Early access users get 3 months free + priority onboarding support
+                        🎁 <strong>Early Access Bonus:</strong> 3 months free + priority onboarding + exclusive AI training
                       </p>
                     </div>
                   </CardContent>
@@ -621,7 +623,7 @@ const Index = () => {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="properties" className="text-white text-lg font-medium">Number of Properties (Optional)</Label>
+                        <Label htmlFor="properties" className="text-white text-lg font-medium">Properties (Optional)</Label>
                         <Input
                           id="properties"
                           type="number"
@@ -630,19 +632,20 @@ const Index = () => {
                           className="mt-2 bg-gray-800/70 border-gray-700 text-white focus:border-teal-600 h-12 text-lg"
                           placeholder="e.g., 3"
                         />
-                        <p className="text-gray-400 text-sm mt-1">Help us prioritize based on your portfolio size</p>
+                        <p className="text-gray-400 text-sm mt-1">Help us prioritize based on portfolio size</p>
                       </div>
                       <Button 
                         type="submit" 
-                        className="w-full bg-teal-600 hover:bg-teal-700 text-white h-12 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25 group"
+                        className="w-full bg-teal-600 hover:bg-teal-700 text-white h-12 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25 group relative overflow-hidden"
                         disabled={!email}
                       >
-                        Get Priority Access Now
-                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-teal-400 to-teal-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                        <span className="relative">Secure Early Access</span>
+                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300 relative" />
                       </Button>
                       <div className="text-center">
                         <p className="text-gray-400 text-sm">
-                          💳 No credit card required • 📧 Unsubscribe anytime • 🔒 Your data stays private
+                          💳 No credit card • 📧 Unsubscribe anytime • 🔒 Privacy protected
                         </p>
                       </div>
                     </form>
@@ -670,7 +673,7 @@ const Index = () => {
                 </a>
               </p>
             </div>
-            <p className="text-gray-400">&copy; 2025 PropCloud Inc. Stop losing money to poor guest communication.</p>
+            <p className="text-gray-400">&copy; 2025 PropCloud Inc. Building the future of property management with AI.</p>
           </div>
         </footer>
       </div>
