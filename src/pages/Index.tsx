@@ -20,181 +20,88 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Revolutionary 3D AI-Inspired Space Background */}
+      {/* Enhanced 3D Space Background with Brighter Colors */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Dynamic Star Field with AI Processing Patterns */}
-        {Array.from({ length: 200 }, (_, i) => {
-          const size = Math.random() * 3 + 1;
-          const brightness = Math.random() * 0.8 + 0.2;
-          return (
-            <div
-              key={`star-${i}`}
-              className="absolute bg-white rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                width: `${size}px`,
-                height: `${size}px`,
-                opacity: brightness,
-                animation: `twinkle ${Math.random() * 4 + 2}s infinite`,
-                animationDelay: `${Math.random() * 3}s`,
-                boxShadow: `0 0 ${size * 3}px rgba(20, 184, 166, ${brightness * 0.6}), 0 0 ${size * 6}px rgba(6, 182, 212, ${brightness * 0.3})`
-              }}
-            />
-          );
-        })}
-        
-        {/* AI Neural Network Connections - Floating Data Streams */}
-        {Array.from({ length: 15 }, (_, i) => (
+        {/* Brighter Floating Stars */}
+        {Array.from({ length: 150 }, (_, i) => (
           <div
-            key={`neural-${i}`}
-            className="absolute bg-gradient-to-r from-transparent via-teal-400/40 to-transparent rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 80}%`,
-              top: `${Math.random() * 80}%`,
-              width: `${Math.random() * 300 + 150}px`,
-              height: '2px',
-              transform: `rotate(${Math.random() * 360}deg)`,
-              animationDelay: `${Math.random() * 4}s`,
-              animationDuration: `${Math.random() * 3 + 2}s`,
-              filter: 'blur(0.5px)'
-            }}
-          />
-        ))}
-        
-        {/* Floating Data Nodes - AI Processing Units */}
-        {Array.from({ length: 12 }, (_, i) => (
-          <div
-            key={`node-${i}`}
-            className="absolute w-4 h-4 border border-teal-400/60 rounded-full bg-teal-500/20 animate-pulse"
-            style={{
-              left: `${Math.random() * 90}%`,
-              top: `${Math.random() * 90}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${Math.random() * 4 + 2}s`,
-              boxShadow: `0 0 15px rgba(20, 184, 166, 0.4), inset 0 0 10px rgba(6, 182, 212, 0.3)`
-            }}
-          >
-            <div className="w-1 h-1 bg-teal-300 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-ping" />
-          </div>
-        ))}
-        
-        {/* Quantum Computing Inspired Geometric Shapes */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-teal-400/30 to-cyan-600/20 transform rotate-45 animate-spin shadow-2xl shadow-teal-500/30"
-             style={{ animationDuration: '20s' }}>
-          <div className="w-full h-full border-2 border-teal-400/50 rounded-lg animate-pulse"></div>
-        </div>
-        
-        <div className="absolute top-60 right-20 w-16 h-16 bg-gradient-to-br from-cyan-400/25 to-teal-600/15 transform rotate-12 animate-bounce shadow-xl shadow-cyan-500/25"
-             style={{ animationDuration: '6s' }}>
-          <div className="w-full h-full border border-cyan-400/60 transform rotate-45 animate-spin" style={{ animationDuration: '15s' }}></div>
-        </div>
-        
-        <div className="absolute bottom-40 left-1/4 w-12 h-12 bg-gradient-to-br from-teal-500/35 to-cyan-500/25 transform rotate-45 animate-pulse shadow-lg shadow-teal-400/30">
-          <div className="w-full h-full bg-gradient-to-br from-transparent to-teal-300/20 animate-ping"></div>
-        </div>
-        
-        {/* AI Brain Processing Orbs with Data Flow */}
-        <div className="absolute top-1/3 right-1/3 w-32 h-32 bg-gradient-radial from-teal-400/25 to-transparent rounded-full animate-ping shadow-2xl shadow-teal-400/30"
-             style={{ animationDuration: '4s' }}>
-          <div className="absolute inset-4 border border-teal-300/40 rounded-full animate-spin" style={{ animationDuration: '8s' }}></div>
-          <div className="absolute inset-8 bg-teal-500/20 rounded-full animate-pulse"></div>
-        </div>
-        
-        <div className="absolute bottom-1/3 left-1/3 w-24 h-24 bg-gradient-radial from-cyan-400/30 to-transparent rounded-full animate-pulse shadow-xl shadow-cyan-400/25"
-             style={{ animationDuration: '5s' }}>
-          <div className="absolute inset-2 border-2 border-cyan-300/50 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '12s' }}></div>
-        </div>
-        
-        {/* Matrix-Style Data Rain */}
-        {Array.from({ length: 8 }, (_, i) => (
-          <div
-            key={`rain-${i}`}
-            className="absolute top-0 w-px bg-gradient-to-b from-teal-400/60 via-teal-300/30 to-transparent animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              height: `${Math.random() * 400 + 200}px`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${Math.random() * 3 + 2}s`
-            }}
-          />
-        ))}
-        
-        {/* Cosmic AI Energy Waves */}
-        {Array.from({ length: 6 }, (_, i) => (
-          <div
-            key={`wave-${i}`}
-            className="absolute rounded-full border border-teal-400/20 animate-ping"
-            style={{
-              left: `${Math.random() * 60 + 20}%`,
-              top: `${Math.random() * 60 + 20}%`,
-              width: `${Math.random() * 200 + 100}px`,
-              height: `${Math.random() * 200 + 100}px`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${Math.random() * 4 + 3}s`
-            }}
-          />
-        ))}
-        
-        {/* AI Processing Particles */}
-        {Array.from({ length: 25 }, (_, i) => (
-          <div
-            key={`particle-${i}`}
-            className="absolute w-1 h-1 bg-teal-400/70 rounded-full animate-ping shadow-lg shadow-teal-400/40"
+            key={i}
+            className="absolute bg-gradient-to-r from-teal-300 to-cyan-200 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${Math.random() * 3 + 2}s`
-            }}
-          />
-        ))}
-        
-        {/* Flying AI Data Streams */}
-        {Array.from({ length: 10 }, (_, i) => (
-          <div
-            key={`stream-${i}`}
-            className="absolute h-px bg-gradient-to-r from-transparent via-teal-400/50 to-transparent animate-pulse"
-            style={{
-              left: `${Math.random() * 70}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 300 + 150}px`,
-              transform: `rotate(${Math.random() * 360}deg)`,
+              width: `${Math.random() * 4 + 2}px`,
+              height: `${Math.random() * 4 + 2}px`,
               animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${Math.random() * 4 + 3}s`
+              animation: `twinkle ${Math.random() * 4 + 2}s infinite`,
+              filter: `hue-rotate(${Math.random() * 60}deg)`,
+              boxShadow: '0 0 10px currentColor'
             }}
           />
         ))}
         
-        {/* Quantum Field Distortions */}
-        <div className="absolute top-1/4 left-1/6 w-48 h-32 bg-gradient-to-r from-teal-600/8 via-cyan-500/12 to-teal-400/8 rounded-full blur-2xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/6 w-40 h-24 bg-gradient-to-r from-cyan-600/8 via-teal-500/12 to-cyan-400/8 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        {/* Enhanced 3D Geometric Shapes with Glow */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-teal-400/60 to-cyan-500/40 transform rotate-45 animate-pulse shadow-lg shadow-teal-400/30" style={{ filter: 'blur(0.5px)' }}></div>
+        <div className="absolute top-60 right-20 w-24 h-24 bg-gradient-to-br from-cyan-400/50 to-teal-500/35 transform rotate-12 animate-bounce shadow-lg shadow-cyan-400/25" style={{ filter: 'blur(0.5px)' }}></div>
+        <div className="absolute bottom-40 left-1/4 w-16 h-16 bg-gradient-to-br from-teal-500/55 to-cyan-400/45 transform rotate-45 animate-pulse shadow-lg shadow-teal-500/35" style={{ filter: 'blur(0.5px)' }}></div>
+        <div className="absolute top-1/2 left-20 w-14 h-14 bg-gradient-to-br from-cyan-300/60 to-teal-400/40 transform rotate-30 animate-spin-slow shadow-lg shadow-cyan-300/30"></div>
         
-        {/* Deep Space Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/95 to-black opacity-85"></div>
+        {/* Brighter Floating Orbs with Enhanced Glow */}
+        <div className="absolute top-1/3 right-1/3 w-32 h-32 bg-gradient-radial from-teal-400/40 to-transparent rounded-full animate-ping shadow-2xl shadow-teal-400/20"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-24 h-24 bg-gradient-radial from-cyan-400/45 to-transparent rounded-full animate-pulse shadow-2xl shadow-cyan-400/25"></div>
+        <div className="absolute top-1/4 left-1/2 w-20 h-20 bg-gradient-radial from-teal-300/50 to-transparent rounded-full animate-ping shadow-2xl shadow-teal-300/30" style={{ animationDelay: '1s' }}></div>
         
-        {/* AI Consciousness Grid */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="grid grid-cols-12 gap-1 h-full">
-            {Array.from({ length: 144 }, (_, i) => (
-              <div key={i} className="border border-teal-500/30 rounded-sm shadow-sm shadow-teal-500/10 animate-pulse" 
-                   style={{ animationDelay: `${i * 0.1}s`, animationDuration: '8s' }}></div>
+        {/* Enhanced Grid Pattern with Glow */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="grid grid-cols-20 gap-2 h-full">
+            {Array.from({ length: 400 }, (_, i) => (
+              <div key={i} className="border border-teal-400/50 rounded-sm shadow-sm shadow-teal-400/20" style={{ 
+                animationDelay: `${Math.random() * 5}s`,
+                animation: `pulse ${Math.random() * 6 + 4}s infinite`
+              }}></div>
             ))}
           </div>
         </div>
+        
+        {/* Enhanced Floating Particles with Motion */}
+        {Array.from({ length: 30 }, (_, i) => (
+          <div
+            key={i}
+            className="absolute w-3 h-3 bg-gradient-to-r from-teal-400/60 to-cyan-300/50 rounded-full animate-ping shadow-lg shadow-current"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 2}s`,
+              animationDuration: `${Math.random() * 3 + 2}s`,
+              transform: `scale(${Math.random() * 0.5 + 0.5})`,
+              filter: `hue-rotate(${Math.random() * 30}deg)`
+            }}
+          />
+        ))}
+        
+        {/* Animated Light Beams */}
+        <div className="absolute top-0 left-1/4 w-1 h-full bg-gradient-to-b from-transparent via-teal-400/20 to-transparent animate-pulse"></div>
+        <div className="absolute top-0 right-1/3 w-1 h-full bg-gradient-to-b from-transparent via-cyan-300/15 to-transparent animate-pulse" style={{ animationDelay: '1s' }}></div>
+        
+        {/* Dynamic Gradient Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-gray-900/80 to-black/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40"></div>
+        
+        {/* Breathing Light Effect */}
+        <div className="absolute inset-0 bg-gradient-radial from-teal-600/5 via-transparent to-transparent animate-pulse" style={{ animationDuration: '4s' }}></div>
       </div>
 
       {/* Content */}
       <div className="relative z-10">
-        {/* Header */}
+        {/* Header with New Logo */}
         <header className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-xl border-b border-gray-800/50">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <Logo size="md" />
+            <Logo size="md" animate={true} />
             <nav className="hidden md:flex space-x-6">
-              <a href="#problem" className="text-white hover:text-teal-600 transition-colors duration-300">The Challenge</a>
-              <a href="#solution" className="text-white hover:text-teal-600 transition-colors duration-300">Our AI</a>
-              <a href="#demo" className="text-white hover:text-teal-600 transition-colors duration-300">Demo</a>
-              <a href="#waitlist" className="text-white hover:text-teal-600 transition-colors duration-300">Early Access</a>
+              <a href="#problem" className="text-white hover:text-teal-400 transition-colors duration-300">The Challenge</a>
+              <a href="#solution" className="text-white hover:text-teal-400 transition-colors duration-300">Our AI</a>
+              <a href="#demo" className="text-white hover:text-teal-400 transition-colors duration-300">Demo</a>
+              <a href="#waitlist" className="text-white hover:text-teal-400 transition-colors duration-300">Early Access</a>
             </nav>
           </div>
         </header>
@@ -204,15 +111,15 @@ const Index = () => {
           <div className="container mx-auto text-center">
             <div className="max-w-5xl mx-auto">
               <div className="flex items-center justify-center mb-6">
-                <Bot className="h-8 w-8 text-teal-500 mr-3 animate-pulse" />
+                <Bot className="h-8 w-8 text-teal-400 mr-3 animate-pulse" />
                 <span className="text-lg text-gray-300 font-medium">The Future of Property Management is AI</span>
-                <Bot className="h-8 w-8 text-teal-500 ml-3 animate-pulse" />
+                <Bot className="h-8 w-8 text-teal-400 ml-3 animate-pulse" />
               </div>
               
               <h1 className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
                 <span className="text-white">Meet Your</span>
                 <br />
-                <span className="text-teal-600">AI Co-Host</span>
+                <span className="bg-gradient-to-r from-teal-400 to-cyan-300 bg-clip-text text-transparent">AI Co-Host</span>
                 <br />
                 <span className="text-gray-200">for Short-Term Rentals</span>
               </h1>
@@ -244,17 +151,17 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button 
                   size="lg" 
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25 group relative overflow-hidden"
+                  className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-500/30 group relative overflow-hidden"
                   onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-teal-400 to-teal-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-teal-300/20 to-cyan-300/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <span className="relative">See PropCore in Action</span>
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300 relative" />
                 </Button>
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className="border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 group"
+                  className="border-teal-400 text-teal-400 hover:bg-teal-400/20 hover:text-white px-10 py-6 text-lg font-medium transform hover:scale-105 transition-all duration-300 group backdrop-blur-sm"
                   onClick={() => document.getElementById('problem')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   Learn About the Tech
@@ -764,19 +671,19 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Footer */}
+        {/* Footer with Enhanced Logo */}
         <footer className="py-12 px-4 border-t border-gray-800/50">
           <div className="container mx-auto text-center text-white">
             <div className="flex justify-center mb-6">
-              <Logo size="md" />
+              <Logo size="lg" animate={false} />
             </div>
             <div className="mb-6">
               <p className="text-lg mb-2">
-                <a href="mailto:contact@propcloud.io" className="text-teal-600 hover:text-teal-400 transition-colors">
+                <a href="mailto:contact@propcloud.io" className="text-teal-400 hover:text-teal-300 transition-colors">
                   contact@propcloud.io
                 </a>
                 {" • "}
-                <a href="tel:+13022133107" className="text-teal-600 hover:text-teal-400 transition-colors">
+                <a href="tel:+13022133107" className="text-teal-400 hover:text-teal-300 transition-colors">
                   (302) 213-3107
                 </a>
               </p>
@@ -789,12 +696,17 @@ const Index = () => {
       <style>
         {`
           @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
+            0%, 100% { opacity: 0.4; transform: scale(1); }
             50% { opacity: 1; transform: scale(1.2); }
           }
           
-          .bg-gradient-radial {
-            background: radial-gradient(circle, var(--tw-gradient-stops));
+          @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          
+          .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
           }
         `}
       </style>
