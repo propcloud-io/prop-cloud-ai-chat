@@ -43,7 +43,7 @@ const Properties: React.FC = () => {
       <header className="border-b border-gray-800/50 bg-gray-900/30 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Logo />
-          <Button variant="outline" onClick={() => navigate('/app?view=dashboard')} className="border-gray-600 text-gray-300 bg-teal-900 hover:bg-teal-800">
+          <Button variant="outline" onClick={() => navigate('/app')} className="border-gray-600 text-gray-300 bg-teal-900 hover:bg-teal-800">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
           </Button>
@@ -142,52 +142,37 @@ const Properties: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-8">
             <Card className="bg-gray-900/60 border-gray-800/50">
               <CardHeader>
-                <CardTitle className="text-white">Live Booking Pipeline</CardTitle>
+                <CardTitle className="text-white">Recent Bookings</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex justify-between items-center p-3 bg-green-900/20 border border-green-600/30 rounded-lg">
+                <div className="flex justify-between items-center p-3 bg-gray-800/30 rounded-lg">
                   <div>
-                    <div className="text-white font-medium flex items-center">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      Sarah M. - CONFIRMED
-                    </div>
-                    <div className="text-gray-400 text-sm">Check-in: Tomorrow • 4.9★ guest</div>
+                    <div className="text-white font-medium">Sarah M.</div>
+                    <div className="text-gray-400 text-sm">Check-in: Tomorrow</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-green-400 font-semibold">$540</div>
+                    <div className="text-teal-600 font-semibold">$540</div>
                     <div className="text-gray-400 text-sm">3 nights</div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-blue-900/20 border border-blue-600/30 rounded-lg">
+                <div className="flex justify-between items-center p-3 bg-gray-800/30 rounded-lg">
                   <div>
-                    <div className="text-white font-medium flex items-center">
-                      <div className="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
-                      James K. - PENDING
-                    </div>
-                    <div className="text-gray-400 text-sm">Check-in: Dec 28 • Business traveler</div>
+                    <div className="text-white font-medium">James K.</div>
+                    <div className="text-gray-400 text-sm">Check-in: Dec 28</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-blue-400 font-semibold">$720</div>
+                    <div className="text-teal-600 font-semibold">$720</div>
                     <div className="text-gray-400 text-sm">4 nights</div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-yellow-900/20 border border-yellow-600/30 rounded-lg">
+                <div className="flex justify-between items-center p-3 bg-gray-800/30 rounded-lg">
                   <div>
-                    <div className="text-white font-medium flex items-center">
-                      <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></div>
-                      12 INQUIRIES
-                    </div>
-                    <div className="text-gray-400 text-sm">New Year's week • High demand period</div>
+                    <div className="text-white font-medium">Maria L.</div>
+                    <div className="text-gray-400 text-sm">Check-in: Jan 2</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-yellow-400 font-semibold">~$2,400</div>
-                    <div className="text-gray-400 text-sm">Potential revenue</div>
-                  </div>
-                </div>
-                <div className="mt-4 p-3 bg-gray-800/30 rounded-lg">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-300">Next 30 days revenue forecast:</span>
-                    <span className="text-teal-600 font-semibold">${(metrics.revenue * 1.15).toLocaleString()}</span>
+                    <div className="text-teal-600 font-semibold">$1,080</div>
+                    <div className="text-gray-400 text-sm">6 nights</div>
                   </div>
                 </div>
               </CardContent>
@@ -195,58 +180,34 @@ const Properties: React.FC = () => {
 
             <Card className="bg-gray-900/60 border-gray-800/50">
               <CardHeader>
-                <CardTitle className="text-white">Property Management Hub</CardTitle>
+                <CardTitle className="text-white">Performance Insights</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="p-3 bg-red-900/20 border border-red-600/30 rounded-lg">
-                  <div className="flex items-center text-red-400 mb-2">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    <span className="font-medium">Action Required</span>
-                  </div>
-                  <div className="text-gray-300 text-sm mb-2">
-                    Water heater maintenance due in 3 days
-                  </div>
-                  <Button size="sm" variant="outline" className="text-xs border-red-600/50 text-red-400 hover:bg-red-900/30">
-                    Schedule Service
-                  </Button>
-                </div>
                 <div className="p-3 bg-green-900/20 border border-green-600/30 rounded-lg">
                   <div className="flex items-center text-green-400 mb-2">
-                    <Users className="h-4 w-4 mr-2" />
-                    <span className="font-medium">Guest Communication</span>
+                    <TrendingUp className="h-4 w-4 mr-2" />
+                    <span className="font-medium">Revenue Trending Up</span>
                   </div>
-                  <div className="text-gray-300 text-sm mb-2">
-                    Sarah M. arriving tomorrow - check-in instructions sent
+                  <div className="text-gray-300 text-sm">
+                    Your property is performing 23% above market average
                   </div>
-                  <div className="text-xs text-green-400">Auto-message sent • Response time: 2 min avg</div>
                 </div>
                 <div className="p-3 bg-blue-900/20 border border-blue-600/30 rounded-lg">
                   <div className="flex items-center text-blue-400 mb-2">
                     <Star className="h-4 w-4 mr-2" />
-                    <span className="font-medium">Inventory Status</span>
-                  </div>
-                  <div className="text-gray-300 text-sm space-y-1">
-                    <div className="flex justify-between">
-                      <span>Towels & Linens:</span>
-                      <span className="text-green-400">✓ Fresh</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Cleaning supplies:</span>
-                      <span className="text-yellow-400">! Low stock</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Welcome basket:</span>
-                      <span className="text-green-400">✓ Ready</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-3 bg-purple-900/20 border border-purple-600/30 rounded-lg">
-                  <div className="flex items-center text-purple-400 mb-2">
-                    <DollarSign className="h-4 w-4 mr-2" />
-                    <span className="font-medium">Revenue Optimization</span>
+                    <span className="font-medium">Excellent Guest Reviews</span>
                   </div>
                   <div className="text-gray-300 text-sm">
-                    Peak season pricing activated • +18% premium for holidays
+                    Recent guests praised your quick response time and cleanliness
+                  </div>
+                </div>
+                <div className="p-3 bg-yellow-900/20 border border-yellow-600/30 rounded-lg">
+                  <div className="flex items-center text-yellow-400 mb-2">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    <span className="font-medium">Pricing Opportunity</span>
+                  </div>
+                  <div className="text-gray-300 text-sm">
+                    Consider increasing rates for New Year's week by 15%
                   </div>
                 </div>
               </CardContent>

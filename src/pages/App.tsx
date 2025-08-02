@@ -33,14 +33,6 @@ const App = () => {
   const [sessionStartTime] = useState(new Date());
   const [viewMode, setViewMode] = useState<ViewMode>('conversation');
   const [conversationCompleted, setConversationCompleted] = useState(false);
-  
-  // Check URL params to determine initial view
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('view') === 'dashboard' && conversationCompleted) {
-      setViewMode('dashboard');
-    }
-  }, [conversationCompleted]);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -1027,18 +1019,6 @@ const App = () => {
                 </div>
               </CardContent>
             </Card>
-          )}
-          
-          {/* Permanent Dashboard Access */}
-          {conversationCompleted && (
-            <div className="fixed bottom-6 right-6 z-50">
-              <Button
-                onClick={handleViewDashboard}
-                className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 shadow-lg"
-              >
-                Dashboard
-              </Button>
-            </div>
           )}
         </div>
       </div>
