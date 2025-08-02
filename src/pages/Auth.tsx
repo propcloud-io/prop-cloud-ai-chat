@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import Logo from "@/components/Logo";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -58,7 +59,7 @@ const Auth = () => {
       <div className="w-full max-w-md relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-12 w-auto mx-auto mb-4" />
+          <Logo showText={false} className="h-12 mx-auto mb-4" />
           <h1 className="text-3xl font-bold mb-2">
             {isLogin ? (
               <>

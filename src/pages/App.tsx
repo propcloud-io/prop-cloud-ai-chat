@@ -5,6 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MessageCircle, Send, Edit3, LogOut, Clock, User, CheckCircle, AlertCircle, Activity, Brain, Copy, Star, TrendingUp, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import Logo from "@/components/Logo";
+import Dashboard from "@/components/Dashboard";
 
 interface Message {
   id: number;
@@ -25,8 +27,12 @@ interface PropertyData {
 
 type ConversationStage = 'initial' | 'guestInteraction' | 'pricingOpportunity' | 'pricingDecision' | 'completed' | 'bookingInquiry' | 'bookingResponse';
 
+type ViewMode = 'conversation' | 'dashboard';
+
 const App = () => {
   const [sessionStartTime] = useState(new Date());
+  const [viewMode, setViewMode] = useState<ViewMode>('conversation');
+  const [conversationCompleted, setConversationCompleted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -459,7 +465,19 @@ const App = () => {
       addMessage(finalMessage);
 
       setConversationStage('completed');
+      setConversationCompleted(true);
       console.log('Full demo cycle completed');
+      
+      // Show dashboard option after completion
+      setTimeout(() => {
+        const dashboardPrompt: Message = {
+          id: Date.now() + 8,
+          type: 'ai',
+          content: "🎉 Great work! Your property is now fully optimized and monitored. You can continue chatting with me or explore your dashboard for property management, analytics, and more features.",
+          timestamp: new Date()
+        };
+        addMessage(dashboardPrompt);
+      }, 3000);
     }, 3000);
 
     setShowBookingResponseOptions(false);
@@ -491,6 +509,18 @@ const App = () => {
     navigate('/');
   };
 
+  const handleViewDashboard = () => {
+    setViewMode('dashboard');
+  };
+
+  const handleStartChat = () => {
+    setViewMode('conversation');
+  };
+
+  const handleBackToHome = () => {
+    navigate('/');
+  };
+
   const handleSampleLinkClick = () => {
     setInputValue("https://airbnb.com/rooms/12345678");
   };
@@ -506,6 +536,11 @@ const App = () => {
     
     return () => clearTimeout(timer);
   }, [messages, showResponseOptions, showBookingResponseOptions, showDecisionButtons, showMonitoring]);
+
+  // Show dashboard if in dashboard mode
+  if (viewMode === 'dashboard') {
+    return <Dashboard onStartChat={handleStartChat} onBackToHome={handleBackToHome} />;
+  }
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
@@ -539,7 +574,7 @@ const App = () => {
         <header className="bg-black/90 backdrop-blur-xl border-b border-gray-800/50 p-4">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
             <div className="flex items-center space-x-3">
-              <img src="/lovable-uploads/08a4f4ba-9ef9-40ea-862d-d241858358af.png" alt="PropCloud" className="h-16 w-auto" />
+              <Logo />
               <div className="hidden md:block">
                 <div className="flex items-center space-x-2 text-xs text-gray-400">
                   <Clock className="h-3 w-3" />
@@ -547,14 +582,24 @@ const App = () => {
                 </div>
               </div>
             </div>
-            <Button 
-              variant="ghost" 
-              onClick={handleLogout}
-              className="text-white hover:text-teal-600 transition-colors"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
+            <div className="flex items-center space-x-2">
+              {conversationCompleted && (
+                <Button
+                  onClick={handleViewDashboard}
+                  className="bg-teal-600 hover:bg-teal-700 text-white"
+                >
+                  View Dashboard
+                </Button>
+              )}
+              <Button 
+                variant="ghost" 
+                onClick={handleLogout}
+                className="text-white hover:text-teal-600 transition-colors"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </header>
 
