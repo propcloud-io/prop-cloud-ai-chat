@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { AlertCircle } from "lucide-react";
 import Logo from "@/components/Logo";
 
 const Auth = () => {
@@ -79,8 +80,19 @@ const Auth = () => {
         <Card className="bg-gray-900/90 border-gray-800/50 backdrop-blur-xl shadow-2xl">
           <CardHeader>
             <CardTitle className="text-white text-center text-xl">
-              {isLogin ? 'Sign In' : 'Sign Up'}
+              {isLogin ? 'Sign In' : 'Join the Waitlist'}
             </CardTitle>
+            {!isLogin && (
+              <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4 mt-4">
+                <div className="flex items-center justify-center mb-2">
+                  <AlertCircle className="h-4 w-4 text-blue-400 mr-2" />
+                  <span className="text-blue-300 font-medium text-sm">Beta Access Only</span>
+                </div>
+                <p className="text-gray-300 text-sm text-center">
+                  New accounts are by invitation only. Join our waitlist for early access to PropCore beta.
+                </p>
+              </div>
+            )}
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -119,7 +131,7 @@ const Auth = () => {
                 type="submit" 
                 className="w-full bg-teal-600 hover:bg-teal-700 text-white h-12 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25"
               >
-                {isLogin ? 'Sign In' : 'Sign Up'}
+                {isLogin ? 'Sign In' : 'Join Waitlist →'}
               </Button>
             </form>
 
