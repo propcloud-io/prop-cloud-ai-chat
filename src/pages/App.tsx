@@ -529,8 +529,65 @@ const App = () => {
     navigate('/');
   };
 
-  const handleSampleLinkClick = () => {
+  const handleSampleLinkClick = async () => {
     setInputValue("https://airbnb.com/rooms/12345678");
+    
+    // Immediately process the sample link
+    if (conversationStage === 'initial') {
+      const newMessage: Message = {
+        id: Date.now() + 1,
+        type: 'user',
+        content: "https://airbnb.com/rooms/12345678",
+        timestamp: new Date()
+      };
+
+      addMessage(newMessage);
+      setInputValue('');
+
+      // Show AI working on analysis
+      await showAiWorkingIndicator("🔍 Analyzing property listing...", 1500);
+      await showAiWorkingIndicator("📊 Extracting property data and reviews...", 1500);
+      await showAiWorkingIndicator("🎯 Identifying guest patterns and pricing trends...", 1500);
+
+      // Set property data
+      setPropertyData({
+        name: "Downtown Loft",
+        rating: 4.9,
+        price: 180,
+        occupancy: 85,
+        reviews: 247
+      });
+
+      // Simulate AI analysis with better timing
+      await simulateTyping(1500, 'processing property data...');
+      
+      const aiResponse: Message = {
+        id: Date.now() + 2,
+        type: 'ai',
+        content: "Perfect! I've analyzed your Downtown Loft property. I can see it's a 2-bedroom with 4.9 stars, averaging $180/night with 85% occupancy. I've identified your peak seasons and guest patterns. I'm now monitoring for bookings, messages, and market changes. You're all set!",
+        timestamp: new Date()
+      };
+      addMessage(aiResponse);
+      
+      // Show AI setting up monitoring
+      await showAiWorkingIndicator("⚙️ Setting up intelligent monitoring systems...", 1000);
+      
+      await simulateTyping(1500, 'configuring monitoring systems...');
+      const monitoringMessage: Message = {
+        id: Date.now() + 3,
+        type: 'status',
+        content: "🔍 Monitoring active for bookings, guest messages, and pricing opportunities...",
+        timestamp: new Date()
+      };
+      addMessage(monitoringMessage);
+      
+      setConversationStage('guestInteraction');
+      
+      // Continue to next phase with better timing
+      setTimeout(() => {
+        simulateGuestInteraction();
+      }, 2500);
+    }
   };
 
   const scrollToBottom = () => {
