@@ -9,7 +9,6 @@ import { AlertCircle } from "lucide-react";
 import Logo from "@/components/Logo";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -19,14 +18,10 @@ const Auth = () => {
     e.preventDefault();
     setError('');
 
-    if (isLogin) {
-      if (email === 'contact@propcloud.io' && password === 'Admin123') {
-        navigate('/app');
-      } else {
-        setError('Invalid credentials. Please check your email and password.');
-      }
+    if (email === 'contact@propcloud.io' && password === 'Admin123') {
+      navigate('/app');
     } else {
-      navigate('/?signup=true');
+      setError('Invalid credentials. Please check your email and password.');
     }
   };
 
@@ -62,37 +57,18 @@ const Auth = () => {
         <div className="text-center mb-8">
           <Logo showText={true} className="mx-auto mb-4" />
           <h1 className="text-3xl font-bold mb-2">
-            {isLogin ? (
-              <>
-                <span className="text-teal-600">Welcome</span> <span className="text-white">Back</span>
-              </>
-            ) : (
-              <>
-                <span className="text-teal-600">Join</span> <span className="text-white">PropCloud</span>
-              </>
-            )}
+            <span className="text-teal-600">Welcome</span> <span className="text-white">Back</span>
           </h1>
           <p className="text-gray-400 text-lg">
-            {isLogin ? 'Access your AI co-host dashboard' : 'Start your journey with AI-powered management'}
+            Access your AI co-host dashboard
           </p>
         </div>
 
         <Card className="bg-gray-900/90 border-gray-800/50 backdrop-blur-xl shadow-2xl">
           <CardHeader>
             <CardTitle className="text-white text-center text-xl">
-              {isLogin ? 'Sign In' : 'Join the Waitlist'}
+              Sign In
             </CardTitle>
-            {!isLogin && (
-              <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4 mt-4">
-                <div className="flex items-center justify-center mb-2">
-                  <AlertCircle className="h-4 w-4 text-blue-400 mr-2" />
-                  <span className="text-blue-300 font-medium text-sm">Beta Access Only</span>
-                </div>
-                <p className="text-gray-300 text-sm text-center">
-                  New accounts are by invitation only. Join our waitlist for early access to PropCore beta.
-                </p>
-              </div>
-            )}
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -131,19 +107,19 @@ const Auth = () => {
                 type="submit" 
                 className="w-full bg-teal-600 hover:bg-teal-700 text-white h-12 text-lg font-medium transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-600/25"
               >
-                {isLogin ? 'Sign In' : 'Join Waitlist →'}
+                Sign In
               </Button>
             </form>
 
             <div className="mt-8 text-center">
               <p className="text-gray-400 text-lg">
-                {isLogin ? "Don't have an account?" : "Already have an account?"}
+                Don't have an account?
                 <Button
                   variant="link"
                   className="text-teal-600 hover:text-teal-400 ml-1 text-lg"
-                  onClick={() => setIsLogin(!isLogin)}
+                  onClick={() => navigate('/?signup=true')}
                 >
-                  {isLogin ? 'Sign Up' : 'Sign In'}
+                  Join Waitlist
                 </Button>
               </p>
             </div>
