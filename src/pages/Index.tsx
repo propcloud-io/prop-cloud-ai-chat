@@ -103,6 +103,12 @@ const Index = () => {
             <Logo />
             <nav className="flex items-center space-x-6">
               <div className="hidden md:flex space-x-6">
+                <button 
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  className="text-white hover:text-teal-600 transition-colors duration-300"
+                >
+                  Home
+                </button>
                 <a href="#problem" className="text-white hover:text-teal-600 transition-colors duration-300">The Challenge</a>
                 <a href="#solution" className="text-white hover:text-teal-600 transition-colors duration-300">Our AI</a>
                 <a href="#demo" className="text-white hover:text-teal-600 transition-colors duration-300">Demo</a>
