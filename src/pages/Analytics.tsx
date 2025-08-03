@@ -47,7 +47,7 @@ const Analytics: React.FC = () => {
       <header className="border-b border-gray-800/50 bg-gray-900/30 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Logo />
-          <Button variant="outline" onClick={() => navigate('/app?view=dashboard')} className="border-gray-600 text-gray-300 bg-teal-900 hover:bg-teal-800">
+          <Button variant="outline" onClick={() => navigate('/app')} className="border-gray-600 text-gray-300 bg-teal-900 hover:bg-teal-800">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
           </Button>
@@ -203,68 +203,34 @@ const Analytics: React.FC = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div className="p-3 bg-gray-800/30 rounded-lg">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-white font-medium text-sm">Guest Demographics</span>
-                    </div>
-                    <div className="space-y-2 text-xs">
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Business Travelers</span>
-                        <span className="text-blue-400">45%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Leisure Tourists</span>
-                        <span className="text-green-400">35%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Local Events</span>
-                        <span className="text-purple-400">20%</span>
-                      </div>
-                    </div>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="text-white font-medium">Repeat Guests</div>
+                    <div className="text-gray-400 text-sm">Return customers</div>
                   </div>
-
-                  <div className="p-3 bg-gray-800/30 rounded-lg">
-                    <div className="text-white font-medium text-sm mb-2">Booking Patterns</div>
-                    <div className="space-y-2 text-xs">
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Avg Advance Booking</span>
-                        <span className="text-teal-600">18 days</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Weekend Premium</span>
-                        <span className="text-yellow-400">+28%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Cancellation Rate</span>
-                        <span className="text-green-400">3.2%</span>
-                      </div>
-                    </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-teal-600">{data.repeatGuests}%</div>
+                    <div className="text-xs text-green-400">High loyalty</div>
                   </div>
-
-                  <div className="p-3 bg-blue-900/20 border border-blue-600/30 rounded-lg">
-                    <div className="text-blue-400 font-medium text-sm mb-2">Seasonal Trends</div>
-                    <div className="space-y-1 text-xs">
-                      <div className="flex justify-between">
-                        <span className="text-gray-300">Q4 2024 Performance</span>
-                        <span className="text-green-400">+12% vs Q3</span>
-                      </div>
-                      <div className="text-gray-400">Peak: Tech conferences + holidays driving demand</div>
-                    </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="text-white font-medium">Avg Stay Length</div>
+                    <div className="text-gray-400 text-sm">Nights per booking</div>
                   </div>
-
-                  <div className="p-3 bg-green-900/20 border border-green-600/30 rounded-lg">
-                    <div className="text-green-400 font-medium text-sm mb-2">Guest Satisfaction</div>
-                    <div className="space-y-1 text-xs">
-                      <div className="flex justify-between">
-                        <span className="text-gray-300">5-star reviews</span>
-                        <span className="text-green-400">89%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-300">Repeat bookings</span>
-                        <span className="text-blue-400">{data.repeatGuests}%</span>
-                      </div>
-                    </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-teal-600">3.2</div>
+                    <div className="text-xs text-gray-400">Optimal</div>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="text-white font-medium">Peak Season</div>
+                    <div className="text-gray-400 text-sm">Best performing months</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-teal-600">Jun-Aug</div>
+                    <div className="text-xs text-yellow-400">94% occupancy</div>
                   </div>
                 </div>
               </CardContent>
