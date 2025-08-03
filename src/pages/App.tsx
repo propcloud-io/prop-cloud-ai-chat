@@ -800,20 +800,20 @@ const App = () => {
                               <Copy className="h-3 w-3" />
                             </button>
                           )}
-                          {message.content.includes("https://airbnb.com/rooms/12345678") ? (
-                            <div className="text-white text-sm leading-relaxed">
-                              <p>Hi! I'm PropCore, your AI co-host. Please share your Airbnb listing link so I can analyze it and set you up with intelligent monitoring.</p>
-                              <p className="mt-3">Try this sample property:</p>
-                              <button
-                                onClick={handleSampleLinkClick}
-                                className="mt-2 text-teal-400 hover:text-teal-300 underline transition-colors duration-200 cursor-pointer"
-                              >
-                                https://airbnb.com/rooms/12345678
-                              </button>
-                            </div>
-                          ) : (
-                            <p className="text-white text-sm leading-relaxed">{message.content}</p>
-                          )}
+          {message.content.includes("https://airbnb.com/rooms/12345678") && message.id === 1 ? (
+            <div className="text-white text-sm leading-relaxed">
+              <p>Hi! I'm PropCore, your AI co-host. Please share your Airbnb listing link so I can analyze it and set you up with intelligent monitoring.</p>
+              <p className="mt-3">Try this sample property:</p>
+              <button
+                onClick={handleSampleLinkClick}
+                className="mt-2 text-teal-400 hover:text-teal-300 underline transition-colors duration-200 cursor-pointer"
+              >
+                https://airbnb.com/rooms/12345678
+              </button>
+            </div>
+          ) : (
+            <p className="text-white text-sm leading-relaxed">{message.content}</p>
+          )}
                           <p className="text-xs text-gray-400 mt-2">{formatTime(message.timestamp)}</p>
                         </CardContent>
                       </Card>
