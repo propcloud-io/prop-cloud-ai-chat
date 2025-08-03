@@ -33,6 +33,14 @@ const App = () => {
   const [sessionStartTime] = useState(new Date());
   const [viewMode, setViewMode] = useState<ViewMode>('conversation');
   const [conversationCompleted, setConversationCompleted] = useState(false);
+  
+  // Check URL params to determine initial view
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('view') === 'dashboard' && conversationCompleted) {
+      setViewMode('dashboard');
+    }
+  }, [conversationCompleted]);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -822,49 +830,39 @@ const App = () => {
 
             {/* Continuous Monitoring Display */}
             {showMonitoring && (
-              <div className="bg-gradient-to-r from-teal-900/30 to-blue-900/30 border border-teal-600/50 rounded-lg p-4 backdrop-blur-sm relative">
-  {/* Header */}
-  <div className="flex items-center space-x-3 mb-3">
-    <div className="bg-teal-600 rounded-full p-2">
-      <Activity className="h-5 w-5 text-white animate-pulse" />
-    </div>
-    <h3 className="text-teal-400 font-medium text-lg">Live Monitoring Active</h3>
-  </div>
-
-  {/* Stop button (optional) */}
-  <button
-    onClick={() => setShowMonitoring(false)}
-    className="absolute top-2 right-2 text-xs text-teal-400 hover:text-white"
-  >
-    Stop
-  </button>
-
-  {/* Activity log with scroll */}
-  <div className="space-y-3 max-h-[240px] overflow-y-auto pr-1">
-    {monitoringActivity.map((activity, index) => (
-      <div
-        key={index}
-        className="flex items-center space-x-3 text-sm text-gray-300 animate-fade-in"
-        style={{ animationDelay: `${index * 0.2}s` }}
-      >
-        <div className="w-2 h-2 bg-teal-500 rounded-full opacity-60"></div>
-        <span>{activity}</span>
-        <div className="ml-auto text-xs text-gray-500">
-          {formatTime(new Date())}
-        </div>
-      </div>
-    ))}
-  </div>
-
-  {/* Footer */}
-  <div className="mt-4 pt-3 border-t border-gray-700/50">
-    <p className="text-[10px] text-gray-400 italic flex items-center">
-      <Clock className="h-3 w-3 mr-1" />
-      PropCore will notify you of any important updates or required actions
-    </p>
-  </div>
-</div>
-
+              <div className="mt-6 animate-fade-in">
+                <div className="bg-gradient-to-r from-teal-900/30 to-blue-900/30 border border-teal-600/50 rounded-lg p-6 backdrop-blur-sm">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="bg-teal-600 rounded-full p-2">
+                      <Activity className="h-5 w-5 text-white animate-pulse" />
+                    </div>
+                    <h3 className="text-teal-400 font-medium text-lg">Live Monitoring Active</h3>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {monitoringActivity.map((activity, index) => (
+                      <div 
+                        key={index} 
+                        className="flex items-center space-x-3 text-sm text-gray-300 animate-fade-in"
+                        style={{ animationDelay: `${index * 0.2}s` }}
+                      >
+                        <div className="w-2 h-2 bg-teal-500 rounded-full opacity-60"></div>
+                        <span>{activity}</span>
+                        <div className="ml-auto text-xs text-gray-500">
+                          {formatTime(new Date())}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="mt-4 pt-4 border-t border-gray-700/50">
+                    <p className="text-xs text-gray-400 flex items-center">
+                      <Clock className="h-3 w-3 mr-1" />
+                      PropCore will notify you of any important updates or required actions
+                    </p>
+                  </div>
+                </div>
+              </div>
             )}
 
             {/* Response Options - Fixed edit button colors */}
@@ -1029,6 +1027,18 @@ const App = () => {
                 </div>
               </CardContent>
             </Card>
+          )}
+          
+          {/* Permanent Dashboard Access */}
+          {conversationCompleted && (
+            <div className="fixed bottom-6 right-6 z-50">
+              <Button
+                onClick={handleViewDashboard}
+                className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 shadow-lg"
+              >
+                Dashboard
+              </Button>
+            </div>
           )}
         </div>
       </div>
