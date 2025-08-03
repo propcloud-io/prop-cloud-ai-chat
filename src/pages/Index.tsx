@@ -99,10 +99,10 @@ const Index = () => {
       <div className="relative z-10">
         {/* Header */}
         <header className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-xl border-b border-gray-800/50">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
             <Logo />
-            <nav className="flex items-center space-x-6">
-              <div className="hidden md:flex space-x-6">
+            <nav className="flex items-center space-x-3 sm:space-x-6">
+              <div className="hidden md:flex space-x-4 lg:space-x-6">
                 <button 
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className="text-white hover:text-teal-600 transition-colors duration-300"
@@ -116,7 +116,7 @@ const Index = () => {
               </div>
               <Button
                 variant="outline"
-                className="border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white"
+                className="border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white text-sm sm:text-base px-3 sm:px-4 py-2"
                 onClick={() => window.location.href = '/auth'}
               >
                 Login
@@ -126,16 +126,16 @@ const Index = () => {
         </header>
 
         {/* Hero Section */}
-        <section className="pt-32 pb-20 px-4">
+        <section className="pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6">
           <div className="container mx-auto text-center">
             <div className="max-w-5xl mx-auto">
-              <div className="flex items-center justify-center mb-6">
-                <Bot className="h-8 w-8 text-teal-500 mr-3 animate-pulse" />
-                <span className="text-lg text-gray-300 font-medium">The Future of Property Management is AI</span>
-                <Bot className="h-8 w-8 text-teal-500 ml-3 animate-pulse" />
+              <div className="flex items-center justify-center mb-6 sm:mb-8 animate-fade-in">
+                <Bot className="h-6 sm:h-8 w-6 sm:w-8 text-teal-500 mr-2 sm:mr-3 animate-pulse" />
+                <span className="text-sm sm:text-lg text-gray-300 font-medium">The Future of Property Management is AI</span>
+                <Bot className="h-6 sm:h-8 w-6 sm:w-8 text-teal-500 ml-2 sm:ml-3 animate-pulse" />
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold mb-4 sm:mb-8 leading-tight animate-fade-in delay-200">
                 <span className="text-white">Meet Your</span>
                 <br />
                 <span className="text-teal-600">AI Co-Host</span>
@@ -149,9 +149,9 @@ const Index = () => {
                 and optimizes your revenue — 24/7, in your voice, with superhuman efficiency.
               </p>
 
-              <div className="bg-gray-900/80 rounded-2xl p-6 mb-10 backdrop-blur-sm border border-teal-500/30">
-                <h3 className="text-2xl font-semibold mb-4 text-teal-400">Early Results from Beta Users</h3>
-                <div className="grid md:grid-cols-3 gap-6 text-center">
+              <div className="bg-gray-900/80 rounded-2xl p-4 sm:p-6 mb-8 sm:mb-10 backdrop-blur-sm border border-teal-500/30">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-4 text-teal-400">Early Results from Beta Users</h3>
+                <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 text-center">
                   <div>
                     <div className="text-3xl font-bold text-teal-500 mb-2">+$2,200</div>
                     <p className="text-gray-300 text-sm">Average monthly revenue increase per property</p>
