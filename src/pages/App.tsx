@@ -37,8 +37,12 @@ const App = () => {
   // Check URL params to determine initial view
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('view') === 'dashboard' && conversationCompleted) {
+    if (urlParams.get('view') === 'dashboard') {
       setViewMode('dashboard');
+      // Auto-complete conversation if going directly to dashboard
+      if (!conversationCompleted) {
+        setConversationCompleted(true);
+      }
     }
   }, [conversationCompleted]);
   const [messages, setMessages] = useState<Message[]>([
@@ -669,7 +673,7 @@ const App = () => {
         </header>
 
         {/* Chat Interface */}
-        <div className="max-w-4xl mx-auto p-4 h-[calc(100vh-80px)] flex flex-col">
+        <div className="max-w-5xl mx-auto p-6 h-[calc(100vh-80px)] flex flex-col">
           {/* Property Data Visualization - Fixed with dark background */}
           {propertyData && (
             <div className="mb-4 animate-fade-in">
@@ -711,7 +715,7 @@ const App = () => {
           )}
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto mb-4 space-y-4 pb-4 scroll-smooth">
+          <div className="flex-1 overflow-y-auto mb-6 space-y-6 pb-6 scroll-smooth">
             {messages.map((message) => (
               <div key={message.id} className="animate-fade-in">
                 {message.type === 'notification' && (
@@ -745,16 +749,18 @@ const App = () => {
                 )}
                 
                 {message.type === 'guest' && (
-                  <div className="flex items-start space-x-3 mb-4 hover:bg-gray-900/30 p-2 rounded-lg transition-colors">
-                    <div className="bg-orange-500 rounded-full p-2 flex-shrink-0">
-                      <User className="h-4 w-4 text-white" />
+                  <div className="flex items-start space-x-4 mb-6 hover:bg-gray-900/20 p-3 rounded-xl transition-all duration-200">
+                    <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-3 flex-shrink-0 shadow-lg">
+                      <User className="h-5 w-5 text-white" />
                     </div>
-                    <div className="bg-gray-800/80 rounded-lg p-4 max-w-2xl border border-gray-700/50 backdrop-blur-sm flex-1">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <span className="text-orange-400 font-medium text-sm">{message.sender}</span>
-                        <span className="text-gray-400 text-xs">• {message.guestType}</span>
-                        <Clock className="h-3 w-3 text-gray-400" />
-                        <span className="text-gray-400 text-xs">{formatTime(message.timestamp)}</span>
+                    <div className="bg-gray-800/90 rounded-2xl p-5 max-w-3xl border border-gray-700/50 backdrop-blur-sm flex-1 shadow-xl">
+                      <div className="flex items-center space-x-3 mb-3">
+                        <span className="text-orange-300 font-semibold text-sm">{message.sender}</span>
+                        <span className="text-orange-200 text-xs bg-orange-800/50 px-3 py-1 rounded-full">{message.guestType}</span>
+                        <div className="flex items-center space-x-1 text-gray-400 text-xs">
+                          <Clock className="h-3 w-3" />
+                          <span>{formatTime(message.timestamp)}</span>
+                        </div>
                       </div>
                       <p className="text-white text-sm leading-relaxed">{message.content}</p>
                     </div>
@@ -762,42 +768,42 @@ const App = () => {
                 )}
 
                 {message.type === 'sent' && (
-                  <div className="flex justify-end mb-4 hover:bg-gray-900/20 p-2 rounded-lg transition-colors">
-                    <div className="bg-teal-600 rounded-lg p-4 max-w-2xl">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center space-x-2">
-                          <span className="text-white font-medium text-sm">You → {message.content.includes('Mike') ? 'Mike' : 'Sarah'}</span>
-                          <CheckCircle className="h-3 w-3 text-teal-100" />
+                  <div className="flex justify-end mb-6 hover:bg-gray-900/20 p-3 rounded-xl transition-all duration-200">
+                    <div className="bg-gradient-to-br from-teal-600 to-teal-700 rounded-2xl p-5 max-w-3xl shadow-xl">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center space-x-3">
+                          <span className="text-white font-semibold text-sm">You → {message.content.includes('Mike') ? 'Mike' : 'Sarah'}</span>
+                          <CheckCircle className="h-4 w-4 text-teal-100" />
                         </div>
                         <button
                           onClick={() => copyToClipboard(message.content)}
-                          className="text-teal-100 hover:text-white transition-colors p-1"
+                          className="text-teal-100 hover:text-white transition-colors p-2 rounded-lg hover:bg-teal-500/20"
                           title="Copy message"
                         >
-                          <Copy className="h-3 w-3" />
+                          <Copy className="h-4 w-4" />
                         </button>
                       </div>
                       <p className="text-white text-sm leading-relaxed">{message.content}</p>
-                      <p className="text-xs text-teal-100 mt-2">{formatTime(message.timestamp)}</p>
+                      <p className="text-xs text-teal-100 mt-3 font-medium">{formatTime(message.timestamp)}</p>
                     </div>
                   </div>
                 )}
 
                 {(message.type === 'user' || message.type === 'ai') && (
-                  <div className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`flex items-start space-x-3 max-w-2xl ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''} hover:bg-gray-900/20 p-2 rounded-lg transition-colors`}>
-                      <div className={`rounded-full p-2 flex-shrink-0 ${message.type === 'ai' ? 'bg-teal-600' : 'bg-gray-600'}`}>
-                        <MessageCircle className="h-4 w-4 text-white" />
+                  <div className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} mb-6`}>
+                    <div className={`flex items-start space-x-4 max-w-4xl ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''} hover:bg-gray-900/20 p-3 rounded-xl transition-all duration-200`}>
+                      <div className={`rounded-xl p-3 flex-shrink-0 shadow-lg ${message.type === 'ai' ? 'bg-gradient-to-br from-teal-600 to-teal-700' : 'bg-gradient-to-br from-gray-600 to-gray-700'}`}>
+                        <MessageCircle className="h-5 w-5 text-white" />
                       </div>
-                      <Card className={`${message.type === 'ai' ? 'bg-gray-800/80' : 'bg-teal-600'} border-gray-700/50 backdrop-blur-sm relative group`}>
-                        <CardContent className="p-4">
+                      <Card className={`${message.type === 'ai' ? 'bg-gray-800/90' : 'bg-gradient-to-br from-teal-600/80 to-teal-700/80'} border-gray-700/50 backdrop-blur-sm relative group shadow-xl rounded-2xl`}>
+                        <CardContent className="p-5">
                           {message.type === 'ai' && (
                             <button
                               onClick={() => copyToClipboard(message.content)}
-                              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-white p-1"
+                              className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-white p-2 rounded-lg hover:bg-gray-700/50"
                               title="Copy response"
                             >
-                              <Copy className="h-3 w-3" />
+                              <Copy className="h-4 w-4" />
                             </button>
                           )}
           {message.content.includes("https://airbnb.com/rooms/12345678") && message.id === 1 ? (
@@ -814,7 +820,7 @@ const App = () => {
           ) : (
             <p className="text-white text-sm leading-relaxed">{message.content}</p>
           )}
-                          <p className="text-xs text-gray-400 mt-2">{formatTime(message.timestamp)}</p>
+                          <p className="text-xs text-gray-400 mt-3 font-medium">{formatTime(message.timestamp)}</p>
                         </CardContent>
                       </Card>
                     </div>
