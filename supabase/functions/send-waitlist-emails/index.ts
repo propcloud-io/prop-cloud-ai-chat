@@ -27,7 +27,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send admin notification email
     const adminEmailResponse = await resend.emails.send({
-      from: "PropCore Waitlist <noreply@propcloud.io>",
+      from: "PropCloud Waitlist <noreply@propcloud.io>",
       to: ["contact@propcloud.io"],
       subject: "🎉 New Waitlist Signup - PropCore",
       html: `
@@ -67,14 +67,14 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send welcome email to user
     const userEmailResponse = await resend.emails.send({
-      from: "PropCore Team <welcome@propcloud.io>",
+      from: "PropCloud Team <welcome@propcloud.io>",
       to: [email],
-      subject: "Welcome to PropCore - You're on the list! 🚀",
+      subject: "Welcome to PropCloud - You're on the list! 🚀",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
           <div style="background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
             <div style="text-align: center; margin-bottom: 30px;">
-              <h1 style="color: #0d9488; margin-bottom: 10px;">Welcome to PropCore! 🚀</h1>
+              <h1 style="color: #0d9488; margin-bottom: 10px;">Welcome to PropCloud! 🚀</h1>
               <p style="color: #6b7280; font-size: 18px; margin: 0;">You're officially on the waitlist</p>
             </div>
             
@@ -124,14 +124,14 @@ const handler = async (req: Request): Promise<Response> => {
               </p>
               <p style="color: #6b7280; font-size: 14px;">
                 Best regards,<br>
-                <strong style="color: #0d9488;">The PropCore Team</strong>
+                <strong style="color: #0d9488;">The PropCloud Team</strong>
               </p>
             </div>
             
             <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
               <p style="color: #9ca3af; font-size: 12px; margin: 0;">
-                You're receiving this because you signed up for PropCore updates.<br>
-                PropCore - AI-Powered Property Management
+                You're receiving this because you signed up for PropCloud updates.<br>
+                PropCloud - AI-Powered Property Management
               </p>
             </div>
           </div>
