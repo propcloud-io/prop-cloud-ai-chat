@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import Dashboard from "@/components/Dashboard";
-import EnhancedBackground from "@/components/EnhancedBackground";
 interface Message {
   id: number;
   type: string;
@@ -29,49 +28,8 @@ const App = () => {
   const [sessionStartTime] = useState(new Date());
   const [viewMode, setViewMode] = useState<ViewMode>('conversation');
   const [conversationCompleted, setConversationCompleted] = useState(false);
-  
-  // Global in-flight guard state
-  const [isBusy, setIsBusy] = useState(false);
-  const [opKey, setOpKey] = useState<string | null>(null);
-  
-  // Timer management
-  const timeoutsRef = useRef<number[]>([]);
-  
-  // Schedule wrapper for timeout management
-  const schedule = (fn: () => void, ms: number): number => {
-    const id = window.setTimeout(fn, ms);
-    timeoutsRef.current.push(id);
-    return id;
-  };
-  
-  // RunOnce wrapper for preventing duplicate actions
-  const runOnce = async (key: string, fn: () => Promise<void>) => {
-    if (isBusy && opKey === key) return;
-    setIsBusy(true);
-    setOpKey(key);
-    try {
-      await fn();
-    } finally {
-      setIsBusy(false);
-      setOpKey(null);
-    }
-  };
 
-  // Timer cleanup on unmount and view changes
-  useEffect(() => {
-    return () => {
-      timeoutsRef.current.forEach(clearTimeout);
-      timeoutsRef.current = [];
-    };
-  }, []);
-  
-  // Clear timers when view changes 
-  useEffect(() => {
-    if (viewMode === 'dashboard') {
-      timeoutsRef.current.forEach(clearTimeout);
-      timeoutsRef.current = [];
-    }
-  }, [viewMode]);
+  // Check URL params to determine initial view
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('view') === 'dashboard') {
@@ -141,7 +99,8 @@ const App = () => {
       resolve(true);
     }, duration));
   };
-  const handleInitialSetupCore = async () => {
+  const handleInitialSetup = async () => {
+    if (conversationStage !== 'initial') return;
     const newMessage: Message = {
       id: Date.now() + 1,
       type: 'user',
@@ -188,17 +147,11 @@ const App = () => {
     setConversationStage('guestInteraction');
 
     // Continue to next phase with better timing
-    schedule(() => {
-      if (conversationStage === 'guestInteraction') simulateGuestInteraction();
+    setTimeout(() => {
+      simulateGuestInteraction();
     }, 2500);
   };
-  
-  const handleInitialSetup = async () => {
-    if (conversationStage !== 'initial') return;
-    await runOnce('initial-setup', handleInitialSetupCore);
-  };
   const simulateGuestInteraction = async () => {
-    if (conversationStage !== 'guestInteraction') return;
     console.log('Starting guest interaction, current stage:', conversationStage);
 
     // Show AI detecting new message
@@ -243,7 +196,7 @@ const App = () => {
     setSuggestedResponse("Hi Sarah! Absolutely, early check-in at 2:30 PM is perfect - I'll have everything ready for you. The WiFi password is 'DowntownLoft2024' and the network is 'Downtown_Guest'. Since you have an important call at 3 PM, I've also included a backup hotspot password in your welcome guide. The lighting in the living room is ideal for video calls. Welcome to Downtown Loft!");
     setShowResponseOptions(true);
   };
-  const handleSendResponseCore = async () => {
+  const handleSendResponse = async () => {
     const sentMessage: Message = {
       id: Date.now() + 4,
       type: 'sent',
@@ -264,7 +217,7 @@ const App = () => {
     addMessage(confirmationMessage);
 
     // Guest response with improved timing
-    schedule(async () => {
+    setTimeout(async () => {
       // Show AI detecting guest response
       await showAiWorkingIndicator("👀 Monitoring for guest response...", 1000);
       await simulateTyping(1000, 'guest responded...');
@@ -286,8 +239,8 @@ const App = () => {
       console.log('Moving to pricing opportunity stage');
 
       // Present pricing opportunity with smoother transition
-      schedule(() => {
-        if (conversationStage !== 'completed') presentPricingOpportunity();
+      setTimeout(() => {
+        presentPricingOpportunity();
       }, 1500);
     }, 2500);
     setShowResponseOptions(false);
@@ -295,12 +248,7 @@ const App = () => {
     setEditedResponse('');
     setSuggestedResponse('');
   };
-  
-  const handleSendResponse = async () => {
-    await runOnce('send-guest-response', handleSendResponseCore);
-  };
   const presentPricingOpportunity = async () => {
-    if (conversationStage !== 'pricingOpportunity') return;
     console.log('Presenting pricing opportunity, current stage:', conversationStage);
     await simulateTyping(1500, 'analyzing pricing opportunities...');
     const pricingMessage: Message = {
@@ -313,8 +261,8 @@ const App = () => {
     setConversationStage('pricingDecision');
     setShowDecisionButtons(true);
   };
-  
-  const handlePricingDecisionCore = async (decision: 'yes' | 'no') => {
+  const handlePricingDecision = async (decision: 'yes' | 'no') => {
+    console.log('Handling pricing decision:', decision);
     setShowDecisionButtons(false);
     const userDecision: Message = {
       id: Date.now() + 8,
@@ -348,15 +296,11 @@ const App = () => {
     }
 
     // Start continuous monitoring mode
-    schedule(() => {
+    setTimeout(() => {
       startContinuousMonitoring();
     }, 2000);
     setConversationStage('completed');
     console.log('Conversation completed, starting monitoring mode');
-  };
-  
-  const handlePricingDecision = async (decision: 'yes' | 'no') => {
-    await runOnce(`pricing-${decision}`, () => handlePricingDecisionCore(decision));
   };
   const startContinuousMonitoring = () => {
     setShowMonitoring(true);
@@ -369,20 +313,19 @@ const App = () => {
 
         // Continue showing activities with varying intervals
         const nextDelay = activityIndex < 4 ? 3000 : 5000;
-        schedule(showNextActivity, nextDelay);
+        setTimeout(showNextActivity, nextDelay);
       } else {
         // After monitoring is complete, trigger booking inquiry
-        schedule(() => {
-          if (conversationStage === 'completed') simulateBookingInquiry();
+        setTimeout(() => {
+          simulateBookingInquiry();
         }, 10000);
       }
     };
 
     // Start showing activities
-    schedule(showNextActivity, 1000);
+    setTimeout(showNextActivity, 1000);
   };
   const simulateBookingInquiry = async () => {
-    if (conversationStage !== 'bookingInquiry') return;
     console.log('Starting booking inquiry flow');
     setConversationStage('bookingInquiry');
 
@@ -427,7 +370,7 @@ const App = () => {
     setBookingSuggestedResponse("Hi Mike! Great to hear from you. Your dates March 22-25 (3 nights) are available at $180/night ($540 total). The Downtown Loft is perfect for business travelers - we have high-speed fiber WiFi (100+ Mbps), a dedicated workspace with ergonomic chair, and free secure parking. The space is very quiet with blackout curtains for rest. I can hold these dates for you - would you like to proceed with the booking?");
     setShowBookingResponseOptions(true);
   };
-  const handleSendBookingResponseCore = async () => {
+  const handleSendBookingResponse = async () => {
     const sentMessage: Message = {
       id: Date.now() + 4,
       type: 'sent',
@@ -448,7 +391,7 @@ const App = () => {
     addMessage(confirmationMessage);
 
     // Guest response to booking inquiry
-    schedule(async () => {
+    setTimeout(async () => {
       // Show AI monitoring for guest response
       await showAiWorkingIndicator("👀 Monitoring for booking confirmation...", 1000);
       await simulateTyping(1500, 'Mike responded...');
@@ -479,7 +422,7 @@ const App = () => {
       console.log('Full demo cycle completed');
 
       // Show dashboard option after completion
-      schedule(() => {
+      setTimeout(() => {
         const dashboardPrompt: Message = {
           id: Date.now() + 8,
           type: 'ai',
@@ -493,10 +436,6 @@ const App = () => {
     setIsBookingEditing(false);
     setEditedBookingResponse('');
     setBookingSuggestedResponse('');
-  };
-  
-  const handleSendBookingResponse = async () => {
-    await runOnce('send-booking-response', handleSendBookingResponseCore);
   };
   const handleEditBookingResponse = () => {
     setIsBookingEditing(true);
@@ -577,7 +516,7 @@ const App = () => {
       setConversationStage('guestInteraction');
 
       // Continue to next phase with better timing
-      schedule(() => {
+      setTimeout(() => {
         simulateGuestInteraction();
       }, 2500);
     }
@@ -600,7 +539,26 @@ const App = () => {
     return <Dashboard onStartChat={handleStartChat} onBackToHome={handleBackToHome} propertyData={propertyData} />;
   }
   return <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      <EnhancedBackground seed="app" />
+      {/* Enhanced 3D Space Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Floating Stars */}
+        {Array.from({
+        length: 50
+      }, (_, i) => <div key={i} className="absolute bg-white rounded-full opacity-40" style={{
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        width: `${Math.random() * 2 + 1}px`,
+        height: `${Math.random() * 2 + 1}px`,
+        animationDelay: `${Math.random() * 3}s`,
+        animation: `twinkle ${Math.random() * 4 + 2}s infinite`
+      }} />)}
+        
+        {/* 3D Geometric Elements */}
+        <div className="absolute top-20 left-10 w-8 h-8 bg-gradient-to-br from-teal-600/30 to-teal-800/20 opacity-20 transform rotate-45 animate-pulse"></div>
+        <div className="absolute bottom-40 right-20 w-12 h-12 bg-gradient-to-br from-teal-600/25 to-teal-800/15 opacity-15 transform rotate-12 animate-bounce"></div>
+        <div className="absolute top-1/2 left-1/4 w-6 h-6 bg-gradient-to-br from-teal-600/35 to-teal-800/25 opacity-25 rounded-full animate-ping"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/95 to-black opacity-90"></div>
+      </div>
 
       <div className="relative z-10">
         {/* Header */}
@@ -800,10 +758,10 @@ const App = () => {
 
             {/* Decision Buttons */}
             {showDecisionButtons && <div className="flex justify-center space-x-4 mt-4 animate-fade-in">
-                      <Button onClick={() => handlePricingDecision('yes')} disabled={isBusy} className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-2 transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+                <Button onClick={() => handlePricingDecision('yes')} className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-2 transition-all duration-200 hover:scale-105">
                   Yes, implement pricing change
                 </Button>
-                <Button onClick={() => handlePricingDecision('no')} disabled={isBusy} variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-2 transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+                <Button onClick={() => handlePricingDecision('no')} variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-2 transition-all duration-200 hover:scale-105">
                   No, keep current pricing
                 </Button>
               </div>}
@@ -853,11 +811,11 @@ const App = () => {
                 {isEditing ? <div className="space-y-3">
                     <textarea value={editedResponse} onChange={e => setEditedResponse(e.target.value)} className="w-full bg-gray-800/70 border border-gray-600 rounded-lg p-3 text-white text-sm resize-none focus:border-teal-600 backdrop-blur-sm" rows={4} />
                     <div className="flex space-x-2">
-                      <Button onClick={handleSendResponse} disabled={isBusy} className="bg-teal-600 hover:bg-teal-700 text-white disabled:opacity-50 disabled:cursor-not-allowed">
+                      <Button onClick={handleSendResponse} className="bg-teal-600 hover:bg-teal-700 text-white">
                         <Send className="h-4 w-4 mr-2" />
                         Send Edited Message
                       </Button>
-                      <Button onClick={() => setIsEditing(false)} disabled={isBusy} variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed">
+                      <Button onClick={() => setIsEditing(false)} variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800">
                         Cancel
                       </Button>
                     </div>
@@ -866,11 +824,11 @@ const App = () => {
                       <p className="text-white text-sm leading-relaxed">{suggestedResponse}</p>
                     </div>
                     <div className="flex space-x-2">
-                      <Button onClick={handleSendResponse} disabled={isBusy} className="bg-teal-600 hover:bg-teal-700 text-white disabled:opacity-50 disabled:cursor-not-allowed">
+                      <Button onClick={handleSendResponse} className="bg-teal-600 hover:bg-teal-700 text-white">
                         <Send className="h-4 w-4 mr-2" />
                         Send
                       </Button>
-                      <Button onClick={handleEditResponse} disabled={isBusy} variant="outline" className="bg-gray-900 border-gray-600 text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed">
+                      <Button onClick={handleEditResponse} variant="outline" className="bg-gray-900 border-gray-600 text-white hover:bg-gray-800">
                         <Edit3 className="h-4 w-4 mr-2" />
                         Edit
                       </Button>
@@ -926,7 +884,7 @@ const App = () => {
               <CardContent className="p-4">
                 <div className="flex space-x-2">
                   <Input value={inputValue} onChange={e => setInputValue(e.target.value)} placeholder="Share your Airbnb listing link..." className="bg-gray-800/70 border-gray-600 text-white focus:border-teal-600 transition-colors duration-200" onKeyPress={e => e.key === 'Enter' && handleSend()} />
-                  <Button onClick={handleSend} className="bg-teal-600 hover:bg-teal-700 transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" disabled={isTyping || isBusy}>
+                  <Button onClick={handleSend} className="bg-teal-600 hover:bg-teal-700 transition-all duration-200 hover:scale-105" disabled={isTyping}>
                     <Send className="h-4 w-4" />
                   </Button>
                 </div>
@@ -942,6 +900,11 @@ const App = () => {
 
       <style>
         {`
+          @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+          }
+          
           /* Mobile-specific improvements */
           @media (max-width: 768px) {
             .sticky {

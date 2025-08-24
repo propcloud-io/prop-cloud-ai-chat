@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Home, MessageCircle, BarChart3, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Logo from './Logo';
-import EnhancedBackground from './EnhancedBackground';
 interface PropertyData {
   name: string;
   rating: number;
@@ -29,8 +28,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   const handleViewAnalytics = () => {
     navigate('/analytics');
   };
-  return <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      <EnhancedBackground seed="dashboard" />
+  return <div className="min-h-screen bg-black text-white">
       {/* Header */}
       <header className="border-b border-gray-800/50 bg-gray-900/30 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">

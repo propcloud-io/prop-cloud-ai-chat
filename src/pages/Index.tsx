@@ -93,7 +93,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
       {/* Enhanced Background */}
-      <EnhancedBackground seed="landing" />
+      <EnhancedBackground />
 
       {/* Content */}
       <div className="relative z-10">
@@ -708,6 +708,29 @@ const Index = () => {
         <Footer />
       </div>
 
+      {/* Enhanced CSS animations */}
+      <style>
+        {`
+          @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+          }
+          
+          @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-15px); }
+            75% { transform: translateY(-30px) translateX(5px); }
+          }
+          
+          @keyframes drift {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+          }
+        `}
+      </style>
     </div>
   );
 };
