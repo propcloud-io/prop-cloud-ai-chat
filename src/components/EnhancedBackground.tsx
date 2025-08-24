@@ -1,131 +1,320 @@
+import React, { useMemo, useEffect, useState, useRef } from 'react';
 
-import React from 'react';
+type EnhancedBackgroundProps = {
+  seed?: string;           // default 'propcore-2025'
+  density?: number;        // default 1 (scale for star/particle counts; 0.5 mobile, 1 desktop)
+  parallax?: boolean;      // default true
+  vignette?: boolean;      // default true
+  className?: string;
+};
 
-const EnhancedBackground: React.FC = () => {
+// Seeded pseudo-random number generator for deterministic positions
+const seededRandom = (seed: string) => {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    const char = seed.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  
+  return () => {
+    hash = (hash * 1103515245 + 12345) & 0x7fffffff;
+    return hash / 0x7fffffff;
+  };
+};
+
+const EnhancedBackground: React.FC<EnhancedBackgroundProps> = ({ 
+  seed = 'propcore-2025',
+  density = 1,
+  parallax = true,
+  vignette = true,
+  className = ''
+}) => {
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Check for reduced motion preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mediaQuery.matches);
+    
+    const handleChange = (event: MediaQueryListEvent) => {
+      setReducedMotion(event.matches);
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  // Mouse parallax effect (throttled)
+  useEffect(() => {
+    if (!parallax || reducedMotion) return;
+
+    let animationFrameId: number;
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      
+      animationFrameId = requestAnimationFrame(() => {
+        const rect = containerRef.current?.getBoundingClientRect();
+        if (rect) {
+          const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+          const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+          setMousePosition({ x, y });
+        }
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [parallax, reducedMotion]);
+
+  // Generate deterministic elements based on seed and density
+  const elements = useMemo(() => {
+    const rng = seededRandom(`${seed}-${density}`);
+    
+    // Calculate counts based on density (limit total nodes < 250)
+    const starCount = Math.min(Math.floor(density * 180), 220);
+    const orbCount = Math.min(Math.floor(density * 8), 10);
+    const particleCount = Math.min(Math.floor(density * 20), 25);
+    const geometricCount = Math.min(Math.floor(density * 2) + 1, 3);
+    const dustCount = Math.min(Math.floor(density * 30), 40);
+    
+    // Generate stars
+    const stars = Array.from({ length: starCount }, (_, i) => ({
+      id: `star-${i}`,
+      x: rng() * 100,
+      y: rng() * 100,
+      size: rng() * 3 + 1,
+      delay: rng() * 4,
+      duration: rng() * 3 + 3
+    }));
+
+    // Generate floating orbs
+    const orbs = Array.from({ length: orbCount }, (_, i) => ({
+      id: `orb-${i}`,
+      x: rng() * 100,
+      y: rng() * 100,
+      size: rng() * 20 + 80,
+      delay: rng() * 6,
+      type: rng() > 0.5 ? 'teal' : 'cyan'
+    }));
+
+    // Generate particles
+    const particles = Array.from({ length: particleCount }, (_, i) => ({
+      id: `particle-${i}`,
+      x: rng() * 100,
+      y: rng() * 100,
+      delay: rng() * 8,
+      duration: rng() * 8 + 8
+    }));
+
+    // Generate geometric shapes
+    const geometric = Array.from({ length: geometricCount }, (_, i) => ({
+      id: `geo-${i}`,
+      x: rng() * 80 + 10, // Keep more centered
+      y: rng() * 80 + 10,
+      size: rng() * 20 + 60,
+      rotation: rng() * 360,
+      delay: rng() * 4,
+      type: Math.floor(rng() * 3) // 0, 1, 2 for different shapes
+    }));
+
+    // Generate cosmic dust
+    const dust = Array.from({ length: dustCount }, (_, i) => ({
+      id: `dust-${i}`,
+      x: rng() * 100,
+      y: rng() * 100,
+      delay: rng() * 20,
+      duration: rng() * 8 + 4
+    }));
+
+    return { stars, orbs, particles, geometric, dust };
+  }, [seed, density]);
+
+  const parallaxTransform = !reducedMotion && parallax 
+    ? `translate(${mousePosition.x * 10}px, ${mousePosition.y * 10}px)` 
+    : 'none';
+
   return (
-    <div className="absolute inset-0 overflow-hidden">
-      {/* Deep Space Gradient with better contrast */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/98 to-black"></div>
+    <div 
+      ref={containerRef}
+      className={`absolute inset-0 -z-10 pointer-events-none overflow-hidden ${className}`}
+    >
+      {/* Deep Space Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/98 to-black" />
       
-      {/* Brighter Stars Field */}
-      {Array.from({ length: 150 }, (_, i) => (
-        <div
-          key={`star-${i}`}
-          className="absolute bg-white rounded-full opacity-80"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            width: `${Math.random() * 4 + 1}px`,
-            height: `${Math.random() * 4 + 1}px`,
-            animationDelay: `${Math.random() * 4}s`,
-            animation: `twinkle ${Math.random() * 5 + 3}s infinite`
-          }}
-        />
-      ))}
-      
+      {/* Stars Field */}
+      <div 
+        className="absolute inset-0"
+        style={{ 
+          transform: parallaxTransform,
+          willChange: parallax && !reducedMotion ? 'transform' : 'auto'
+        }}
+      >
+        {elements.stars.map((star) => (
+          <div
+            key={star.id}
+            className="absolute bg-white rounded-full opacity-80"
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              animationDelay: `${star.delay}s`,
+              animation: reducedMotion 
+                ? 'none' 
+                : `twinkle ${star.duration}s infinite ease-in-out`,
+              willChange: reducedMotion ? 'auto' : 'opacity'
+            }}
+          />
+        ))}
+      </div>
+
       {/* Flying Light Particles */}
-      {Array.from({ length: 25 }, (_, i) => (
-        <div
-          key={`particle-${i}`}
-          className="absolute w-1 h-1 bg-teal-400/70 rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 8}s`,
-            animation: `float ${Math.random() * 12 + 8}s infinite linear`
-          }}
-        />
-      ))}
-      
-      {/* Enhanced 3D Geometric Shapes with vibrant colors */}
       <div 
-        className="absolute w-20 h-20 bg-gradient-to-br from-teal-400/40 to-cyan-600/30 transform rotate-45 animate-pulse shadow-lg shadow-teal-400/20"
-        style={{
-          top: '15%',
-          left: '8%',
-          animation: 'float 8s ease-in-out infinite'
+        className="absolute inset-0"
+        style={{ 
+          transform: `translate(${mousePosition.x * 5}px, ${mousePosition.y * 5}px)`,
+          willChange: parallax && !reducedMotion ? 'transform' : 'auto'
         }}
-      ></div>
+      >
+        {elements.particles.map((particle) => (
+          <div
+            key={particle.id}
+            className="absolute w-1 h-1 bg-teal-400/70 rounded-full"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              animationDelay: `${particle.delay}s`,
+              animation: reducedMotion 
+                ? 'none' 
+                : `float ${particle.duration}s infinite linear`,
+              willChange: reducedMotion ? 'auto' : 'transform'
+            }}
+          />
+        ))}
+      </div>
       
+      {/* Enhanced 3D Geometric Shapes */}
       <div 
-        className="absolute w-24 h-24 bg-gradient-to-br from-cyan-400/35 to-teal-600/25 transform rotate-12 shadow-lg shadow-cyan-400/15"
-        style={{
-          top: '60%',
-          right: '12%',
-          animation: 'bounce 6s ease-in-out infinite'
+        className="absolute inset-0"
+        style={{ 
+          transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)`,
+          willChange: parallax && !reducedMotion ? 'transform' : 'auto'
         }}
-      ></div>
-      
-      <div 
-        className="absolute w-16 h-16 bg-gradient-to-br from-teal-500/45 to-cyan-700/35 transform rotate-45 shadow-lg shadow-teal-500/25"
-        style={{
-          bottom: '35%',
-          left: '20%',
-          animation: 'pulse 4s ease-in-out infinite'
-        }}
-      ></div>
+      >
+        {elements.geometric.map((geo) => (
+          <div 
+            key={geo.id}
+            className={`absolute shadow-lg ${
+              geo.type === 0 
+                ? 'bg-gradient-to-br from-teal-400/40 to-cyan-600/30 shadow-teal-400/20' 
+                : geo.type === 1 
+                ? 'bg-gradient-to-br from-cyan-400/35 to-teal-600/25 shadow-cyan-400/15' 
+                : 'bg-gradient-to-br from-teal-500/45 to-cyan-700/35 shadow-teal-500/25'
+            }`}
+            style={{
+              left: `${geo.x}%`,
+              top: `${geo.y}%`,
+              width: `${geo.size}px`,
+              height: `${geo.size}px`,
+              transform: `rotate(${geo.rotation}deg)`,
+              animationDelay: `${geo.delay}s`,
+              animation: reducedMotion 
+                ? 'none' 
+                : geo.type === 0 
+                ? 'float 8s ease-in-out infinite' 
+                : geo.type === 1 
+                ? 'pulse 6s ease-in-out infinite' 
+                : 'pulse 4s ease-in-out infinite',
+              willChange: reducedMotion ? 'auto' : 'transform, opacity'
+            }}
+          />
+        ))}
+      </div>
       
       {/* Floating Orbs with Enhanced Glow */}
       <div 
-        className="absolute w-32 h-32 bg-gradient-radial from-teal-400/30 to-transparent rounded-full shadow-2xl shadow-teal-400/40"
-        style={{
-          top: '30%',
-          right: '25%',
-          animation: 'ping 8s ease-in-out infinite'
+        className="absolute inset-0"
+        style={{ 
+          transform: `translate(${mousePosition.x * 8}px, ${mousePosition.y * 8}px)`,
+          willChange: parallax && !reducedMotion ? 'transform' : 'auto'
         }}
-      ></div>
-      
+      >
+        {elements.orbs.map((orb) => (
+          <div 
+            key={orb.id}
+            className={`absolute rounded-full ${
+              orb.type === 'teal' 
+                ? 'bg-gradient-radial from-teal-400/30 to-transparent shadow-2xl shadow-teal-400/40'
+                : 'bg-gradient-radial from-cyan-400/35 to-transparent shadow-xl shadow-cyan-400/30'
+            }`}
+            style={{
+              width: `${orb.size}px`,
+              height: `${orb.size}px`,
+              left: `${orb.x}%`,
+              top: `${orb.y}%`,
+              animationDelay: `${orb.delay}s`,
+              animation: reducedMotion 
+                ? 'none' 
+                : orb.type === 'teal' 
+                ? 'ping 8s ease-in-out infinite' 
+                : 'pulse 6s ease-in-out infinite',
+              willChange: reducedMotion ? 'auto' : 'transform, opacity'
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Cosmic Dust Effect */}
       <div 
-        className="absolute w-20 h-20 bg-gradient-radial from-cyan-400/35 to-transparent rounded-full shadow-xl shadow-cyan-400/30"
-        style={{
-          bottom: '40%',
-          left: '35%',
-          animation: 'pulse 6s ease-in-out infinite'
+        className="absolute inset-0"
+        style={{ 
+          transform: `translate(${mousePosition.x * 3}px, ${mousePosition.y * 3}px)`,
+          willChange: parallax && !reducedMotion ? 'transform' : 'auto'
         }}
-      ></div>
-      
-      {/* Subtle Moving Lights */}
-      {Array.from({ length: 8 }, (_, i) => (
-        <div
-          key={`light-${i}`}
-          className="absolute w-3 h-3 bg-teal-500/50 rounded-full blur-sm"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 10}s`,
-            animation: `drift ${Math.random() * 15 + 10}s infinite ease-in-out`
-          }}
-        />
-      ))}
-      
-      {/* Enhanced Grid Pattern */}
-      <div className="absolute inset-0 opacity-8">
-        <div 
-          className="grid grid-cols-12 gap-4 h-full"
-          style={{
-            background: `
-              linear-gradient(rgba(20, 184, 166, 0.05) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(20, 184, 166, 0.05) 1px, transparent 1px)
-            `,
-            backgroundSize: '80px 80px'
-          }}
-        >
-        </div>
+      >
+        {elements.dust.map((dust) => (
+          <div
+            key={dust.id}
+            className="absolute w-0.5 h-0.5 bg-teal-300/40 rounded-full"
+            style={{
+              left: `${dust.x}%`,
+              top: `${dust.y}%`,
+              animationDelay: `${dust.delay}s`,
+              animation: reducedMotion 
+                ? 'none' 
+                : `twinkle ${dust.duration}s infinite ease-in-out`,
+              willChange: reducedMotion ? 'auto' : 'opacity'
+            }}
+          />
+        ))}
       </div>
       
-      {/* Cosmic Dust Effect */}
-      {Array.from({ length: 40 }, (_, i) => (
-        <div
-          key={`dust-${i}`}
-          className="absolute w-0.5 h-0.5 bg-teal-300/40 rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 20}s`,
-            animation: `twinkle ${Math.random() * 8 + 4}s infinite ease-in-out`
-          }}
-        />
-      ))}
+      {/* Enhanced Grid Pattern */}
+      {vignette && (
+        <div className="absolute inset-0 opacity-8">
+          <div 
+            className="grid grid-cols-12 gap-4 h-full"
+            style={{
+              background: `
+                linear-gradient(rgba(20, 184, 166, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(20, 184, 166, 0.05) 1px, transparent 1px)
+              `,
+              backgroundSize: '80px 80px'
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

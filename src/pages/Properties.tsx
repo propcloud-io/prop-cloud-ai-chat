@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Home, Star, DollarSign, Users, Calendar, TrendingUp, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Logo from '@/components/Logo';
+import EnhancedBackground from '@/components/EnhancedBackground';
 interface PropertyMetrics {
   occupancyRate: number;
   revenue: number;
@@ -38,7 +39,8 @@ const Properties: React.FC = () => {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
-  return <div className="min-h-screen bg-black text-white">
+  return <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      <EnhancedBackground seed="properties" density={0.8} />
       {/* Header */}
       <header className="border-b border-gray-800/50 bg-gray-900/30 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
