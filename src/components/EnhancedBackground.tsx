@@ -1,322 +1,218 @@
-import React, { useMemo, useEffect, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 type EnhancedBackgroundProps = {
-  seed?: string;           // default 'propcore-2025'
-  density?: number;        // default 1 (scale for star/particle counts; 0.5 mobile, 1 desktop)
-  parallax?: boolean;      // default true
-  vignette?: boolean;      // default true
+  seed?: string;
+  density?: number;           // 1 desktop, 0.5 mobile-friendly
+  parallax?: boolean;         // pointer parallax
+  vignette?: boolean;
   className?: string;
 };
 
-// Seeded pseudo-random number generator for deterministic positions
-const seededRandom = (seed: string) => {
-  let hash = 0;
-  for (let i = 0; i < seed.length; i++) {
-    const char = seed.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32-bit integer
-  }
-  
-  return () => {
-    hash = (hash * 1103515245 + 12345) & 0x7fffffff;
-    return hash / 0x7fffffff;
+function mulberry32(a: number) {
+  return function () {
+    let t = (a += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
-};
+}
 
-const EnhancedBackground: React.FC<EnhancedBackgroundProps> = ({ 
-  seed = 'propcore-2025',
+function useReducedMotion(): boolean {
+  const ref = useRef(false);
+  useEffect(() => {
+    const m = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    ref.current = !!m?.matches;
+    const handler = (e: MediaQueryListEvent) => (ref.current = e.matches);
+    m?.addEventListener?.("change", handler);
+    return () => m?.removeEventListener?.("change", handler);
+  }, []);
+  return ref.current;
+}
+
+export default function EnhancedBackground({
+  seed = "propcore-2025",
   density = 1,
   parallax = true,
   vignette = true,
-  className = ''
-}) => {
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  className,
+}: EnhancedBackgroundProps) {
+  const reduced = useReducedMotion();
 
-  // Check for reduced motion preference
+  // Clamp/normalize density
+  const d = Math.max(0.25, Math.min(1.25, density || 1));
+
+  // Seeded RNG
+  const rnd = useMemo(() => {
+    let acc = 2166136261;
+    for (let i = 0; i < seed.length; i++) acc ^= seed.charCodeAt(i);
+    return mulberry32(acc >>> 0);
+  }, [seed]);
+
+  // Generate stable elements
+  const { stars, orbs, accents } = useMemo(() => {
+    const starCount = Math.round(180 * d);
+    const orbCount = Math.round(8 * d);
+    const accentCount = 2;
+
+    const makePct = () => `${Math.floor(rnd() * 10000) / 100}%`;
+    const makePx = (min: number, max: number) =>
+      `${Math.round(min + rnd() * (max - min))}px`;
+
+    const s = Array.from({ length: starCount }, (_, i) => ({
+      key: `s-${i}`,
+      left: makePct(),
+      top: makePct(),
+      size: makePx(1, 3 + Math.round(2 * d)),
+      delay: `${(rnd() * 4).toFixed(2)}s`,
+      dur: `${(3 + rnd() * 4).toFixed(2)}s`,
+      op: (0.35 + rnd() * 0.45).toFixed(2),
+    }));
+
+    const o = Array.from({ length: orbCount }, (_, i) => ({
+      key: `o-${i}`,
+      left: makePct(),
+      top: makePct(),
+      size: makePx(60, 140),
+      delay: `${(rnd() * 6).toFixed(2)}s`,
+      dur: `${(6 + rnd() * 10).toFixed(2)}s`,
+      op: (0.16 + rnd() * 0.2).toFixed(2),
+    }));
+
+    const a = Array.from({ length: accentCount }, (_, i) => ({
+      key: `a-${i}`,
+      left: makePct(),
+      top: makePct(),
+      sizeW: makePx(60, 110),
+      sizeH: makePx(60, 110),
+      rotate: `${Math.round(rnd() * 60) - 30}deg`,
+      delay: `${(rnd() * 5).toFixed(2)}s`,
+      dur: `${(5 + rnd() * 6).toFixed(2)}s`,
+      op: (0.12 + rnd() * 0.15).toFixed(2),
+    }));
+
+    return { stars: s, orbs: o, accents: a };
+  }, [rnd, d]);
+
+  // Pointer parallax
+  const wrapRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReducedMotion(mediaQuery.matches);
-    
-    const handleChange = (event: MediaQueryListEvent) => {
-      setReducedMotion(event.matches);
-    };
-    
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+    if (reduced || !parallax) return;
+    const el = wrapRef.current;
+    if (!el) return;
 
-  // Mouse parallax effect (throttled)
-  useEffect(() => {
-    if (!parallax || reducedMotion) return;
-
-    let animationFrameId: number;
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-      
-      animationFrameId = requestAnimationFrame(() => {
-        const rect = containerRef.current?.getBoundingClientRect();
-        if (rect) {
-          const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-          const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-          setMousePosition({ x, y });
-        }
+    let raf = 0;
+    const onMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const { innerWidth: w, innerHeight: h } = window;
+        const x = (e.clientX / w - 0.5) * 2;
+        const y = (e.clientY / h - 0.5) * 2;
+        el.style.setProperty("--parallaxX", `${x}`);
+        el.style.setProperty("--parallaxY", `${y}`);
       });
     };
-
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener("pointermove", onMove, { passive: true });
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
+      window.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(raf);
     };
-  }, [parallax, reducedMotion]);
-
-  // Generate deterministic elements based on seed and density
-  const elements = useMemo(() => {
-    const rng = seededRandom(`${seed}-${density}`);
-    
-    // Calculate counts based on density (limit total nodes < 250)
-    const starCount = Math.min(Math.floor(density * 180), 220);
-    const orbCount = Math.min(Math.floor(density * 8), 10);
-    const particleCount = Math.min(Math.floor(density * 20), 25);
-    const geometricCount = Math.min(Math.floor(density * 2) + 1, 3);
-    const dustCount = Math.min(Math.floor(density * 30), 40);
-    
-    // Generate stars
-    const stars = Array.from({ length: starCount }, (_, i) => ({
-      id: `star-${i}`,
-      x: rng() * 100,
-      y: rng() * 100,
-      size: rng() * 3 + 1,
-      delay: rng() * 4,
-      duration: rng() * 3 + 3
-    }));
-
-    // Generate floating orbs
-    const orbs = Array.from({ length: orbCount }, (_, i) => ({
-      id: `orb-${i}`,
-      x: rng() * 100,
-      y: rng() * 100,
-      size: rng() * 20 + 80,
-      delay: rng() * 6,
-      type: rng() > 0.5 ? 'teal' : 'cyan'
-    }));
-
-    // Generate particles
-    const particles = Array.from({ length: particleCount }, (_, i) => ({
-      id: `particle-${i}`,
-      x: rng() * 100,
-      y: rng() * 100,
-      delay: rng() * 8,
-      duration: rng() * 8 + 8
-    }));
-
-    // Generate geometric shapes
-    const geometric = Array.from({ length: geometricCount }, (_, i) => ({
-      id: `geo-${i}`,
-      x: rng() * 80 + 10, // Keep more centered
-      y: rng() * 80 + 10,
-      size: rng() * 20 + 60,
-      rotation: rng() * 360,
-      delay: rng() * 4,
-      type: Math.floor(rng() * 3) // 0, 1, 2 for different shapes
-    }));
-
-    // Generate cosmic dust
-    const dust = Array.from({ length: dustCount }, (_, i) => ({
-      id: `dust-${i}`,
-      x: rng() * 100,
-      y: rng() * 100,
-      delay: rng() * 20,
-      duration: rng() * 8 + 4
-    }));
-
-    return { stars, orbs, particles, geometric, dust };
-  }, [seed, density]);
-
-  const parallaxTransform = !reducedMotion && parallax 
-    ? `translate(${mousePosition.x * 10}px, ${mousePosition.y * 10}px)` 
-    : 'none';
+  }, [parallax, reduced]);
 
   return (
-    <div 
-      ref={containerRef}
-      className={`absolute inset-0 -z-10 pointer-events-none overflow-hidden ${className}`}
+    <div
+      ref={wrapRef}
+      className={cn(
+        "absolute inset-0 -z-10 pointer-events-none select-none",
+        className
+      )}
+      // Default vars if parallax is off
+      style={{ ["--parallaxX" as any]: 0, ["--parallaxY" as any]: 0 }}
+      aria-hidden
     >
-      {/* Deep Space Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/98 to-black" />
-      
-      {/* Stars Field */}
-      <div 
-        className="absolute inset-0"
-        style={{ 
-          transform: parallaxTransform,
-          willChange: parallax && !reducedMotion ? 'transform' : 'auto'
-        }}
-      >
-        {elements.stars.map((star) => (
+      {/* Base gradient (never pure black) */}
+      <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_0%_0%,rgba(20,184,166,0.07),transparent_40%),radial-gradient(120%_120%_at_100%_100%,rgba(56,189,248,0.06),transparent_45%),linear-gradient(to_br,#000,#0b0f14_35%,#000_100%)]" />
+
+      {/* Stars */}
+      <div className={cn("absolute inset-0", !reduced && "animate-none")}>
+        {stars.map((st) => (
           <div
-            key={star.id}
-            className="absolute bg-white rounded-full opacity-80"
+            key={st.key}
+            className="absolute rounded-full bg-white"
             style={{
-              left: `${star.x}%`,
-              top: `${star.y}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              animationDelay: `${star.delay}s`,
-              animation: reducedMotion 
-                ? 'none' 
-                : `twinkle ${star.duration}s infinite ease-in-out`,
-              willChange: reducedMotion ? 'auto' : 'opacity'
+              left: st.left,
+              top: st.top,
+              width: st.size,
+              height: st.size,
+              opacity: st.op as any,
+              animation: reduced ? "none" : `twinkle ${st.dur} infinite`,
+              animationDelay: st.delay,
+              willChange: "opacity",
+              filter: "drop-shadow(0 0 2px rgba(255,255,255,0.15))",
+              transform: `translate(calc(var(--parallaxX) * 2px), calc(var(--parallaxY) * 2px))`,
             }}
           />
         ))}
       </div>
 
-      {/* Flying Light Particles */}
-      <div 
-        className="absolute inset-0"
-        style={{ 
-          transform: `translate(${mousePosition.x * 5}px, ${mousePosition.y * 5}px)`,
-          willChange: parallax && !reducedMotion ? 'transform' : 'auto'
-        }}
-      >
-        {elements.particles.map((particle) => (
+      {/* Orbs */}
+      <div className="absolute inset-0">
+        {orbs.map((o) => (
           <div
-            key={particle.id}
-            className="absolute w-1 h-1 bg-teal-400/70 rounded-full"
+            key={o.key}
+            className="absolute rounded-full"
             style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              animationDelay: `${particle.delay}s`,
-              animation: reducedMotion 
-                ? 'none' 
-                : `float ${particle.duration}s infinite linear`,
-              willChange: reducedMotion ? 'auto' : 'transform'
-            }}
-          />
-        ))}
-      </div>
-      
-      {/* Enhanced 3D Geometric Shapes */}
-      <div 
-        className="absolute inset-0"
-        style={{ 
-          transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)`,
-          willChange: parallax && !reducedMotion ? 'transform' : 'auto'
-        }}
-      >
-        {elements.geometric.map((geo) => (
-          <div 
-            key={geo.id}
-            className={`absolute shadow-lg ${
-              geo.type === 0 
-                ? 'bg-gradient-to-br from-teal-400/40 to-cyan-600/30 shadow-teal-400/20' 
-                : geo.type === 1 
-                ? 'bg-gradient-to-br from-cyan-400/35 to-teal-600/25 shadow-cyan-400/15' 
-                : 'bg-gradient-to-br from-teal-500/45 to-cyan-700/35 shadow-teal-500/25'
-            }`}
-            style={{
-              left: `${geo.x}%`,
-              top: `${geo.y}%`,
-              width: `${geo.size}px`,
-              height: `${geo.size}px`,
-              transform: `rotate(${geo.rotation}deg)`,
-              animationDelay: `${geo.delay}s`,
-              animation: reducedMotion 
-                ? 'none' 
-                : geo.type === 0 
-                ? 'float 8s ease-in-out infinite' 
-                : geo.type === 1 
-                ? 'pulse 6s ease-in-out infinite' 
-                : 'pulse 4s ease-in-out infinite',
-              willChange: reducedMotion ? 'auto' : 'transform, opacity'
-            }}
-          />
-        ))}
-      </div>
-      
-      {/* Floating Orbs with Enhanced Glow */}
-      <div 
-        className="absolute inset-0"
-        style={{ 
-          transform: `translate(${mousePosition.x * 8}px, ${mousePosition.y * 8}px)`,
-          willChange: parallax && !reducedMotion ? 'transform' : 'auto'
-        }}
-      >
-        {elements.orbs.map((orb) => (
-          <div 
-            key={orb.id}
-            className={`absolute rounded-full ${
-              orb.type === 'teal' 
-                ? 'bg-gradient-radial from-teal-400/30 to-transparent shadow-2xl shadow-teal-400/40'
-                : 'bg-gradient-radial from-cyan-400/35 to-transparent shadow-xl shadow-cyan-400/30'
-            }`}
-            style={{
-              width: `${orb.size}px`,
-              height: `${orb.size}px`,
-              left: `${orb.x}%`,
-              top: `${orb.y}%`,
-              animationDelay: `${orb.delay}s`,
-              animation: reducedMotion 
-                ? 'none' 
-                : orb.type === 'teal' 
-                ? 'ping 8s ease-in-out infinite' 
-                : 'pulse 6s ease-in-out infinite',
-              willChange: reducedMotion ? 'auto' : 'transform, opacity'
+              left: o.left,
+              top: o.top,
+              width: o.size,
+              height: o.size,
+              background:
+                "radial-gradient(circle at 30% 30%, rgba(45,212,191,0.5), rgba(45,212,191,0.0) 60%)",
+              opacity: o.op as any,
+              animation: reduced ? "none" : `float ${o.dur} ease-in-out infinite`,
+              animationDelay: o.delay,
+              willChange: "transform",
+              transform: `translate(calc(var(--parallaxX) * 6px), calc(var(--parallaxY) * 6px))`,
+              filter: "blur(1px)",
             }}
           />
         ))}
       </div>
 
-      {/* Cosmic Dust Effect */}
-      <div 
-        className="absolute inset-0"
-        style={{ 
-          transform: `translate(${mousePosition.x * 3}px, ${mousePosition.y * 3}px)`,
-          willChange: parallax && !reducedMotion ? 'transform' : 'auto'
-        }}
-      >
-        {elements.dust.map((dust) => (
+      {/* Accents */}
+      <div className="absolute inset-0">
+        {accents.map((a) => (
           <div
-            key={dust.id}
-            className="absolute w-0.5 h-0.5 bg-teal-300/40 rounded-full"
+            key={a.key}
+            className="absolute"
             style={{
-              left: `${dust.x}%`,
-              top: `${dust.y}%`,
-              animationDelay: `${dust.delay}s`,
-              animation: reducedMotion 
-                ? 'none' 
-                : `twinkle ${dust.duration}s infinite ease-in-out`,
-              willChange: reducedMotion ? 'auto' : 'opacity'
+              left: a.left,
+              top: a.top,
+              width: a.sizeW,
+              height: a.sizeH,
+              background:
+                "linear-gradient(135deg, rgba(45,212,191,0.35), rgba(56,189,248,0.25))",
+              transform: `rotate(${a.rotate}) translate(calc(var(--parallaxX) * 10px), calc(var(--parallaxY) * 10px))`,
+              borderRadius: "12px",
+              opacity: a.op as any,
+              animation: reduced ? "none" : `pulse ${a.dur} ease-in-out infinite`,
+              animationDelay: a.delay,
+              boxShadow: "0 0 30px rgba(45,212,191,0.15)",
+              willChange: "transform, opacity",
             }}
           />
         ))}
       </div>
-      
-      {/* Enhanced Grid Pattern */}
+
+      {/* Optional vignette to frame content */}
       {vignette && (
-        <div className="absolute inset-0 opacity-8">
-          <div 
-            className="grid grid-cols-12 gap-4 h-full"
-            style={{
-              background: `
-                linear-gradient(rgba(20, 184, 166, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(20, 184, 166, 0.05) 1px, transparent 1px)
-              `,
-              backgroundSize: '80px 80px'
-            }}
-          />
-        </div>
+        <div className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.45) 100%)",
+          }}
+        />
       )}
     </div>
   );
-};
-
-export default EnhancedBackground;
+}

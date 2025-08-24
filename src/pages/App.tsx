@@ -189,7 +189,7 @@ const App = () => {
 
     // Continue to next phase with better timing
     schedule(() => {
-      if (conversationStage !== 'completed') simulateGuestInteraction();
+      if (conversationStage === 'guestInteraction') simulateGuestInteraction();
     }, 2500);
   };
   
@@ -373,7 +373,7 @@ const App = () => {
       } else {
         // After monitoring is complete, trigger booking inquiry
         schedule(() => {
-          if (conversationStage !== 'completed') simulateBookingInquiry();
+          if (conversationStage === 'completed') simulateBookingInquiry();
         }, 10000);
       }
     };
