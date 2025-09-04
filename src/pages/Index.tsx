@@ -19,16 +19,23 @@ const Index = () => {
   const [showSignupMessage, setShowSignupMessage] = useState(false);
   const { toast } = useToast();
 
-  // Check for signup redirect parameter
+  // Check for signup redirect parameter and capture source
+  const [source, setSource] = useState<string | null>(null);
+  
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
+    const sourceParam = urlParams.get('source');
+    if (sourceParam) {
+      setSource(sourceParam);
+    }
+    
     if (urlParams.get('signup') === 'true') {
       setShowSignupMessage(true);
       // Scroll to waitlist section after a brief delay
       setTimeout(() => {
         document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
       }, 500);
-      // Clear the URL parameter
+      // Clear the URL parameters
       window.history.replaceState({}, '', window.location.pathname);
     }
   }, []);
@@ -44,7 +51,8 @@ const Index = () => {
         .insert({
           email,
           city: city || null,
-          properties_count: properties ? parseInt(properties) : null
+          properties_count: properties ? parseInt(properties) : null,
+          source: source || null
         });
 
       if (dbError) {
@@ -56,7 +64,8 @@ const Index = () => {
         body: {
           email,
           city,
-          properties_count: properties ? parseInt(properties) : null
+          properties_count: properties ? parseInt(properties) : null,
+          source: source || null
         }
       });
 
