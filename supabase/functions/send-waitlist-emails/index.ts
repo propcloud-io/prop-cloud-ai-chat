@@ -12,6 +12,7 @@ interface WaitlistRequest {
   email: string;
   city?: string;
   properties_count?: number;
+  source?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -21,9 +22,9 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { email, city, properties_count }: WaitlistRequest = await req.json();
+    const { email, city, properties_count, source }: WaitlistRequest = await req.json();
 
-    console.log("Processing waitlist signup:", { email, city, properties_count });
+    console.log("Processing waitlist signup:", { email, city, properties_count, source });
 
     // Send admin notification email
     const adminEmailResponse = await resend.emails.send({
@@ -40,6 +41,7 @@ const handler = async (req: Request): Promise<Response> => {
               <p style="margin: 8px 0;"><strong>Email:</strong> ${email}</p>
               <p style="margin: 8px 0;"><strong>City:</strong> ${city || 'Not provided'}</p>
               <p style="margin: 8px 0;"><strong>Properties:</strong> ${properties_count || 'Not provided'}</p>
+              <p style="margin: 8px 0;"><strong>Source:</strong> ${source || 'Direct signup'}</p>
             </div>
             
             <p style="color: #374151; margin-bottom: 20px;">

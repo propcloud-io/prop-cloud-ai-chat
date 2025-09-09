@@ -27,6 +27,7 @@ const Index = () => {
     const sourceParam = urlParams.get('source');
     if (sourceParam) {
       setSource(sourceParam);
+      console.log('Captured source from URL:', sourceParam);
     }
     
     if (urlParams.get('signup') === 'true') {
